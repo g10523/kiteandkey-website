@@ -1,0 +1,694 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==================================================
+   ROOT + BASE
+================================================== */
+
+:root {
+  color-scheme: light;
+  
+  /* Brand Colors */
+  --kk-primary: #5E5574;
+  --kk-primary-dark: #4F4865;
+  --kk-primary-light: #8B7FA8;
+  
+  --kk-lavender: #D9CFF2;
+  --kk-lavender-soft: #E6E0F5;
+  --kk-lavender-muted: #B8ADD8;
+  
+  --kk-text: #3F3A52;
+  --kk-text-secondary: #6B647F;
+  --kk-text-muted: #8C84A8;
+  --kk-text-faint: #9A95AF;
+  
+  --kk-bg: #FBFAFF;
+  --kk-bg-soft: #F7F5FB;
+  --kk-bg-card: rgba(255, 255, 255, 0.72);
+  
+  --kk-border: #E6E0F2;
+  --kk-border-strong: rgba(217, 207, 242, 0.85);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--kk-bg);
+  color: #2e2e38;
+  font-feature-settings: "ss01" on, "ss02" on;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(217, 207, 242, 0.7);
+}
+
+/* ==================================================
+   GLOBAL PAGE BACKGROUND
+================================================== */
+
+.kk-global-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      900px 520px at 20% 10%,
+      rgba(217, 207, 242, 0.12),
+      transparent 65%
+    ),
+    radial-gradient(
+      900px 520px at 80% 14%,
+      rgba(94, 85, 116, 0.06),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfaff 50%,
+      #ffffff 100%
+    );
+}
+
+.kk-global-bg::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      700px 480px at 30% 20%,
+      rgba(217, 207, 242, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      600px 420px at 70% 30%,
+      rgba(94, 85, 116, 0.08),
+      transparent 62%
+    ),
+    radial-gradient(
+      800px 520px at 50% 70%,
+      rgba(217, 207, 242, 0.14),
+      transparent 65%
+    );
+  animation: kk-light-drift 90s linear infinite;
+  transform-origin: center;
+}
+
+.kk-global-bg::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      900px 600px at 20% 80%,
+      rgba(217, 207, 242, 0.10),
+      transparent 70%
+    );
+  animation: kk-light-drift-reverse 140s linear infinite;
+}
+
+/* ==================================================
+   TYPOGRAPHY
+================================================== */
+
+h1, h2, h3, h4, h5 {
+  color: var(--kk-text);
+}
+
+p {
+  color: #2e2e38;
+}
+
+.text-secondary {
+  color: var(--kk-text-secondary);
+}
+
+.text-muted {
+  color: var(--kk-text-muted);
+}
+
+/* ==================================================
+   LINKS
+================================================== */
+
+a {
+  text-underline-offset: 4px;
+  transition: color 200ms ease;
+}
+
+a:hover {
+  color: var(--kk-primary);
+}
+
+/* ==================================================
+   GLASS SYSTEM
+================================================== */
+
+.kk-glass {
+  position: relative;
+  border-radius: 24px;
+  padding: 1.4rem 1.6rem;
+  background: var(--kk-bg-card);
+  border: 1px solid rgba(217, 207, 242, 0.75);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 22px 60px rgba(63, 58, 82, 0.08);
+  transition:
+    transform 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.kk-glass::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 80% at 20% 0%,
+      rgba(217, 207, 242, 0.35),
+      transparent 60%
+    );
+  opacity: 0.6;
+}
+
+.kk-glass:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 28px 70px rgba(63, 58, 82, 0.14);
+}
+
+/* Strong glass variant */
+.kk-glass-strong {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--kk-border-strong);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 1) inset,
+    0 30px 80px rgba(63, 58, 82, 0.18);
+}
+
+/* Soft glass variant */
+.kk-glass-soft {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(217, 207, 242, 0.6);
+  backdrop-filter: blur(12px) saturate(110%);
+  -webkit-backdrop-filter: blur(12px) saturate(110%);
+  box-shadow: 0 16px 48px rgba(63, 58, 82, 0.06);
+}
+
+/* ==================================================
+   CARDS
+================================================== */
+
+.kk-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--kk-border);
+  border-radius: 16px;
+  transition: all 300ms ease;
+}
+
+.kk-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--kk-lavender);
+  box-shadow: 0 12px 40px rgba(63, 58, 82, 0.08);
+}
+
+.kk-card-strong {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--kk-lavender);
+  box-shadow: 0 8px 32px rgba(63, 58, 82, 0.06);
+}
+
+/* ==================================================
+   INTERACTIVE ELEMENTS
+================================================== */
+
+.kk-hover {
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    background 240ms ease,
+    border-color 240ms ease;
+}
+
+.kk-hover:hover {
+  transform: translateY(-2px);
+}
+
+.kk-hover-soft:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 26px 70px rgba(63, 58, 82, 0.12);
+}
+
+/* ==================================================
+   BACKGROUND VARIANTS
+================================================== */
+
+.kk-glass-wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 520px at 15% 12%, rgba(217,207,242,0.45), transparent 60%),
+    radial-gradient(900px 520px at 85% 18%, rgba(94,85,116,0.18), transparent 58%),
+    linear-gradient(180deg, #fbfaff 0%, #f7f5fb 55%, #ffffff 100%);
+}
+
+.kk-hero {
+  background:
+    radial-gradient(1000px 600px at 20% 10%, rgba(217,207,242,0.55), transparent 60%),
+    radial-gradient(900px 520px at 80% 20%, rgba(94,85,116,0.22), transparent 60%),
+    linear-gradient(180deg, #faf9fd 0%, #f6f4fb 60%, #ffffff 100%);
+}
+
+.kk-soft {
+  background:
+    radial-gradient(800px 480px at 50% 20%, rgba(217,207,242,0.35), transparent 60%),
+    #fbfaff;
+}
+
+/* ==================================================
+   AMBIENT BACKGROUND SYSTEM
+================================================== */
+
+.kk-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Ambient blobs */
+.kk-ambient-blob {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: kk-ambient-float 26s ease-in-out infinite;
+}
+
+.kk-ambient-blob.blob-a {
+  background: var(--kk-lavender);
+  top: 12%;
+  left: -160px;
+}
+
+.kk-ambient-blob.blob-b {
+  background: var(--kk-lavender-muted);
+  top: 48%;
+  right: -180px;
+  animation-delay: 8s;
+}
+
+.kk-ambient-blob.blob-c {
+  background: #ede8f8;
+  bottom: -160px;
+  left: 30%;
+  animation-delay: 16s;
+}
+
+/* Glass orbs (alternative naming) */
+.kk-glass-orb {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: kk-float 22s ease-in-out infinite;
+}
+
+.kk-glass-orb.orb-1 {
+  background: var(--kk-lavender);
+  top: 10%;
+  left: -120px;
+}
+
+.kk-glass-orb.orb-2 {
+  background: var(--kk-lavender-muted);
+  bottom: -120px;
+  right: -140px;
+  animation-delay: 8s;
+}
+
+/* Legacy blob support */
+.blob {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.45;
+  animation: kk-float 22s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.blob-1 {
+  background: var(--kk-lavender);
+  top: 8%;
+  left: -140px;
+}
+
+.blob-2 {
+  background: var(--kk-lavender-muted);
+  top: 45%;
+  right: -160px;
+  animation-delay: 7s;
+}
+
+.blob-3 {
+  background: #ede8f8;
+  bottom: -160px;
+  left: 35%;
+  animation-delay: 14s;
+}
+
+/* ==================================================
+   KEYFRAME ANIMATIONS
+================================================== */
+
+/* Primary float animation */
+@keyframes kk-float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -45px);
+  }
+}
+
+/* Ambient float (slower, larger movement) */
+@keyframes kk-ambient-float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -50px);
+  }
+}
+
+/* Float with rotation */
+@keyframes kk-float-rotate {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+/* Slow float (for hero backgrounds) */
+@keyframes kk-float-slow {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-30px) translateX(10px);
+  }
+}
+
+/* Delayed float (offset timing) */
+@keyframes kk-float-delayed {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-25px) translateX(-15px);
+  }
+}
+
+/* Light drift for background layers */
+@keyframes kk-light-drift {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  50% {
+    transform: translate(-60px, -40px) rotate(0.6deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+@keyframes kk-light-drift-reverse {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(80px, -60px);
+  }
+}
+
+/* Breathing animation */
+@keyframes kk-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.015);
+    opacity: 1;
+  }
+}
+
+/* Gradient animation */
+@keyframes kk-gradient-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Shimmer effect */
+@keyframes kk-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Fade in */
+@keyframes kk-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Slide up with fade */
+@keyframes kk-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale in */
+@keyframes kk-scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pulse glow */
+@keyframes kk-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(94, 85, 116, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(94, 85, 116, 0);
+  }
+}
+
+/* Background drift */
+@keyframes kk-background-drift {
+  0% {
+    background-position: 20% 10%, 80% 14%, center;
+  }
+  100% {
+    background-position: 23% 12%, 77% 16%, center;
+  }
+}
+
+/* ==================================================
+   ANIMATION UTILITY CLASSES
+================================================== */
+
+.animate-float {
+  animation: kk-float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: kk-float-slow 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: kk-float-delayed 7s ease-in-out infinite 2s;
+}
+
+.animate-float-rotate {
+  animation: kk-float-rotate 6s ease-in-out infinite;
+}
+
+.animate-gradient-x {
+  animation: kk-gradient-x 8s ease infinite;
+}
+
+.animate-shimmer {
+  animation: kk-shimmer 2s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: kk-fade-in 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: kk-slide-up 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: kk-scale-in 0.3s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: kk-pulse-glow 2s ease-in-out infinite;
+}
+
+/* Breathe animation (with reduced motion support) */
+@media (prefers-reduced-motion: no-preference) {
+  .kk-breathe {
+    animation: kk-breathe 12s ease-in-out infinite;
+  }
+
+  .kk-global-bg {
+    animation: kk-background-drift 120s ease-in-out infinite alternate;
+  }
+}
+
+/* ==================================================
+   SCROLL-TRIGGERED ANIMATION HELPERS
+================================================== */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays for children */
+.animate-stagger > *:nth-child(1) { transition-delay: 0ms; }
+.animate-stagger > *:nth-child(2) { transition-delay: 100ms; }
+.animate-stagger > *:nth-child(3) { transition-delay: 200ms; }
+.animate-stagger > *:nth-child(4) { transition-delay: 300ms; }
+.animate-stagger > *:nth-child(5) { transition-delay: 400ms; }
+.animate-stagger > *:nth-child(6) { transition-delay: 500ms; }
+
+/* ==================================================
+   RESPONSIVE HELPERS
+================================================== */
+
+.kk-hide-mobile {
+  display: block;
+}
+
+.kk-show-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .kk-hide-mobile {
+    display: none;
+  }
+  .kk-show-mobile {
+    display: block;
+  }
+}
+
+/* ==================================================
+   FOCUS STATES (ACCESSIBILITY)
+================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--kk-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--kk-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ==================================================
+   SCROLLBAR STYLING
+================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--kk-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--kk-lavender);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kk-lavender-muted);
+}
+
+/* ==================================================
+   PRINT STYLES
+================================================== */
+
+@media print {
+  .kk-global-bg,
+  .kk-ambient,
+  .blob,
+  .kk-glass-orb,
+  .kk-ambient-blob {
+    display: none !important;
+  }
+}

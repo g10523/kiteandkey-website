@@ -1,0 +1,44 @@
+.verc"use client";
+
+import { createContext, useContext, useState } from "react";
+
+type BackgroundContextType = {
+  enabled: boolean;
+  setEnabled: (v: boolean) => void;
+};
+
+const BackgroundContext = createContext<BackgroundContextType | null>(null);
+
+export function BackgroundProvider({ children }: { children: React.ReactNode }) {
+  const [enabled, setEnabled] = useState(true); // DEFAULT = ON
+
+  return (
+    <BackgroundContext.Provider value={{ enabled, setEnabled }}>
+      {children}
+    </BackgroundContext.Provider>
+  );
+}
+
+export function useBackground() {
+  const ctx = useContext(BackgroundContext);
+  if (!ctx) throw new Error("useBackground must be used inside BackgroundProvider");
+  return ctx;
+node_modules
+
+# Next.js
+.next/
+out/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+
+# Vercel
+.vercel/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
