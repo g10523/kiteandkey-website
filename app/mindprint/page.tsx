@@ -10,7 +10,7 @@ import {
   Eye,
   Layers,
   Clock,
-  Sparkles,
+  Heart,
   TrendingUp,
   Shield,
   BookOpen,
@@ -240,7 +240,7 @@ export default function MindPrintPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveDimension((prev) => (prev + 1) % COGNITIVE_DIMENSIONS.length);
-    }, 4000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -250,7 +250,7 @@ export default function MindPrintPage() {
       <section className="relative pt-32 pb-24 overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#F5F3F9] via-[#FAFAFA] to-[#FAFAFA]" />
-        
+
         {/* Floating orbs */}
         <div className="absolute top-20 right-1/4 h-96 w-96 rounded-full bg-[#E6E1F2]/50 blur-3xl animate-pulse" />
         <div className="absolute bottom-0 left-1/4 h-80 w-80 rounded-full bg-[#DDD4F2]/40 blur-3xl animate-pulse delay-1000" />
@@ -272,9 +272,8 @@ export default function MindPrintPage() {
 
         <div
           ref={heroAnim.ref}
-          className={`relative mx-auto max-w-6xl px-6 transition-all duration-1000 ${
-            heroAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`relative mx-auto max-w-6xl px-6 transition-all duration-1000 ${heroAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
         >
           <div className="grid gap-12 lg:grid-cols-2 items-center">
             {/* Left content */}
@@ -295,8 +294,8 @@ export default function MindPrintPage() {
               </p>
 
               <p className="mt-6 text-lg text-[#6B647F] leading-relaxed max-w-xl">
-                A proprietary cognitive intelligence framework that transforms 
-                how students think into an actionable learning blueprint — 
+                A proprietary cognitive intelligence framework that transforms
+                how students think into an actionable learning blueprint —
                 guiding every tutoring session, study strategy, and academic decision.
               </p>
 
@@ -320,7 +319,7 @@ export default function MindPrintPage() {
                   href="/consultation"
                   className="group inline-flex items-center gap-2 rounded-xl bg-[#5E5574] px-8 py-4 text-base font-semibold text-white shadow-lg shadow-[#5E5574]/20 transition-all hover:bg-[#4F4865] hover:shadow-xl hover:-translate-y-0.5"
                 >
-                  Get Your Child's MindPrint
+                  Get Your Child&apos;s MindPrint
                   <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                 </Link>
                 <a
@@ -356,9 +355,8 @@ export default function MindPrintPage() {
                   return (
                     <div
                       key={dim.id}
-                      className={`absolute transition-all duration-500 ${
-                        activeDimension === index ? "scale-125 z-20" : "scale-100 z-0"
-                      }`}
+                      className={`absolute transition-all duration-500 ${activeDimension === index ? "scale-125 z-20" : "scale-100 z-0"
+                        }`}
                       style={{
                         top: `calc(50% + ${y}px)`,
                         left: `calc(50% + ${x}px)`,
@@ -366,11 +364,10 @@ export default function MindPrintPage() {
                       }}
                     >
                       <div
-                        className={`flex h-14 w-14 items-center justify-center rounded-2xl border-2 bg-white shadow-lg transition-all duration-300 cursor-pointer ${
-                          activeDimension === index
-                            ? "border-[#5E5574] shadow-xl"
-                            : "border-[#E6E1F2] hover:border-[#D9CFF2]"
-                        }`}
+                        className={`flex h-14 w-14 items-center justify-center rounded-2xl border-2 bg-white shadow-lg transition-all duration-300 cursor-pointer ${activeDimension === index
+                          ? "border-[#5E5574] shadow-xl"
+                          : "border-[#E6E1F2] hover:border-[#D9CFF2]"
+                          }`}
                         onClick={() => setActiveDimension(index)}
                         style={{
                           color: activeDimension === index ? dim.color : "#8C84A8",
@@ -430,9 +427,8 @@ export default function MindPrintPage() {
           <div className="grid gap-16 lg:grid-cols-2 items-center">
             {/* Left: Problem visualization */}
             <div
-              className={`transition-all duration-700 ${
-                problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-              }`}
+              className={`transition-all duration-700 ${problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+                }`}
             >
               <div className="relative">
                 {/* Traditional approach card */}
@@ -492,32 +488,31 @@ export default function MindPrintPage() {
 
             {/* Right: Content */}
             <div
-              className={`transition-all duration-700 delay-200 ${
-                problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-              }`}
+              className={`transition-all duration-700 delay-200 ${problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+                }`}
             >
               <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
                 The Problem We Solve
               </p>
               <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52] leading-tight">
-                Most students who struggle aren't incapable.
-                <span className="text-[#5E5574]"> They're mismatched to the method.</span>
+                Most students who struggle aren&apos;t incapable.
+                <span className="text-[#5E5574]"> They&apos;re mismatched to the method.</span>
               </h2>
               <p className="mt-6 text-lg text-[#6B647F] leading-relaxed">
-                Traditional education assumes one optimal pace, one teaching style, 
-                and one definition of intelligence. This creates capable students 
-                who lose confidence, effort that doesn't translate to results, and 
+                Traditional education assumes one optimal pace, one teaching style,
+                and one definition of intelligence. This creates capable students
+                who lose confidence, effort that doesn&apos;t translate to results, and
                 families left confused and pressured.
               </p>
               <p className="mt-4 text-[#6B647F] leading-relaxed">
                 MindPrint addresses this mismatch by{" "}
-                <strong className="text-[#3F3A52]">diagnosing cognition itself</strong>, 
+                <strong className="text-[#3F3A52]">diagnosing cognition itself</strong>,
                 allowing teaching to adapt to the student — not the other way around.
               </p>
 
               <div className="mt-8 p-6 rounded-2xl border border-[#E6E1F2] bg-[#FAFAFA]">
                 <p className="text-[#5E5574] font-medium italic">
-                  "What is the most effective way for <u>this specific student</u> to learn?"
+                  &quot;What is the most effective way for <u>this specific student</u> to learn?&quot;
                 </p>
                 <p className="text-sm text-[#8C84A8] mt-2">
                   — The fundamental question MindPrint answers
@@ -532,9 +527,8 @@ export default function MindPrintPage() {
       <section ref={dimensionsAnim.ref} className="py-24 border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-6xl px-6">
           <div
-            className={`text-center mb-16 transition-all duration-700 ${
-              dimensionsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`text-center mb-16 transition-all duration-700 ${dimensionsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               The Cognitive Model
@@ -543,7 +537,7 @@ export default function MindPrintPage() {
               Eight dimensions of cognitive intelligence
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
-              Rather than reducing learners to a single "learning style," MindPrint 
+              Rather than reducing learners to a single &quot;learning style,&quot; MindPrint
               recognises that cognition is composite and dynamic.
             </p>
           </div>
@@ -552,9 +546,8 @@ export default function MindPrintPage() {
             {COGNITIVE_DIMENSIONS.map((dim, index) => (
               <div
                 key={dim.id}
-                className={`group rounded-2xl border border-[#E6E1F2] bg-white p-6 transition-all duration-500 hover:border-[#D9CFF2] hover:shadow-lg hover:-translate-y-1 cursor-pointer ${
-                  dimensionsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
+                className={`group rounded-2xl border border-[#E6E1F2] bg-white p-6 transition-all duration-500 hover:border-[#D9CFF2] hover:shadow-lg hover:-translate-y-1 cursor-pointer ${dimensionsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`}
                 style={{ transitionDelay: `${index * 75}ms` }}
                 onClick={() => setActiveDimension(index)}
               >
@@ -596,9 +589,8 @@ export default function MindPrintPage() {
       <section ref={testsAnim.ref} className="py-24 bg-white border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-5xl px-6">
           <div
-            className={`text-center mb-16 transition-all duration-700 ${
-              testsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`text-center mb-16 transition-all duration-700 ${testsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Initial Assessment
@@ -607,7 +599,7 @@ export default function MindPrintPage() {
               Five assessments, one complete profile
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
-              No single test determines the result. The full profile emerges from 
+              No single test determines the result. The full profile emerges from
               synthesis across five distinct assessments, each targeting different neural systems.
             </p>
           </div>
@@ -620,9 +612,8 @@ export default function MindPrintPage() {
               {MINDPRINT_TESTS.map((test, index) => (
                 <div
                   key={test.number}
-                  className={`relative transition-all duration-500 ${
-                    testsAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-                  }`}
+                  className={`relative transition-all duration-500 ${testsAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+                    }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <div className="md:ml-20 rounded-2xl border border-[#E6E1F2] bg-white p-6 hover:border-[#D9CFF2] hover:shadow-md transition-all">
@@ -657,9 +648,8 @@ export default function MindPrintPage() {
 
             {/* Test characteristics */}
             <div
-              className={`mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 transition-all duration-700 delay-500 ${
-                testsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 transition-all duration-700 delay-500 ${testsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               {[
                 { icon: <Clock size={20} />, label: "Short", desc: "35–45 min total" },
@@ -685,9 +675,8 @@ export default function MindPrintPage() {
       <section ref={archetypesAnim.ref} className="py-24 border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-6xl px-6">
           <div
-            className={`text-center mb-16 transition-all duration-700 ${
-              archetypesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`text-center mb-16 transition-all duration-700 ${archetypesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Learning Archetypes
@@ -696,7 +685,7 @@ export default function MindPrintPage() {
               Fifteen ways of learning
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
-              Students receive a primary archetype with secondary influences, 
+              Students receive a primary archetype with secondary influences,
               reflecting real cognitive complexity — not rigid labels.
             </p>
           </div>
@@ -705,9 +694,8 @@ export default function MindPrintPage() {
             {LEARNING_ARCHETYPES.map((archetype, index) => (
               <div
                 key={archetype.name}
-                className={`group rounded-xl border border-[#E6E1F2] bg-white p-4 transition-all duration-300 hover:border-[#5E5574]/30 hover:bg-[#F7F5FB] ${
-                  archetypesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
+                className={`group rounded-xl border border-[#E6E1F2] bg-white p-4 transition-all duration-300 hover:border-[#5E5574]/30 hover:bg-[#F7F5FB] ${archetypesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`}
                 style={{ transitionDelay: `${index * 40}ms` }}
               >
                 <div className="flex items-start gap-3">
@@ -725,9 +713,8 @@ export default function MindPrintPage() {
 
           {/* Archetype detail */}
           <div
-            className={`mt-12 rounded-2xl border border-[#D9CFF2] bg-[#F7F5FB] p-8 transition-all duration-700 delay-500 ${
-              archetypesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`mt-12 rounded-2xl border border-[#D9CFF2] bg-[#F7F5FB] p-8 transition-all duration-700 delay-500 ${archetypesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <div className="grid gap-8 md:grid-cols-2">
               <div>
@@ -757,7 +744,7 @@ export default function MindPrintPage() {
                   <div className="absolute inset-12 rounded-full border border-[#E6E1F2] bg-white/50" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <Sparkles size={32} className="text-[#5E5574] mx-auto mb-2" />
+                      <Brain size={32} className="text-[#5E5574] mx-auto mb-2" />
                       <p className="text-xs text-[#8C84A8]">Cognitive Profile</p>
                     </div>
                   </div>
@@ -772,9 +759,8 @@ export default function MindPrintPage() {
       <section ref={reportAnim.ref} className="py-24 bg-white border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-6xl px-6">
           <div
-            className={`text-center mb-16 transition-all duration-700 ${
-              reportAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`text-center mb-16 transition-all duration-700 ${reportAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Sample Cognitive Report
@@ -783,16 +769,15 @@ export default function MindPrintPage() {
               From assessment to actionable insight
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
-              See how MindPrint transforms cognitive data into a personalised 
+              See how MindPrint transforms cognitive data into a personalised
               learning blueprint. This is a sample report for a Year 8 student.
             </p>
           </div>
 
           {/* Report Card */}
           <div
-            className={`rounded-3xl border border-[#E6E1F2] bg-white shadow-xl overflow-hidden transition-all duration-700 delay-100 ${
-              reportAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`rounded-3xl border border-[#E6E1F2] bg-white shadow-xl overflow-hidden transition-all duration-700 delay-100 ${reportAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             {/* Report Header */}
             <div className="bg-gradient-to-r from-[#5E5574] to-[#7B6F96] p-8 text-white">
@@ -804,7 +789,7 @@ export default function MindPrintPage() {
                     </div>
                     <div>
                       <p className="text-white/80 text-sm">MindPrint™ Cognitive Report</p>
-                      <h3 className="text-2xl font-bold">{SAMPLE_PROFILE.name}'s Profile</h3>
+                      <h3 className="text-2xl font-bold">{SAMPLE_PROFILE.name}&apos;s Profile</h3>
                     </div>
                   </div>
                 </div>
@@ -832,9 +817,8 @@ export default function MindPrintPage() {
                       <div className="flex items-center justify-between text-sm mb-2">
                         <span className="text-[#3F3A52] font-medium">{dim.name}</span>
                         <span
-                          className={`font-semibold ${
-                            dim.score >= dim.benchmark ? "text-green-600" : "text-amber-600"
-                          }`}
+                          className={`font-semibold ${dim.score >= dim.benchmark ? "text-green-600" : "text-amber-600"
+                            }`}
                         >
                           {dim.score}/100
                         </span>
@@ -847,11 +831,10 @@ export default function MindPrintPage() {
                         />
                         {/* Score bar */}
                         <div
-                          className={`h-full rounded-full transition-all duration-1000 ${
-                            dim.score >= dim.benchmark
-                              ? "bg-gradient-to-r from-[#5E5574] to-[#7B6F96]"
-                              : "bg-gradient-to-r from-amber-400 to-amber-500"
-                          }`}
+                          className={`h-full rounded-full transition-all duration-1000 ${dim.score >= dim.benchmark
+                            ? "bg-gradient-to-r from-[#5E5574] to-[#7B6F96]"
+                            : "bg-gradient-to-r from-amber-400 to-amber-500"
+                            }`}
                           style={{
                             width: reportAnim.isVisible ? `${dim.score}%` : "0%",
                             transitionDelay: `${index * 100 + 300}ms`,
@@ -968,7 +951,7 @@ export default function MindPrintPage() {
                       </div>
                       <div>
                         <h5 className="text-sm font-medium text-[#5E5574] mb-3">
-                          Emotional & Motivational Factors
+                          Emotional &amp; Motivational Factors
                         </h5>
                         <ul className="space-y-2 text-sm text-[#6B647F]">
                           <li>• Intrinsically motivated by mastery and understanding</li>
@@ -987,7 +970,7 @@ export default function MindPrintPage() {
                       Pathway to Higher Order Thinking
                     </h4>
                     <p className="text-sm text-[#6B647F] mb-6">
-                      Based on {SAMPLE_PROFILE.name}'s cognitive profile, here's how to develop 
+                      Based on {SAMPLE_PROFILE.name}&apos;s cognitive profile, here&apos;s how to develop
                       analytical, evaluative, and creative thinking skills:
                     </p>
                     <div className="grid gap-4 md:grid-cols-3">
@@ -1101,111 +1084,339 @@ export default function MindPrintPage() {
       </section>
 
       {/* ================= ONGOING TRACKING ================= */}
-      <section ref={trackingAnim.ref} className="py-24 border-t border-[#E6E1F2]">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid gap-16 lg:grid-cols-2 items-center">
-            {/* Left: Content */}
-            <div
-              className={`transition-all duration-700 ${
-                trackingAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-              }`}
-            >
-              <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
-                Longitudinal Intelligence
-              </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52] leading-tight">
-                Cognition isn't static.
-                <span className="text-[#5E5574]"> Neither is MindPrint.</span>
-              </h2>
-              <p className="mt-6 text-lg text-[#6B647F] leading-relaxed">
-                After the initial assessment, students complete short bi-weekly quizzes 
-                that continuously refine their cognitive profile over time.
-              </p>
+      <section ref={trackingAnim.ref} className="py-28 border-t border-[#E6E1F2] relative overflow-hidden">
+        {/* Subtle background elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 right-10 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#E6E1F2]/30 to-transparent blur-3xl" />
+          <div className="absolute bottom-20 left-10 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-[#D9CFF2]/20 to-transparent blur-3xl" />
+        </div>
 
-              <div className="mt-8 space-y-4">
-                {[
-                  { value: "~300", label: "Micro-assessments across Years 5–10" },
-                  { value: "~5", label: "Quick checks per term" },
-                  { value: "∞", label: "Continuous profile refinement" },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="flex items-center gap-4 rounded-xl border border-[#E6E1F2] bg-white p-4"
-                  >
-                    <div className="text-2xl font-bold text-[#5E5574] w-16">{stat.value}</div>
-                    <div className="text-sm text-[#6B647F]">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+        <div className="relative mx-auto max-w-6xl px-6">
+          {/* Header */}
+          <div
+            className={`text-center mb-20 transition-all duration-700 ${trackingAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-[#5E5574] shadow-sm mb-6">
+              <RefreshCw size={16} className="animate-spin-slow" />
+              Continuous Refinement
             </div>
 
-            {/* Right: Tracking visualization */}
-            <div
-              className={`transition-all duration-700 delay-200 ${
-                trackingAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+            <h2 className="text-4xl md:text-5xl font-bold text-[#3F3A52] leading-tight">
+              Learning evolves.
+              <span className="block mt-2 bg-gradient-to-r from-[#5E5574] via-[#7B6F96] to-[#5E5574] bg-clip-text text-transparent">
+                So does MindPrint.
+              </span>
+            </h2>
+
+            <p className="mt-6 text-lg text-[#6B647F] leading-relaxed max-w-2xl mx-auto">
+              The initial assessment is just the beginning. Through ongoing micro-assessments,
+              MindPrint tracks cognitive development and adapts strategies in real-time.
+            </p>
+          </div>
+
+          {/* Stats Row */}
+          <div
+            className={`grid grid-cols-3 gap-6 mb-16 transition-all duration-700 delay-100 ${trackingAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
+          >
+            {[
+              {
+                value: "~300",
+                label: "Micro-assessments",
+                sublabel: "across Years 5–10",
+                icon: <Layers size={24} />,
+                color: "#7C3AED"
+              },
+              {
+                value: "5-10",
+                label: "Minutes per check",
+                sublabel: "quick & non-intrusive",
+                icon: <Clock size={24} />,
+                color: "#3B82F6"
+              },
+              {
+                value: "∞",
+                label: "Profile updates",
+                sublabel: "continuous refinement",
+                icon: <RefreshCw size={24} />,
+                color: "#10B981"
+              },
+            ].map((stat, index) => (
+              <div
+                key={stat.label}
+                className="relative group"
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div className="rounded-2xl border border-[#E6E1F2] bg-white p-6 text-center transition-all duration-300 hover:border-[#D9CFF2] hover:shadow-lg hover:-translate-y-1">
+                  {/* Icon */}
+                  <div
+                    className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: `${stat.color}15`, color: stat.color }}
+                  >
+                    {stat.icon}
+                  </div>
+
+                  {/* Value */}
+                  <div className="text-4xl font-bold text-[#3F3A52] mb-1">{stat.value}</div>
+
+                  {/* Label */}
+                  <div className="text-sm font-semibold text-[#5E5574]">{stat.label}</div>
+                  <div className="text-xs text-[#8C84A8] mt-1">{stat.sublabel}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Main Content: Two Columns */}
+          <div className="grid gap-10 lg:grid-cols-2 items-start">
+
+            {/* Left Column: What MindPrint Detects */}
+            <div
+              className={`transition-all duration-700 delay-200 ${trackingAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+                }`}
             >
-              <div className="rounded-2xl border border-[#E6E1F2] bg-white p-6">
-                <h4 className="font-semibold text-[#3F3A52] mb-6">MindPrint Detects:</h4>
-                <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-3xl border border-[#E6E1F2] bg-white p-8 shadow-sm">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#5E5574]">
+                    <Brain size={24} className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[#3F3A52]">What MindPrint Detects</h3>
+                    <p className="text-sm text-[#8C84A8]">Real-time cognitive insights</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
                   {[
-                    { icon: <TrendingUp size={20} />, label: "Growth trends", desc: "Cognitive development over time" },
-                    { icon: <AlertTriangle size={20} />, label: "Burnout risk", desc: "Early warning signs" },
-                    { icon: <RefreshCw size={20} />, label: "Strategy shifts", desc: "When to change approach" },
-                    { icon: <Activity size={20} />, label: "Learning patterns", desc: "Evolving preferences" },
+                    {
+                      icon: <TrendingUp size={22} />,
+                      label: "Growth Trajectories",
+                      desc: "Track cognitive development patterns over months and years",
+                      color: "#10B981",
+                      bgColor: "#ECFDF5"
+                    },
+                    {
+                      icon: <AlertTriangle size={22} />,
+                      label: "Early Warning Signs",
+                      desc: "Detect burnout, disengagement, or cognitive fatigue before they escalate",
+                      color: "#F59E0B",
+                      bgColor: "#FFFBEB"
+                    },
+                    {
+                      icon: <RefreshCw size={22} />,
+                      label: "Strategy Effectiveness",
+                      desc: "Know when current approaches are working — or when to pivot",
+                      color: "#3B82F6",
+                      bgColor: "#EFF6FF"
+                    },
+                    {
+                      icon: <Activity size={22} />,
+                      label: "Learning Pattern Shifts",
+                      desc: "Identify evolving preferences as students mature cognitively",
+                      color: "#8B5CF6",
+                      bgColor: "#F5F3FF"
+                    },
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className="rounded-xl border border-[#E6E1F2] bg-[#FAFAFA] p-4"
+                      className="group flex gap-4 p-4 rounded-2xl border border-transparent transition-all duration-300 hover:border-[#E6E1F2] hover:bg-[#FAFAFA]"
                     >
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-[#5E5574]">{item.icon}</span>
-                        <span className="font-medium text-[#3F3A52] text-sm">{item.label}</span>
+                      <div
+                        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110"
+                        style={{ backgroundColor: item.bgColor, color: item.color }}
+                      >
+                        {item.icon}
                       </div>
-                      <p className="text-xs text-[#8C84A8]">{item.desc}</p>
+                      <div>
+                        <h4 className="font-semibold text-[#3F3A52] mb-1">{item.label}</h4>
+                        <p className="text-sm text-[#6B647F] leading-relaxed">{item.desc}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
 
-                {/* Timeline visualization */}
-                <div className="mt-8 pt-6 border-t border-[#E6E1F2]">
-                  <div className="flex items-center justify-between text-xs text-[#8C84A8] mb-4">
-                    <span>Year 5</span>
-                    <span>Year 6</span>
-                    <span>Year 7</span>
-                    <span>Year 8</span>
-                    <span>Year 9</span>
-                    <span>Year 10</span>
+            {/* Right Column: Timeline Visualization */}
+            <div
+              className={`transition-all duration-700 delay-300 ${trackingAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+                }`}
+            >
+              <div className="rounded-3xl border border-[#E6E1F2] bg-gradient-to-br from-white to-[#FAFAFA] p-8 shadow-sm">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#5E5574] to-[#7B6F96]">
+                    <Calendar size={24} className="text-white" />
                   </div>
-                  <div className="relative h-8">
-                    <div className="absolute inset-0 rounded-full bg-[#E6E1F2]" />
-                    <div
-                      className="absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-[#5E5574] to-[#8B7FA8] transition-all duration-1000"
-                      style={{ width: trackingAnim.isVisible ? "60%" : "0%" }}
-                    />
-                    {/* Data points */}
-                    {[0, 16, 33, 50, 66, 83, 100].map((pos, i) => (
+                  <div>
+                    <h3 className="text-xl font-bold text-[#3F3A52]">6-Year Learning Journey</h3>
+                    <p className="text-sm text-[#8C84A8]">Continuous profile evolution</p>
+                  </div>
+                </div>
+
+                {/* Interactive Timeline */}
+                <div className="relative mb-6">
+                  {/* Timeline Track with Dots */}
+                  <div className="relative">
+                    {/* Background Track */}
+                    <div className="h-3 rounded-full bg-[#E6E1F2] overflow-hidden">
+                      {/* Animated Progress */}
                       <div
-                        key={i}
-                        className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-white border-2 border-[#5E5574]"
-                        style={{ left: `${pos}%`, transform: "translate(-50%, -50%)" }}
+                        className="absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-[#5E5574] via-[#7B6F96] to-[#9D8FBF] transition-all duration-[2000ms] ease-out"
+                        style={{ width: trackingAnim.isVisible ? "60%" : "0%" }}
                       />
+
+                      {/* Shimmer effect */}
+                      <div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent shimmer-animation"
+                        style={{
+                          animationPlayState: trackingAnim.isVisible ? "running" : "paused",
+                        }}
+                      />
+                    </div>
+
+                    {/* Data Points - positioned on top of track */}
+                    <div className="absolute inset-0 flex items-center justify-between">
+                      {[
+                        { active: true, current: false },
+                        { active: true, current: false },
+                        { active: true, current: false },
+                        { active: true, current: true },
+                        { active: false, current: false },
+                        { active: false, current: false },
+                      ].map((point, i) => (
+                        <div
+                          key={i}
+                          className={`h-4 w-4 rounded-full border-[3px] transition-all duration-500 ${point.current
+                            ? "bg-[#5E5574] border-white shadow-lg scale-125 ring-4 ring-[#5E5574]/20"
+                            : point.active
+                              ? "bg-white border-[#5E5574]"
+                              : "bg-white border-[#D9CFF2]"
+                            }`}
+                          style={{ transitionDelay: `${i * 150 + 500}ms` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Year Labels and Sub-labels */}
+                  <div className="flex justify-between mt-3">
+                    {[
+                      { year: "Year 5", label: "Initial", current: false },
+                      { year: "Year 6", label: "", current: false },
+                      { year: "Year 7", label: "", current: false },
+                      { year: "Year 8", label: "Now", current: true },
+                      { year: "Year 9", label: "", current: false },
+                      { year: "Year 10", label: "Goal", current: false },
+                    ].map((item, i) => (
+                      <div key={i} className="flex flex-col items-center">
+                        <span className="text-xs font-medium text-[#8C84A8]">{item.year}</span>
+                        {item.label && (
+                          <span
+                            className={`text-xs font-medium mt-0.5 ${item.current ? "text-[#5E5574]" : "text-[#8C84A8]"
+                              }`}
+                          >
+                            {item.label}
+                          </span>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Assessment Frequency Cards */}
+                <div className="grid grid-cols-2 gap-4 mt-8 mb-6">
+                  <div className="rounded-xl bg-[#F7F5FB] p-4 border border-[#E6E1F2]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="h-2 w-2 rounded-full bg-[#5E5574] animate-pulse" />
+                      <span className="text-xs font-semibold text-[#5E5574] uppercase tracking-wide">Per Term</span>
+                    </div>
+                    <div className="text-2xl font-bold text-[#3F3A52]">4-6</div>
+                    <div className="text-xs text-[#6B647F]">quick check-ins</div>
+                  </div>
+                  <div className="rounded-xl bg-[#F7F5FB] p-4 border border-[#E6E1F2]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="h-2 w-2 rounded-full bg-[#10B981]" />
+                      <span className="text-xs font-semibold text-[#5E5574] uppercase tracking-wide">Per Year</span>
+                    </div>
+                    <div className="text-2xl font-bold text-[#3F3A52]">~50</div>
+                    <div className="text-xs text-[#6B647F]">data points collected</div>
+                  </div>
+                </div>
+
+                {/* How it works */}
+                <div className="rounded-xl border border-dashed border-[#D9CFF2] bg-white/50 p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#E6E1F2]">
+                      <Zap size={16} className="text-[#5E5574]" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-[#6B647F] leading-relaxed">
+                        <span className="font-semibold text-[#3F3A52]">Seamless integration:</span> Check-ins
+                        happen naturally during tutoring sessions — students barely notice them happening.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom: Benefits Banner */}
+          <div
+            className={`mt-16 transition-all duration-700 delay-400 ${trackingAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
+          >
+            <div className="rounded-3xl bg-gradient-to-r from-[#5E5574] to-[#4A4463] p-8 md:p-10 relative overflow-hidden">
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div
+                  className="h-full w-full"
+                  style={{
+                    backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+              </div>
+
+              <div className="relative grid gap-8 md:grid-cols-3 text-center">
+                {[
+                  {
+                    icon: <Shield size={28} />,
+                    title: "Proactive Support",
+                    desc: "Catch issues before they become problems"
+                  },
+                  {
+                    icon: <Target size={28} />,
+                    title: "Adaptive Strategies",
+                    desc: "Methods evolve as your child grows"
+                  },
+                  {
+                    icon: <TrendingUp size={28} />,
+                    title: "Visible Progress",
+                    desc: "Track cognitive growth over years"
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="group">
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white transition-transform group-hover:scale-110 group-hover:bg-white/20">
+                      {item.icon}
+                    </div>
+                    <h4 className="text-lg font-semibold text-white mb-2">{item.title}</h4>
+                    <p className="text-sm text-white/70">{item.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-        {/* ================= THE EXPERIENCE ================= */}
+      {/* ================= THE EXPERIENCE ================= */}
       <section ref={experienceAnim.ref} className="py-24 bg-white border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-5xl px-6">
           <div
-            className={`text-center mb-16 transition-all duration-700 ${
-              experienceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`text-center mb-16 transition-all duration-700 ${experienceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               The Student Experience
@@ -1214,7 +1425,7 @@ export default function MindPrintPage() {
               Designed as an experience, not a test
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
-              MindPrint is calm, glass-like, and non-judgemental. Students begin to see 
+              MindPrint is calm, glass-like, and non-judgemental. Students begin to see
               learning as something that can be designed — not endured.
             </p>
           </div>
@@ -1237,7 +1448,7 @@ export default function MindPrintPage() {
                 description: "Radar charts, cognitive mind maps, and emerging archetype indicators.",
               },
               {
-                icon: <Sparkles size={24} />,
+                icon: <Heart size={24} />,
                 title: "No Pressure",
                 description: "Exploratory feel, not evaluative. Understanding reduces anxiety.",
               },
@@ -1254,9 +1465,8 @@ export default function MindPrintPage() {
             ].map((item, index) => (
               <div
                 key={item.title}
-                className={`rounded-2xl border border-[#E6E1F2] bg-[#FAFAFA] p-6 transition-all duration-500 hover:border-[#D9CFF2] hover:shadow-md hover:-translate-y-1 ${
-                  experienceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                }`}
+                className={`rounded-2xl border border-[#E6E1F2] bg-[#FAFAFA] p-6 transition-all duration-500 hover:border-[#D9CFF2] hover:shadow-md hover:-translate-y-1 ${experienceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`}
                 style={{ transitionDelay: `${index * 75}ms` }}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574] mb-4">
@@ -1270,12 +1480,11 @@ export default function MindPrintPage() {
 
           {/* Key principle */}
           <div
-            className={`mt-12 rounded-2xl border border-[#D9CFF2] bg-[#F7F5FB] p-8 text-center transition-all duration-700 delay-500 ${
-              experienceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`mt-12 rounded-2xl border border-[#D9CFF2] bg-[#F7F5FB] p-8 text-center transition-all duration-700 delay-500 ${experienceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <p className="text-xl text-[#5E5574] font-medium italic">
-              "Understanding reduces anxiety."
+              &quot;Understanding reduces anxiety.&quot;
             </p>
             <p className="text-sm text-[#8C84A8] mt-3">
               A core psychological principle embedded in every aspect of MindPrint
@@ -1295,7 +1504,7 @@ export default function MindPrintPage() {
               From data to daily action
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
-              MindPrint doesn't stop at scores. Each profile feeds directly into 
+              MindPrint doesn&apos;t stop at scores. Each profile feeds directly into
               how we teach, what we assign, and when we adapt.
             </p>
           </div>
@@ -1364,16 +1573,16 @@ export default function MindPrintPage() {
       <section className="py-24 bg-white border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
-            The Kite & Key Difference
+            The Kite &amp; Key Difference
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
             MindPrint is not a feature.
             <br />
-            <span className="text-[#5E5574]">It's the intellectual backbone.</span>
+            <span className="text-[#5E5574]">It&apos;s the intellectual backbone.</span>
           </h2>
           <p className="mt-6 text-lg text-[#6B647F] max-w-2xl mx-auto">
-            In a market full of louder, faster, more pressured education products, 
-            MindPrint positions Kite & Key as something different.
+            In a market full of louder, faster, more pressured education products,
+            MindPrint positions Kite &amp; Key as something different.
           </p>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-3">
@@ -1417,9 +1626,8 @@ export default function MindPrintPage() {
       <section ref={ctaAnim.ref} className="py-24 border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-4xl px-6">
           <div
-            className={`rounded-3xl border border-[#E6E1F2] bg-gradient-to-b from-[#F7F5FB] to-white p-10 md:p-16 text-center transition-all duration-700 ${
-              ctaAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`rounded-3xl border border-[#E6E1F2] bg-gradient-to-b from-[#F7F5FB] to-white p-10 md:p-16 text-center transition-all duration-700 ${ctaAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             <div className="flex justify-center mb-6">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#5E5574] text-white">
@@ -1428,12 +1636,12 @@ export default function MindPrintPage() {
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
-              Discover your child's MindPrint
+              Discover your child&apos;s MindPrint
             </h2>
 
             <p className="mt-4 text-lg text-[#6B647F] max-w-xl mx-auto">
-              Start with a free consultation to learn how MindPrint can transform 
-              your child's learning experience.
+              Start with a free consultation to learn how MindPrint can transform
+              your child&apos;s learning experience.
             </p>
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -1472,13 +1680,13 @@ export default function MindPrintPage() {
       <section className="py-10 border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <p className="text-sm text-[#8C84A8]">
-            <strong className="text-[#5E5574]">MindPrint™</strong> is a proprietary 
+            <strong className="text-[#5E5574]">MindPrint™</strong> is a proprietary
             cognitive intelligence system developed by{" "}
             <Link href="/" className="underline hover:text-[#5E5574]">
-              Kite & Key Academy
+              Kite &amp; Key Academy
             </Link>
-            . All assessments and profiles are confidential and used solely to 
-            enhance your child's learning experience.
+            . All assessments and profiles are confidential and used solely to
+            enhance your child&apos;s learning experience.
           </p>
         </div>
       </section>
@@ -1495,8 +1703,36 @@ export default function MindPrintPage() {
             transform: translateY(0);
           }
         }
+        
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(200%);
+          }
+        }
+        
+        @keyframes spinSlow {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        
         .animate-fadeIn {
           animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .shimmer-animation {
+          animation: shimmer 2s ease-in-out infinite;
+          animation-delay: 1s;
+        }
+        
+        .animate-spin-slow {
+          animation: spinSlow 3s linear infinite;
         }
       `}</style>
     </main>

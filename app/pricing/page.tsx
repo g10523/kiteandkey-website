@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Check, HelpCircle, ChevronDown, Sparkles, Users, BookOpen, Target, Clock, Calculator } from "lucide-react";
+import { Check, HelpCircle, ChevronDown, Tag, Star, Info, Clock, Calculator } from "lucide-react";
 
 /* ---------- Scroll Animation Hook ---------- */
 
@@ -154,18 +154,17 @@ export default function PricingPage() {
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden pt-32 pb-16">
         <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5FB] via-[#EEEAF8] to-white" />
-        
+
         {/* Background decoration */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[#E6E0F5]/30 rounded-full blur-3xl" />
 
         <div
           ref={heroAnim.ref}
-          className={`relative mx-auto max-w-4xl px-6 text-center transition-all duration-700 ${
-            heroAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`relative mx-auto max-w-4xl px-6 text-center transition-all duration-700 ${heroAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/80 px-4 py-1.5 text-xs font-medium text-[#5E5574] backdrop-blur-sm mb-6">
-            <Sparkles size={14} />
+            <Tag size={14} />
             Simple, term-based pricing
           </div>
 
@@ -175,7 +174,7 @@ export default function PricingPage() {
           </h1>
 
           <p className="mt-6 text-lg text-[#6B647F] max-w-2xl mx-auto leading-relaxed">
-            Choose how many hours per week works for your child. All packages include 
+            Choose how many hours per week works for your child. All packages include
             the same high-quality tutoring — the only difference is the time commitment.
           </p>
 
@@ -191,82 +190,82 @@ export default function PricingPage() {
       </section>
 
       {/* ================= PACKAGES ================= */}
-      <section ref={packagesAnim.ref} className="py-16">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="grid gap-6 lg:grid-cols-3">
+      <section ref={packagesAnim.ref} className="py-8 md:py-16">
+        <div className="mx-auto max-w-5xl px-2 sm:px-4 md:px-6">
+          {/* Grid - always 3 columns, shrinks on mobile */}
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-3 md:gap-6">
             {packages.map((pkg, index) => {
               const termTotal = pkg.pricePerHour * pkg.hoursPerWeek * TERM_WEEKS;
               const weeklyTotal = pkg.pricePerHour * pkg.hoursPerWeek;
-              
+
               return (
                 <div
                   key={pkg.name}
-                  className={`relative rounded-2xl transition-all duration-500 ${
-                    packagesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
+                  className={`relative rounded-lg sm:rounded-xl md:rounded-2xl transition-all duration-500 ${packagesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   {/* Popular badge */}
                   {pkg.popular && (
-                    <div className="absolute -top-4 left-0 right-0 flex justify-center z-10">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#5E5574] px-4 py-1.5 text-xs font-semibold text-white shadow-lg">
-                        <Sparkles size={12} />
-                        Most Popular
+                    <div className="absolute -top-2 sm:-top-3 md:-top-4 left-0 right-0 flex justify-center z-10">
+                      <span className="inline-flex items-center gap-0.5 sm:gap-1 md:gap-1.5 rounded-full bg-[#5E5574] px-1.5 sm:px-2 md:px-4 py-0.5 sm:py-1 md:py-1.5 text-[8px] sm:text-[10px] md:text-xs font-semibold text-white shadow-lg">
+                        <Star className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
+                        <span className="hidden sm:inline">Most Popular</span>
+                        <span className="sm:hidden">Popular</span>
                       </span>
                     </div>
                   )}
 
                   <div
-                    className={`h-full rounded-2xl border bg-white p-8 transition-all duration-300 hover:shadow-xl hover:shadow-[#5E5574]/10 ${
-                      pkg.popular
+                    className={`h-full rounded-lg sm:rounded-xl md:rounded-2xl border bg-white p-2 sm:p-4 md:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-[#5E5574]/10 ${pkg.popular
                         ? "border-[#5E5574] shadow-lg shadow-[#5E5574]/10"
                         : "border-[#E6E0F2] hover:border-[#D9CFF2]"
-                    }`}
+                      }`}
                   >
                     {/* Header */}
-                    <div className="text-center pb-6 border-b border-[#E6E0F2]">
-                      <div className={`inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br ${pkg.color} text-2xl mb-4`}>
+                    <div className="text-center pb-2 sm:pb-4 md:pb-6 border-b border-[#E6E0F2]">
+                      <div className={`inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 md:h-14 md:w-14 rounded-lg sm:rounded-xl md:rounded-2xl bg-gradient-to-br ${pkg.color} text-sm sm:text-lg md:text-2xl mb-1 sm:mb-2 md:mb-4`}>
                         {pkg.icon}
                       </div>
-                      
-                      <h3 className="text-xl font-semibold text-[#3F3A52]">{pkg.name}</h3>
-                      <p className="text-sm text-[#5E5574] font-medium">{pkg.tagline}</p>
-                      
+
+                      <h3 className="text-xs sm:text-sm md:text-xl font-semibold text-[#3F3A52]">{pkg.name}</h3>
+                      <p className="text-[8px] sm:text-[10px] md:text-sm text-[#5E5574] font-medium hidden sm:block">{pkg.tagline}</p>
+
                       {/* Hours */}
-                      <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#F7F5FB] px-4 py-2">
-                        <Clock size={16} className="text-[#5E5574]" />
-                        <span className="text-sm font-semibold text-[#3F3A52]">
-                          {pkg.hoursPerWeek} hour{pkg.hoursPerWeek > 1 ? "s" : ""} / week
+                      <div className="mt-1 sm:mt-2 md:mt-4 inline-flex items-center gap-0.5 sm:gap-1 md:gap-2 rounded-full bg-[#F7F5FB] px-1.5 sm:px-2 md:px-4 py-0.5 sm:py-1 md:py-2">
+                        <Clock className="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 text-[#5E5574]" />
+                        <span className="text-[8px] sm:text-[10px] md:text-sm font-semibold text-[#3F3A52]">
+                          {pkg.hoursPerWeek}hr{pkg.hoursPerWeek > 1 ? "s" : ""}<span className="hidden sm:inline"> / week</span>
                         </span>
                       </div>
                     </div>
 
                     {/* Pricing */}
-                    <div className="py-6 text-center">
-                      <div className="flex items-baseline justify-center gap-1">
-                        <span className="text-4xl font-bold text-[#3F3A52]">${pkg.pricePerHour}</span>
-                        <span className="text-[#8C84A8]">/ hour</span>
+                    <div className="py-2 sm:py-4 md:py-6 text-center">
+                      <div className="flex items-baseline justify-center gap-0.5">
+                        <span className="text-base sm:text-2xl md:text-4xl font-bold text-[#3F3A52]">${pkg.pricePerHour}</span>
+                        <span className="text-[8px] sm:text-xs md:text-base text-[#8C84A8]">/hr</span>
                       </div>
-                      
-                      <div className="mt-3 space-y-1">
-                        <div className="text-sm text-[#6B647F]">
-                          <span className="font-medium text-[#3F3A52]">${weeklyTotal}</span> per week
+
+                      <div className="mt-1 sm:mt-2 md:mt-3 space-y-0.5 sm:space-y-1">
+                        <div className="text-[8px] sm:text-xs md:text-sm text-[#6B647F]">
+                          <span className="font-medium text-[#3F3A52]">${weeklyTotal}</span><span className="hidden sm:inline"> per week</span><span className="sm:hidden">/wk</span>
                         </div>
-                        <div className="text-sm text-[#6B647F]">
-                          <span className="font-semibold text-[#5E5574]">${termTotal.toLocaleString()}</span> per term
+                        <div className="text-[8px] sm:text-xs md:text-sm text-[#6B647F]">
+                          <span className="font-semibold text-[#5E5574]">${termTotal.toLocaleString()}</span><span className="hidden sm:inline"> per term</span><span className="sm:hidden">/term</span>
                         </div>
                       </div>
 
                       {/* Savings indicator for Soar */}
                       {pkg.name === "Soar" && (
-                        <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-3 py-1 text-xs font-medium text-green-700">
-                          Save $30/week vs Elevate rate
+                        <div className="mt-1 sm:mt-2 md:mt-3 hidden sm:inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-[8px] sm:text-[10px] md:text-xs font-medium text-green-700">
+                          Save $30/week
                         </div>
                       )}
                     </div>
 
-                    {/* Example usage */}
-                    <div className="rounded-xl bg-[#F7F5FB] p-4 mb-6">
+                    {/* Example usage - hidden on mobile */}
+                    <div className="hidden md:block rounded-xl bg-[#F7F5FB] p-4 mb-6">
                       <p className="text-xs font-semibold text-[#8C84A8] uppercase tracking-wider mb-2">
                         Example
                       </p>
@@ -276,19 +275,18 @@ export default function PricingPage() {
                     {/* CTA */}
                     <Link
                       href="/enrol"
-                      className={`flex w-full items-center justify-center rounded-xl py-3.5 text-sm font-semibold transition-all ${
-                        pkg.popular
+                      className={`flex w-full items-center justify-center rounded-md sm:rounded-lg md:rounded-xl py-1.5 sm:py-2 md:py-3.5 text-[8px] sm:text-xs md:text-sm font-semibold transition-all ${pkg.popular
                           ? "bg-[#5E5574] text-white hover:bg-[#4F4865]"
                           : "bg-[#F4F1FB] text-[#5E5574] hover:bg-[#E6E0F5]"
-                      }`}
+                        }`}
                     >
-                      Enrol Now
+                      Enrol
                     </Link>
 
-                    <p className="mt-4 text-center text-xs text-[#8C84A8]">
+                    <p className="mt-1 sm:mt-2 md:mt-4 text-center text-[6px] sm:text-[8px] md:text-xs text-[#8C84A8] hidden sm:block">
                       or{" "}
                       <Link href="/consultation" className="text-[#5E5574] underline underline-offset-2">
-                        book a free consultation
+                        book a consultation
                       </Link>
                     </p>
                   </div>
@@ -299,11 +297,10 @@ export default function PricingPage() {
 
           {/* Price comparison note */}
           <div
-            className={`mt-8 text-center transition-all duration-700 delay-300 ${
-              packagesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`mt-4 sm:mt-6 md:mt-8 text-center transition-all duration-700 delay-300 ${packagesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
-            <p className="text-sm text-[#8C84A8]">
+            <p className="text-[10px] sm:text-xs md:text-sm text-[#8C84A8]">
               <Calculator size={14} className="inline mr-1" />
               More hours = lower hourly rate. All packages include the same services.
             </p>
@@ -315,23 +312,21 @@ export default function PricingPage() {
       <section ref={flexibilityAnim.ref} className="py-16 bg-[#FAFBFF]">
         <div className="mx-auto max-w-5xl px-6">
           <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              flexibilityAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`text-center mb-10 transition-all duration-700 ${flexibilityAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <h2 className="text-3xl font-semibold text-[#3F3A52]">
               Flexible subject allocation
             </h2>
             <p className="mt-3 text-[#6B647F] max-w-xl mx-auto">
-              Use your hours however works best. Focus on one subject or spread across multiple — it's your choice.
+              Use your hours however works best. Focus on one subject or spread across multiple — it&apos;s your choice.
             </p>
           </div>
 
           {/* Flexibility selector */}
           <div
-            className={`transition-all duration-700 delay-100 ${
-              flexibilityAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`transition-all duration-700 delay-100 ${flexibilityAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             {/* Package tabs */}
             <div className="flex justify-center gap-2 mb-8">
@@ -339,11 +334,10 @@ export default function PricingPage() {
                 <button
                   key={pkg.name}
                   onClick={() => setSelectedPackage(index)}
-                  className={`rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${
-                    selectedPackage === index
+                  className={`rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${selectedPackage === index
                       ? "bg-[#5E5574] text-white shadow-md"
                       : "bg-white text-[#6B647F] border border-[#E6E0F2] hover:border-[#D9CFF2]"
-                  }`}
+                    }`}
                 >
                   {pkg.name} ({pkg.hoursPerWeek}hr{pkg.hoursPerWeek > 1 ? "s" : ""})
                 </button>
@@ -374,8 +368,8 @@ export default function PricingPage() {
               </div>
 
               <div className="mt-6 flex items-center gap-2 text-sm text-[#8C84A8]">
-                <Sparkles size={14} />
-                <span>Subject mix can be adjusted each week based on your child's needs</span>
+                <Info size={14} />
+                <span>Subject mix can be adjusted each week based on your child&apos;s needs</span>
               </div>
             </div>
           </div>
@@ -386,9 +380,8 @@ export default function PricingPage() {
       <section ref={featuresAnim.ref} className="py-16">
         <div className="mx-auto max-w-4xl px-6">
           <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`text-center mb-10 transition-all duration-700 ${featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <h2 className="text-3xl font-semibold text-[#3F3A52]">
               Everything included in every package
@@ -399,9 +392,8 @@ export default function PricingPage() {
           </div>
 
           <div
-            className={`grid gap-4 sm:grid-cols-2 transition-all duration-700 delay-100 ${
-              featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`grid gap-4 sm:grid-cols-2 transition-all duration-700 delay-100 ${featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             {allFeatures.map((feature, i) => (
               <div
@@ -418,9 +410,8 @@ export default function PricingPage() {
 
           {/* Tutor quality note */}
           <div
-            className={`mt-8 rounded-2xl border border-[#D9CFF2] bg-gradient-to-r from-[#F7F5FB] to-[#EEEAF8] p-6 transition-all duration-700 delay-200 ${
-              featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`mt-8 rounded-2xl border border-[#D9CFF2] bg-gradient-to-r from-[#F7F5FB] to-[#EEEAF8] p-6 transition-all duration-700 delay-200 ${featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#5E5574] text-xl">
@@ -429,7 +420,7 @@ export default function PricingPage() {
               <div>
                 <h3 className="font-semibold text-[#3F3A52]">95+ ATAR tutors only</h3>
                 <p className="mt-1 text-sm text-[#6B647F]">
-                  Every tutor at Kite & Key achieved a 95+ ATAR and is trained in The KEY Method. 
+                  Every tutor at Kite &amp; Key achieved a 95+ ATAR and is trained in The KEY Method.
                   Your child gets the same quality tutoring regardless of which package you choose.
                 </p>
               </div>
@@ -442,9 +433,8 @@ export default function PricingPage() {
       <section ref={faqAnim.ref} className="py-16 bg-[#FAFBFF]">
         <div className="mx-auto max-w-3xl px-6">
           <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`text-center mb-10 transition-all duration-700 ${faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <h2 className="text-3xl font-semibold text-[#3F3A52]">
               Frequently asked questions
@@ -458,9 +448,8 @@ export default function PricingPage() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className={`rounded-xl border border-[#E6E0F2] bg-white overflow-hidden transition-all duration-500 ${
-                  faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
+                className={`rounded-xl border border-[#E6E0F2] bg-white overflow-hidden transition-all duration-500 ${faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  }`}
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
                 <button
@@ -472,16 +461,14 @@ export default function PricingPage() {
                   </span>
                   <ChevronDown
                     size={18}
-                    className={`shrink-0 text-[#8C84A8] transition-transform duration-300 ${
-                      openFaq === index ? "rotate-180" : ""
-                    }`}
+                    className={`shrink-0 text-[#8C84A8] transition-transform duration-300 ${openFaq === index ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
                 <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    openFaq === index ? "max-h-[300px]" : "max-h-0"
-                  }`}
+                  className={`overflow-hidden transition-all duration-300 ${openFaq === index ? "max-h-[300px]" : "max-h-0"
+                    }`}
                 >
                   <div className="px-6 pb-4 text-sm text-[#6B647F] leading-relaxed border-t border-[#E6E0F2] pt-4">
                     {faq.answer}
@@ -497,9 +484,8 @@ export default function PricingPage() {
       <section ref={ctaAnim.ref} className="py-20">
         <div className="mx-auto max-w-4xl px-6">
           <div
-            className={`relative overflow-hidden rounded-3xl transition-all duration-700 ${
-              ctaAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`relative overflow-hidden rounded-3xl transition-all duration-700 ${ctaAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#5E5574] to-[#4A4463]" />
@@ -512,7 +498,7 @@ export default function PricingPage() {
                 }}
               />
             </div>
-            
+
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/10 blur-3xl" />
 
             <div className="relative px-8 py-14 md:px-14 text-center">
@@ -522,11 +508,11 @@ export default function PricingPage() {
               </div>
 
               <h2 className="text-3xl md:text-4xl font-semibold text-white">
-                Let's find the right fit together
+                Let&apos;s find the right fit together
               </h2>
 
               <p className="mt-4 text-lg text-white/70 max-w-xl mx-auto">
-                A free consultation helps us understand your child's needs and
+                A free consultation helps us understand your child&apos;s needs and
                 recommend the right hours per week — no pressure, no obligation.
               </p>
 

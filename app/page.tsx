@@ -3,703 +3,386 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import Container from "../components/Container";
-import ButtonLink from "../components/ButtonLink";
-import KeishaReviews from "../components/KeishaReviews";
 import MindPrintSection from "../components/MindPrintSection";
+import KeishaReviews from "../components/KeishaReviews";
+import Footer from "../components/Footer";
+import { ArrowRight, BookOpen, Compass, Layers, Zap } from "lucide-react";
 
-/* ---------- Animation Hook ---------- */
+/* ==========================================
+   ANIMATION VARIANTS
+   ========================================== */
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
 
-function useScrollAnimation(threshold = 0.1) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
     }
+  }
+};
 
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
-
-/* ---------- UI Components ---------- */
-
-function FeatureCard({
-  title,
-  body,
-  icon,
-  strong,
-  index = 0,
-  isVisible = true,
-}: {
-  title: string;
-  body: string;
-  icon?: string;
-  strong?: boolean;
-  index?: number;
-  isVisible?: boolean;
-}) {
-  return (
-    <div
-      className={`group relative rounded-2xl border px-6 py-5 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg ${
-        strong
-          ? "border-[#D9CFF2] bg-white/80 shadow-md backdrop-blur-sm"
-          : "border-[#E6E0F2] bg-white/60 hover:border-[#D9CFF2] hover:bg-white/80"
-      } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-      style={{ transitionDelay: `${index * 100}ms` }}
-    >
-      {icon && (
-        <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F1FB] text-lg transition-transform group-hover:scale-110">
-          {icon}
-        </div>
-      )}
-      <h3 className="text-sm font-semibold text-[#3F3A52]">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-[#6B647F]">{body}</p>
-      
-      {/* Hover accent line */}
-      <div className="absolute bottom-0 left-6 right-6 h-0.5 scale-x-0 rounded-full bg-gradient-to-r from-[#5E5574] to-[#8B7FA8] transition-transform duration-300 group-hover:scale-x-100" />
-    </div>
-  );
-}
-
-function Stat({
-  label,
-  value,
-  icon,
-  index = 0,
-  isVisible = true,
-}: {
-  label: string;
-  value: string;
-  icon: string;
-  index?: number;
-  isVisible?: boolean;
-}) {
-  return (
-    <div
-      className={`group relative overflow-hidden rounded-2xl border border-[#E6E0F2] bg-white/60 p-6 text-center backdrop-blur-sm transition-all duration-500 hover:border-[#D9CFF2] hover:bg-white/80 hover:shadow-md ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
-    >
-      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#F4F1FB] text-xl transition-transform group-hover:scale-110">
-        {icon}
-      </div>
-      <div className="text-xs uppercase tracking-wider text-[#8C84A8]">
-        {label}
-      </div>
-      <div className="mt-1 text-lg font-semibold tracking-tight text-[#3F3A52]">
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function ProblemCard({
-  title,
-  body,
-  icon,
-  index = 0,
-  isVisible = true,
-}: {
-  title: string;
-  body: string;
-  icon: string;
-  index?: number;
-  isVisible?: boolean;
-}) {
-  return (
-    <div
-      className={`group relative rounded-2xl border border-[#E6E0F2] bg-white/60 p-6 transition-all duration-500 hover:border-[#D9CFF2] hover:bg-white/80 hover:shadow-md ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
-    >
-      <div className="flex items-start gap-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FEF3F2] text-lg">
-          {icon}
-        </div>
-        <div>
-          <h3 className="text-sm font-semibold text-[#3F3A52]">{title}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-[#6B647F]">{body}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ---------- Page ---------- */
+/* ==========================================
+   HOMEPAGE
+   ========================================== */
 
 export default function HomePage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const whySection = useScrollAnimation();
-  const problemSection = useScrollAnimation();
-  const ctaSection = useScrollAnimation();
-  
-  const [heroVisible, setHeroVisible] = useState(false);
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const heroY = useTransform(scrollY, [0, 500], [0, 100]);
 
-  useEffect(() => {
-    setHeroVisible(true);
-  }, []);
+  // Parallax for background orbs
+  const y1 = useTransform(scrollY, [0, 2000], [0, -300]);
+  const y2 = useTransform(scrollY, [0, 2000], [0, 400]);
 
   return (
-    <main className="kk-page">
-      {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
-        {/* Background layers */}
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2400&auto=format&fit=crop"
-            alt="Modern study environment"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[50%_35%] scale-105"
-          />
-          <div className="absolute inset-0 bg-[#F7F5FB]/88" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#F1ECFA]/95 via-[#F7F5FB]/90 to-[#F7F5FB]/70" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
-        </div>
+    <div className="relative font-inter text-[#5E5574] selection:bg-[#D9CFF2] selection:text-[#3F3A52] overflow-x-hidden">
 
-        {/* Decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full bg-[#D9CFF2]/30 blur-3xl animate-float-slow" />
-          <div className="absolute bottom-20 left-1/4 w-80 h-80 rounded-full bg-[#E6E0F5]/40 blur-3xl animate-float-delayed" />
-        </div>
+      {/* ==========================================
+          GLOBAL ANIMATED BACKGROUND
+          ========================================== */}
+      <div className="fixed inset-0 z-0 w-full h-full max-h-screen bg-[#FAFAFA] overflow-hidden pointer-events-none">
+        {/* Orb 1 - Top Left - Lavender */}
+        <motion.div
+          className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] rounded-full bg-[#E6E0F5]/50 blur-[120px]"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.1, 1],
+            backgroundColor: ["rgba(230, 224, 245, 0.5)", "rgba(217, 207, 242, 0.5)", "rgba(230, 224, 245, 0.5)"]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          style={{ y: y1 }}
+        />
 
-        <Container>
-          <div ref={heroRef} className="relative py-20 md:py-28">
-            <div className="grid gap-14 lg:grid-cols-12 items-center">
-              {/* Left content */}
-              <div className="lg:col-span-7">
-                <div
-                  className={`transition-all duration-700 ${
-                    heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  <span className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/80 px-4 py-1.5 text-xs font-medium text-[#5E5574] backdrop-blur-sm">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#5E5574] opacity-75"></span>
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[#5E5574]"></span>
-                    </span>
-                    Now enrolling for 2026
-                  </span>
-                </div>
+        {/* Orb 2 - Bottom Right - Cool Blue/White */}
+        <motion.div
+          className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-[#D9CFF2]/40 blur-[100px]"
+          animate={{
+            x: [0, -50, 0],
+            y: [0, -100, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          style={{ y: y2 }}
+        />
 
-                <h1
-                  className={`mt-6 max-w-3xl text-[2.6rem] md:text-[3.6rem] font-semibold leading-[1.08] tracking-tight text-[#3F3A52] transition-all duration-700 delay-100 ${
-                    heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  Calm, intelligent tutoring —
-                  <span className="relative">
-                    <br />
-                    built for{" "}
-                    <span className="relative inline-block">
-                      <span className="relative z-10 bg-gradient-to-r from-[#5E5574] to-[#7C6B94] bg-clip-text text-transparent">
-                        long-term capability
-                      </span>
-                      <svg
-                        className="absolute -bottom-2 left-0 w-full h-3 text-[#D9CFF2]"
-                        viewBox="0 0 200 12"
-                        preserveAspectRatio="none"
-                      >
-                        <path
-                          d="M0,8 Q50,0 100,8 T200,8"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                    .
-                  </span>
-                </h1>
+        {/* Orb 3 - Center - Warm Hue */}
+        <motion.div
+          className="absolute top-[40%] left-[30%] w-[500px] h-[500px] rounded-full bg-[#F1ECFA]/60 blur-[90px]"
+          animate={{
+            x: [0, -30, 30, 0],
+            y: [0, 30, -30, 0],
+            opacity: [0.6, 0.4, 0.6]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
 
-                <p
-                  className={`mt-6 max-w-2xl text-base md:text-lg text-[#6B647F] leading-relaxed transition-all duration-700 delay-200 ${
-                    heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  Personalised 1:1 tutoring for Years 5–10 in Maths, English and
-                  Science — guided by psychology-informed systems that build
-                  confidence, clarity, and independence.
-                </p>
+      {/* ==========================================
+          1. HERO — ATMOSPHERIC
+          ========================================== */}
+      <section className="relative min-h-screen flex items-center justify-center z-10">
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 text-center">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="flex flex-col items-center"
+            style={{ opacity: heroOpacity, y: heroY }}
+          >
+            <motion.div variants={fadeInUp} className="mb-8">
+              <span className="inline-block py-1.5 px-4 rounded-full border border-[#D9CFF2] bg-white/40 backdrop-blur-md text-xs tracking-[0.2em] font-medium uppercase text-[#8B7FA8] shadow-sm">
+                Learning Mentorship
+              </span>
+            </motion.div>
 
-                <div
-                  className={`mt-10 flex flex-wrap gap-4 transition-all duration-700 delay-300 ${
-                    heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  <Link
-                    href="/consultation"
-                    className="group inline-flex items-center gap-2 rounded-xl bg-[#5E5574] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#5E5574]/20 transition-all hover:bg-[#4F4865] hover:shadow-xl hover:shadow-[#5E5574]/25 hover:-translate-y-0.5"
-                  >
-                    Book a free consultation
-                    <svg
-                      className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
-                  <Link
-                    href="/key-method"
-                    className="group inline-flex items-center gap-2 rounded-xl border border-[#D9CFF2] bg-white/70 px-6 py-3.5 text-sm font-semibold text-[#5E5574] backdrop-blur-sm transition-all hover:bg-white hover:border-[#5E5574]/30 hover:-translate-y-0.5"
-                  >
-                    Explore the KEY Method
-                    <svg
-                      className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
-                </div>
-
-                {/* Social proof mini */}
-                <div
-                  className={`mt-10 flex items-center gap-4 transition-all duration-700 delay-400 ${
-                    heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
-                >
-                  <div className="flex -space-x-2">
-                    {["PP", "IL", "AJ", "TE"].map((initials, i) => (
-                      <div
-                        key={initials}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-[#5E5574] text-xs font-semibold text-white shadow-sm"
-                      >
-                        {initials}
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1 text-[#F2B705]">
-                      {"★★★★★".split("").map((star, i) => (
-                        <span key={i}>{star}</span>
-                      ))}
-                    </div>
-                    <div className="text-xs text-[#6B647F]">
-                      Trusted by families across Australia
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right content - Feature cards */}
-              <div className="lg:col-span-5 grid gap-4">
-                {[
-                  {
-                    icon: "🏛️",
-                    title: "Private-school level structure",
-                    body: "Clear learning pathways, deliberate pacing, and consistent academic oversight.",
-                    strong: true,
-                  },
-                  {
-                    icon: "🧠",
-                    title: "MindPrint-informed learning",
-                    body: "We tailor study strategies to how each student thinks — not just what they study.",
-                  },
-                  {
-                    icon: "📈",
-                    title: "Confidence that compounds",
-                    body: "Calm coaching that replaces anxiety with clarity and momentum.",
-                  },
-                ].map((feature, index) => (
-                  <FeatureCard
-                    key={feature.title}
-                    {...feature}
-                    index={index}
-                    isVisible={heroVisible}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Stats row */}
-            <div
-              className={`mt-16 grid gap-4 md:grid-cols-3 transition-all duration-700 delay-500 ${
-                heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Stat
-                icon="💻"
-                label="Delivery"
-                value="1:1 Online Tutoring"
-                index={0}
-                isVisible={heroVisible}
-              />
-              <Stat
-                icon="📚"
-                label="Focus"
-                value="Years 5–10 Mastery"
-                index={1}
-                isVisible={heroVisible}
-              />
-              <Stat
-                icon="🎓"
-                label="Standard"
-                value="95+ ATAR Tutors"
-                index={2}
-                isVisible={heroVisible}
-              />
-            </div>
-          </div>
-        </Container>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#8C84A8]">
-          <span className="text-xs uppercase tracking-wider">Scroll to explore</span>
-          <div className="h-10 w-6 rounded-full border-2 border-[#D9CFF2] p-1">
-            <div className="h-2 w-1.5 mx-auto rounded-full bg-[#5E5574] animate-bounce" />
-          </div>
-        </div>
-      </section>
-
-      {/* ================= WHY SECTION ================= */}
-      <section ref={whySection.ref} className="relative border-t border-[#E6E8F0] py-28 overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-[#FAFBFF] to-white" />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#F7F5FB]/50 to-transparent" />
-
-        <Container>
-          <div className="relative grid gap-16 lg:grid-cols-2 lg:items-center">
-            {/* Left content */}
-            <div className="max-w-xl">
-              <p
-                className={`text-xs tracking-[0.20em] uppercase text-[#8C84A8] transition-all duration-700 ${
-                  whySection.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                Why Kite & Key
-              </p>
-
-              <h2
-                className={`mt-3 text-[2.1rem] md:text-[2.5rem] font-semibold leading-[1.15] tracking-tight text-[#3F3A52] transition-all duration-700 delay-100 ${
-                  whySection.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                Most students don't need more pressure — they need a{" "}
-                <span className="relative inline-block">
-                  <span className="relative z-10 text-[#5E5574]">better system</span>
-                  <div className="absolute -bottom-1 left-0 right-0 h-3 bg-[#E6E0F5]/60 -rotate-1" />
-                </span>
-                .
-              </h2>
-
-              <p
-                className={`mt-5 text-base text-[#6B647F] leading-relaxed transition-all duration-700 delay-200 ${
-                  whySection.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                Many capable students struggle not because of ability, but
-                because the method doesn't match how they learn. We bridge that gap
-                with structured, psychology-informed tutoring.
-              </p>
-
-              <div
-                className={`mt-8 flex items-center gap-6 transition-all duration-700 delay-300 ${
-                  whySection.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-[#5E5574]">73%</div>
-                  <div className="text-xs text-[#8C84A8]">of students<br />learn differently</div>
-                </div>
-                <div className="h-12 w-px bg-[#E6E0F2]" />
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-[#5E5574]">2x</div>
-                  <div className="text-xs text-[#8C84A8]">faster progress<br />with matched method</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right image */}
-            <div
-              className={`relative transition-all duration-700 delay-200 ${
-                whySection.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-              }`}
-            >
-              <div className="relative h-[420px] overflow-hidden rounded-[2rem] border border-[#E6E1F2] shadow-[0_20px_60px_rgba(94,85,116,0.15)]">
-                <Image
-                  src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=2400&auto=format&fit=crop"
-                  alt="Focused student studying"
-                  fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#3F3A52]/20 via-transparent to-transparent" />
-                
-                {/* Floating badge */}
-                <div className="absolute bottom-6 left-6 right-6 rounded-xl border border-white/20 bg-white/90 p-4 backdrop-blur-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#F4F1FB]">
-                      🎯
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-[#3F3A52]">
-                        Personalised approach
-                      </div>
-                      <div className="text-xs text-[#6B647F]">
-                        Every student gets a custom learning pathway
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 h-24 w-24 rounded-2xl border border-[#D9CFF2]/50 bg-[#F7F5FB]/50" />
-              <div className="absolute -bottom-4 -left-4 h-16 w-16 rounded-xl border border-[#D9CFF2]/50 bg-[#F7F5FB]/50" />
-            </div>
-          </div>
-
-          {/* Problem cards */}
-          <div ref={problemSection.ref} className="mt-20">
-            <h3
-              className={`text-center text-sm font-semibold uppercase tracking-wider text-[#8C84A8] mb-8 transition-all duration-700 ${
-                problemSection.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              Common challenges we solve
-            </h3>
-            
-            <div className="grid gap-4 md:grid-cols-2">
-              {[
-                {
-                  icon: "🏫",
-                  title: "One-size-fits-all classrooms",
-                  body: "Fixed pacing and generic instruction leave many students quietly falling behind.",
-                },
-                {
-                  icon: "😔",
-                  title: "Confidence erodes early",
-                  body: "Repeated confusion often gets misread as lack of ability.",
-                },
-                {
-                  icon: "📖",
-                  title: "Ineffective study habits",
-                  body: "Students are told what to study, not how to learn in a way that suits them.",
-                },
-                {
-                  icon: "❓",
-                  title: "Parents left guessing",
-                  body: "Without clarity, it's hard to know the right next step.",
-                },
-              ].map((problem, index) => (
-                <ProblemCard
-                  key={problem.title}
-                  {...problem}
-                  index={index}
-                  isVisible={problemSection.isVisible}
-                />
-              ))}
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* ================= SOLUTION BRIDGE ================= */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#5E5574] to-[#4A4463]" />
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-              backgroundSize: "32px 32px",
-            }}
-          />
-        </div>
-
-        <Container>
-          <div className="relative text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white max-w-2xl mx-auto">
-              That's why we built the{" "}
-              <span className="underline decoration-[#D9CFF2]/50 underline-offset-4">
-                KEY Method
-              </span>{" "}
-              — a structured, psychology-informed system for lasting learning.
-            </h2>
-
-            <div className="mt-10 flex flex-wrap justify-center gap-8">
-              {[
-                { letter: "K", word: "Knowledge", desc: "Building foundations" },
-                { letter: "E", word: "Engagement", desc: "Active learning" },
-                { letter: "Y", word: "Yield", desc: "Measurable results" },
-              ].map((item) => (
-                <div key={item.letter} className="text-center group">
-                  <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 text-3xl font-bold text-white backdrop-blur-sm border border-white/20 transition-transform group-hover:scale-110">
-                    {item.letter}
-                  </div>
-                  <div className="font-semibold text-white">{item.word}</div>
-                  <div className="text-sm text-white/60">{item.desc}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-10">
-              <Link
-                href="/key-method"
-                className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[#5E5574] transition-all hover:shadow-lg hover:-translate-y-0.5"
-              >
-                Discover the KEY Method
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
+            <motion.h1 variants={fadeInUp} className="font-cormorant text-5xl md:text-7xl lg:text-8xl font-light leading-[1.1] text-[#3F3A52] tracking-tight">
+              Clarity precedes <br />
+              <span className="italic relative z-10">
+                confidence.
+                <svg className="absolute -bottom-2 md:-bottom-4 left-0 w-full h-4 text-[#D9CFF2]/60 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                  <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="2" fill="none" />
                 </svg>
+              </span>
+            </motion.h1>
+
+            <motion.p variants={fadeInUp} className="mt-8 max-w-2xl text-lg md:text-xl text-[#6B647F] font-light leading-relaxed">
+              We replace academic anxiety with calm, predictable progress.
+              Structured mentorship for Years 5–10 that builds systems, not just results.
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className="mt-12 flex flex-col sm:flex-row gap-5 items-center">
+              <Link
+                href="/enrol"
+                className="group relative px-8 py-4 bg-[#5E5574] text-white rounded-full font-medium transition-all hover:bg-[#4F4865] hover:shadow-lg hover:shadow-[#5E5574]/20 hover:-translate-y-0.5"
+              >
+                Start Your Journey
+                <ArrowRight className="inline-block ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href="/consultation"
+                className="px-8 py-4 bg-white/50 border border-[#E6E0F2] text-[#5E5574] rounded-full font-medium backdrop-blur-sm transition-all hover:bg-white hover:border-[#D9CFF2] hover:-translate-y-0.5"
+              >
+                The Philosophy
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        >
+          <div className="w-[1px] h-16 bg-gradient-to-b from-[#5E5574]/0 via-[#5E5574]/30 to-[#5E5574]/0" />
+        </motion.div>
+      </section>
+
+      {/* ==========================================
+          2. PHILOSOPHY — QUIET CONFIDENCE
+          ========================================== */}
+      <section className="relative py-32 bg-white/60 backdrop-blur-sm z-10">
+        <Container>
+          <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <h2 className="font-cormorant text-4xl md:text-5xl text-[#3F3A52] leading-tight mb-8">
+                It’s not about ability. <br />
+                It’s about <span className="italic text-[#8B7FA8]">architecture.</span>
+              </h2>
+              <div className="space-y-6 text-lg text-[#6B647F] leading-relaxed font-light">
+                <p>
+                  Most students do not struggle because they lack intelligence. They struggle because the teaching methods they are exposed to do not match how they process information.
+                </p>
+                <p>
+                  At Kite & Key, we don’t just teach subjects. We build the cognitive architecture required to learn them.
+                </p>
+                <p>
+                  When a student understands <em className="text-[#5E5574]">how</em> they learn, anxiety is replaced by agency. Urgent cramming is replaced by sustainable growth.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="aspect-[4/5] md:aspect-square relative rounded-2xl overflow-hidden bg-[#F7F5FB]">
+                <Image
+                  src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2400&auto=format&fit=crop"
+                  alt="Student studying comfortably"
+                  fill
+                  className="object-cover transition-transform duration-1000 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[#5E5574]/10 mix-blend-overlay" />
+              </div>
+              <div className="absolute -bottom-8 -left-8 md:-left-12 bg-white/90 p-8 rounded-xl shadow-glass border border-[#E6E0F2] max-w-xs backdrop-blur-md">
+                <p className="font-cormorant text-2xl italic text-[#5E5574] mb-2">"Structure before speed."</p>
+                <p className="text-sm text-[#8C84A8]">The core principle of calm progress.</p>
+              </div>
+            </motion.div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ==========================================
+          3. KEY METHOD — THE SYSTEM
+          ========================================== */}
+      <section className="py-32 bg-[#F7F5FB]/60 backdrop-blur-sm overflow-hidden z-10 relative border-t border-white/50">
+        <Container>
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="font-cormorant text-4xl md:text-5xl text-[#3F3A52] mb-6">The KEY Method</h2>
+            <p className="text-lg text-[#6B647F] font-light">
+              A structured instructional framework designed to make learning predictable, repeatable, and calm.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: "Structure",
+                desc: "Clear frameworks reduce cognitive load.",
+                icon: Layers
+              },
+              {
+                title: "Sequencing",
+                desc: "Concepts built in the brain's natural order.",
+                icon: Compass
+              },
+              {
+                title: "Pacing",
+                desc: "Moving at the speed of understanding.",
+                icon: Zap
+              },
+              {
+                title: "Mastery",
+                desc: "Deep retention over surface coverage.",
+                icon: BookOpen
+              }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                className="bg-white/60 backdrop-blur-md p-8 rounded-2xl border border-white hover:border-[#D9CFF2] transition-colors shadow-sm"
+              >
+                <div className="w-12 h-12 bg-[#F7F5FB] rounded-xl flex items-center justify-center text-[#5E5574] mb-6">
+                  <item.icon size={24} strokeWidth={1.5} />
+                </div>
+                <h3 className="font-cormorant text-2xl text-[#3F3A52] mb-3">{item.title}</h3>
+                <p className="text-sm text-[#6B647F] leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ==========================================
+          4. MINDPRINT — COGNITIVE PROFILING
+          ========================================== */}
+      <div className="bg-white/70 backdrop-blur-xl border-t border-[#F1ECFA] z-10 relative">
+        <MindPrintSection />
+      </div>
+
+      {/* ==========================================
+          5. SUBJECTS — ACADEMIC SCOPE
+          ========================================== */}
+      <section className="py-32 bg-[#F7F5FB]/70 backdrop-blur-sm z-10 relative">
+        <Container>
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-4 sticky top-32">
+              <h2 className="font-cormorant text-4xl md:text-5xl text-[#3F3A52] mb-6">
+                Curriculum <br />
+                <span className="italic text-[#8B7FA8]">Refined.</span>
+              </h2>
+              <p className="text-[#6B647F] leading-relaxed mb-8">
+                We teach the NSW Syllabus, but we teach it differently. We focus on the underlying logic of each subject, not just rote memorisation.
+              </p>
+              <Link href="/enrol" className="text-[#5E5574] font-medium border-b border-[#5E5574]/30 hover:border-[#5E5574] transition-colors pb-0.5">
+                View Learning Packages
               </Link>
             </div>
-          </div>
-        </Container>
-      </section>
 
-      {/* ================= MINDPRINT ================= */}
-      <MindPrintSection />
-
-      {/* ================= REVIEWS ================= */}
-      <KeishaReviews />
-
-      {/* ================= FINAL CTA ================= */}
-      <section ref={ctaSection.ref} className="border-t border-[#E6E8F0] py-28">
-        <Container>
-          <div
-            className={`relative overflow-hidden rounded-[2.25rem] transition-all duration-700 ${
-              ctaSection.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#F7F5FB] via-[#EEEAF8] to-[#E6E0F5]" />
-            <div className="absolute inset-0 bg-[radial-gradient(900px_420px_at_20%_20%,rgba(217,207,242,0.6),transparent_60%)]" />
-            
-            {/* Decorative shapes */}
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#D9CFF2]/30 blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#5E5574]/10 blur-3xl" />
-
-            <div className="relative p-10 md:p-16">
-              <div className="grid gap-10 lg:grid-cols-2 items-center">
-                {/* Left content */}
-                <div className="max-w-lg">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/60 px-4 py-1.5 text-xs font-medium text-[#5E5574] mb-6">
-                    <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                    Spots available for Term 2
+            <div className="lg:col-span-8 flex flex-col gap-6">
+              {[
+                {
+                  subject: "Mathematics",
+                  years: "Years 5–10",
+                  desc: "Moving beyond 'following the formula' to true mathematical reasoning and problem-solving confidence.",
+                  color: "bg-[#E6E0F5]/50"
+                },
+                {
+                  subject: "English",
+                  years: "Years 5–10",
+                  desc: "Developing critical analysis and articulate expression. Reading for meaning, writing with intent.",
+                  color: "bg-[#F1ECFA]/50"
+                },
+                {
+                  subject: "Science",
+                  years: "Years 7–10",
+                  desc: "Cultivating scientific literacy, inquiry skills, and an evidence-based approach to the world.",
+                  color: "bg-[#FAFBFF]/50"
+                }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="group bg-white/60 backdrop-blur-md p-8 md:p-10 rounded-2xl border border-[#E6E0F2] hover:border-[#D9CFF2] hover:shadow-glass hover:-translate-x-1 transition-all"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                    <h3 className="font-cormorant text-3xl text-[#3F3A52]">{item.subject}</h3>
+                    <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wide text-[#5E5574] ${item.color}`}>
+                      {item.years}
+                    </span>
                   </div>
-
-                  <h2 className="text-2xl md:text-4xl font-semibold tracking-tight text-[#3F3A52]">
-                    Start with a calm, no-pressure conversation.
-                  </h2>
-
-                  <p className="mt-4 text-base text-[#6B647F] leading-relaxed">
-                    A free consultation helps us understand your child's needs and
-                    whether Kite & Key is the right fit — no obligation, no pressure.
-                  </p>
-
-                  <div className="mt-8 flex flex-wrap gap-4">
-                    <Link
-                      href="/consultation"
-                      className="group inline-flex items-center gap-2 rounded-xl bg-[#5E5574] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#5E5574]/20 transition-all hover:bg-[#4F4865] hover:shadow-xl hover:-translate-y-0.5"
-                    >
-                      Book a free consultation
-                      <svg
-                        className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </Link>
-                    <Link
-                      href="/pricing"
-                      className="inline-flex items-center gap-2 rounded-xl border border-[#D9CFF2] bg-white/70 px-6 py-3.5 text-sm font-semibold text-[#5E5574] transition-all hover:bg-white hover:-translate-y-0.5"
-                    >
-                      View pricing
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Right - What to expect */}
-                <div className="rounded-2xl border border-[#D9CFF2] bg-white/70 p-6 backdrop-blur-sm">
-                  <h3 className="text-sm font-semibold text-[#3F3A52] mb-4">
-                    What to expect in your consultation:
-                  </h3>
-                  <div className="space-y-4">
-                    {[
-                      {
-                        icon: "👋",
-                        title: "15-minute chat",
-                        body: "A relaxed conversation about your child's needs",
-                      },
-                      {
-                        icon: "🎯",
-                        title: "Personalised recommendations",
-                        body: "We'll suggest the right approach for your situation",
-                      },
-                      {
-                        icon: "📋",
-                        title: "Clear next steps",
-                        body: "No pressure — just clarity on how we can help",
-                      },
-                    ].map((item) => (
-                      <div key={item.title} className="flex items-start gap-4">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F4F1FB] text-lg">
-                          {item.icon}
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-[#3F3A52]">
-                            {item.title}
-                          </div>
-                          <div className="text-sm text-[#6B647F]">{item.body}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                  <p className="text-[#6B647F] leading-relaxed max-w-2xl">{item.desc}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </Container>
       </section>
-    </main>
+
+      {/* ==========================================
+          6. SOCIAL PROOF — KEISHA REVIEWS
+          ========================================== */}
+      <div className="z-10 relative bg-white/70 backdrop-blur-sm">
+        <KeishaReviews />
+      </div>
+
+      {/* ==========================================
+          7. MENTORSHIP & FINAL CTA
+          ========================================== */}
+      <section className="py-32 bg-white/80 backdrop-blur-xl border-t border-[#F1ECFA] overflow-hidden relative z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-white/0 to-[#F7F5FB]/50" />
+
+        <Container>
+          <div className="relative z-10 max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="mb-12 inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#F7F5FB] text-[#D9CFF2] mb-12"
+            >
+              <svg viewBox="0 0 24 24" fill="none" className="w-10 h-10" stroke="currentColor" strokeWidth="1">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+              </svg>
+            </motion.div>
+
+            <h2 className="font-cormorant text-5xl md:text-6xl text-[#3F3A52] mb-8 leading-tight">
+              Predictability in a <br />
+              <span className="italic text-[#8B7FA8]">pressure-filled world.</span>
+            </h2>
+
+            <p className="text-xl text-[#6B647F] mb-12 leading-relaxed max-w-2xl mx-auto font-light">
+              We invite you to experience a new standard of learning support.
+              One that prioritises clarity, connection, and long-term gain.
+            </p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <Link
+                href="/enrol"
+                className="px-10 py-5 bg-[#5E5574] text-white text-lg rounded-full font-medium transition-all hover:bg-[#4F4865] hover:shadow-xl hover:-translate-y-1"
+              >
+                Begin Enrollment
+              </Link>
+              <Link
+                href="/consultation"
+                className="px-10 py-5 bg-white/80 border border-[#DDD4F2] text-[#5E5574] text-lg rounded-full font-medium transition-all hover:border-[#5E5574] hover:bg-[#FAF9FC] hover:-translate-y-1"
+              >
+                Book a Conversation
+              </Link>
+            </div>
+
+            <p className="mt-8 text-sm text-[#8C84A8] tracking-wide uppercase">
+              No pressure. No lock-in contracts. Just clarity.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      <Footer />
+    </div>
   );
 }

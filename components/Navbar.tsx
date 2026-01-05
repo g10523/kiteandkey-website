@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import LiftNavbar from "./LiftNavbar"; //
+import LiftNavbar from "./LiftNavbar";
 
 export default function Navbar() {
   const pathname = usePathname();
 
   const isLiftPage = pathname?.startsWith("/lift-initiative");
-   if (isLiftPage) {
+  if (isLiftPage) {
     return <LiftNavbar />;
   }
 
@@ -117,7 +117,7 @@ export default function Navbar() {
                 src="/logo.jpg"
                 alt="Kite & Key Academy logo"
                 fill
-                className="rounded-full object-contain ring-2 ring-[#D9CFF2] ring-offset-2 ring-offset-transparent"
+                className="object-contain"
                 priority
               />
             </div>
@@ -172,21 +172,33 @@ export default function Navbar() {
                   <div className="p-4 space-y-1">
                     <DropdownBlock
                       href="/key-method"
-                      icon="🔑"
+                      icon={<KeyIcon />}
                       title="The KEY Method"
                       description="Structured teaching systems for long-term mastery."
                     />
                     <DropdownBlock
                       href="/mindprint"
-                      icon="🧠"
+                      icon={<BrainIcon />}
                       title="MindPrint"
                       description="Cognitive learning profiles refined through diagnostics."
                     />
                     <DropdownBlock
                       href="/lift-initiative"
-                      icon="🚀"
+                      icon={<RocketIcon />}
                       title="Lift Initiative"
                       description="Confidence, discipline, and momentum systems."
+                    />
+                    <DropdownBlock
+                      href="/kite-and-key-in-the-community"
+                      icon={<CommunityIcon />}
+                      title="Kite & Key in the Community"
+                      description="Our initiatives and outreach in the local community."
+                    />
+                    <DropdownBlock
+                      href="/articles"
+                      icon={<ArticleIcon />}
+                      title="Articles"
+                      description="Insights, tips, and educational resources."
                     />
                   </div>
                 </div>
@@ -289,8 +301,8 @@ export default function Navbar() {
                                 .replace(" ", "-")}/${subject.toLowerCase()}`}
                               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#6B647F] transition-all hover:bg-[#F4F1FB] hover:text-[#3F3A52] group"
                             >
-                              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F4F1FB] text-base group-hover:bg-[#E6E0F5]">
-                                {SUBJECT_ICONS[subject] || "📚"}
+                              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F4F1FB] group-hover:bg-[#E6E0F5]">
+                                {SUBJECT_ICONS[subject]}
                               </span>
                               <div>
                                 <div className="font-medium">{subject}</div>
@@ -304,7 +316,19 @@ export default function Navbar() {
                       ) : (
                         <div className="flex h-full items-center justify-center py-8">
                           <div className="text-center">
-                            <div className="text-2xl mb-2">👈</div>
+                            <svg
+                              className="h-8 w-8 mx-auto mb-2 text-[#9A95AF]"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                              />
+                            </svg>
                             <div className="text-sm text-[#9A95AF]">
                               Select a year level
                             </div>
@@ -420,6 +444,8 @@ export default function Navbar() {
                 <MobileDropdownLink href="/key-method" label="The KEY Method" />
                 <MobileDropdownLink href="/mindprint" label="MindPrint" />
                 <MobileDropdownLink href="/lift-initiative" label="Lift Initiative" />
+                <MobileDropdownLink href="/kite-and-key-in-the-community" label="Kite & Key in the Community" />
+                <MobileDropdownLink href="/articles" label="Articles" />
               </MobileAccordion>
 
               {/* Courses Accordion */}
@@ -473,6 +499,72 @@ export default function Navbar() {
   );
 }
 
+/* ==================== Icon Components ==================== */
+
+function KeyIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+    </svg>
+  );
+}
+
+function BrainIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+    </svg>
+  );
+}
+
+function RocketIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+  );
+}
+
+function CommunityIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+  );
+}
+
+function ArticleIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  );
+}
+
+function EnglishIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    </svg>
+  );
+}
+
+function MathsIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
+function ScienceIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+    </svg>
+  );
+}
+
 /* ==================== Helper Components ==================== */
 
 function NavLink({
@@ -482,7 +574,7 @@ function NavLink({
 }: {
   href: string;
   label: string;
-  pathname: string;
+  pathname: string | null;
 }) {
   const isActive = pathname === href;
 
@@ -508,7 +600,7 @@ function DropdownBlock({
   description,
 }: {
   href: string;
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   description: string;
 }) {
@@ -517,7 +609,7 @@ function DropdownBlock({
       href={href}
       className="flex items-start gap-4 rounded-xl p-3 transition-all hover:bg-[#F7F5FB] group"
     >
-      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F1FB] text-lg group-hover:bg-[#E6E0F5] transition-colors">
+      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F4F1FB] group-hover:bg-[#E6E0F5] transition-colors">
         {icon}
       </span>
       <div>
@@ -626,8 +718,8 @@ const YEAR_TO_SUBJECTS: Record<string, string[]> = {
   "Year 10": ["English", "Maths", "Science"],
 };
 
-const SUBJECT_ICONS: Record<string, string> = {
-  English: "📖",
-  Maths: "🔢",
-  Science: "🔬",
+const SUBJECT_ICONS: Record<string, React.ReactNode> = {
+  English: <EnglishIcon />,
+  Maths: <MathsIcon />,
+  Science: <ScienceIcon />,
 };

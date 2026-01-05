@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Admin Users
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String   // Hashed with bcrypt
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+// Lead Management
+model Lead {
+  id           String        @id @default(cuid())
+  
+  // Parent Information
+  parentName   String
+  email        String
+  phone        String
+  
+  // Student Information
+  studentName  String
+  yearLevel    String
+  studentEmail String?       // New field for comprehensive profile
+  subjects     String        // JSON string array
+  
+  // Additional Info
+  notes        String?
+  concerns     String?
+  school       String?
+  address      String?
+  
+  // Status & Tracking
+  status       String        @default("NEW")
+  source       String        @default("website")
+  
+  // Relations
+  consultation Consultation?
+  signup       Signup?
+  
+  // Metadata
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+}
+
+
+
+// Consultation Bookings
+model Consultation {
+  id                String             @id @default(cuid())
+  
+  // Relations
+  leadId            String             @unique
+  lead              Lead               @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  
+  // Booking Details
+  scheduledAt       DateTime
+  duration          Int                @default(30) // minutes
+  status            String             @default("SCHEDULED")
+  
+  // Google Calendar
+  googleEventId     String?
+  meetLink          String?
+  
+  // Continuation
+  continuationToken String?            @unique
+  tokenUsed         Boolean            @default(false)
+  tokenExpiresAt    DateTime?
+  
+  // Notes
+  adminNotes        String?
+  outcome           String?
+  
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  @@index([scheduledAt])
+  @@index([status])
+}
+
+
+
+// Student Signups
+model Signup {
+  id             String       @id @default(cuid())
+  
+  // Relations
+  leadId         String       @unique
+  lead           Lead         @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  
+  // Signup Details
+  preferredDays  String       // JSON string array
+  preferredTimes String       // JSON string array
+  startDate      DateTime?
+  
+  // Package Details
+  learningPackage String?      // Elevate, Lift, Soar
+  hours           Int?         // 1, 2, 3
+  paymentFrequency String?     // Monthly, Quarterly
+  
+  // Consent
+  consentGiven   Boolean      @default(false)
+  marketingOptIn Boolean      @default(false)
+
+  // Finance / Stripe
+  stripeCustomerId String?
+  stripeSubscriptionId String?
+  
+  // Status
+  status         String       @default("PENDING")
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+
+
+// Availability Slots for Consultations
+model AvailabilitySlot {
+  id              String   @id @default(cuid())
+  
+  // Slot Details
+  startTime       DateTime
+  endTime         DateTime
+  isBooked        Boolean  @default(false)
+  isEnabled       Boolean  @default(true)
+  
+  // Capacity
+  maxBookings     Int      @default(1)
+  currentBookings Int      @default(0)
+  
+  // Metadata
+  createdBy       String?
+  notes           String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([startTime])
+  @@index([isBooked])
+  @@index([isEnabled])
+}

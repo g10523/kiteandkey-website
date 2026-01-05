@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, GraduationCap, Sparkles } from "lucide-react";
+import { ChevronDown, GraduationCap, Award, Star, Heart, Users, BookOpen } from "lucide-react";
 
 /* ---------- Types ---------- */
 
@@ -31,7 +31,7 @@ const leadership: Member[] = [
     atar: "97.4",
     university: "University of Sydney",
     degree: "Diagnostic Radiography",
-    subjects: ["Maths", "Science", "English"],
+    subjects: [],
     standoutFeature: "Creator of The KEY Method",
     highlights: [
       "2+ years tutoring experience",
@@ -49,7 +49,7 @@ I do also believe that learning is about balance. Outside of school, I love to s
   },
   {
     name: "Giovanni Thomas",
-    role: "Strategist & Director",
+    role: "Director",
     image: "/team/giovanni.jpg",
     university: "Macquarie University",
     degree: "Actuarial & Finance",
@@ -61,7 +61,7 @@ I do also believe that learning is about balance. Outside of school, I love to s
       "Student Psychology Focus",
     ],
     interests: ["Guitar", "Debate", "Random Facts"],
-    bio: `Hey there, so glad you made it this far!
+    bio: `Hey there!
 
 I'm Gio, an Actuarial and Finance Student at Macquarie University. But that's besides the point — my role here is to glide Kite & Key Academy to greater heights through strategic methods.
 
@@ -273,40 +273,93 @@ function useScrollAnimation(threshold = 0.1) {
 
 export default function MeetTheTeamPage() {
   const headerAnim = useScrollAnimation();
+  const statsAnim = useScrollAnimation();
   const leadershipAnim = useScrollAnimation();
   const tutorsAnim = useScrollAnimation();
 
   return (
     <main className="bg-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-32 pb-16">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5FB] to-white" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#E6E0F5]/30 rounded-full blur-3xl" />
+      {/* Hero Section - Enhanced */}
+      <section className="relative overflow-hidden pt-32 pb-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5FB] via-[#FAFBFF] to-white" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[#E6E0F5]/40 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-1/4 w-64 h-64 bg-[#D9CFF2]/30 rounded-full blur-3xl" />
 
         <div
           ref={headerAnim.ref}
-          className={`relative mx-auto max-w-7xl px-6 text-center transition-all duration-700 ${
-            headerAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`relative mx-auto max-w-7xl px-6 text-center transition-all duration-700 ${headerAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#8C84A8]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#DDD4F2] bg-white/90 px-5 py-2.5 text-sm font-medium text-[#5E5574] backdrop-blur-sm mb-6 shadow-sm">
+            <Users size={18} />
             Our Team
-          </p>
-          <h1 className="mt-4 text-4xl md:text-5xl font-semibold tracking-tight text-[#3F3A52]">
-            Meet the people behind Kite & Key
+          </div>
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#3F3A52]">
+            Meet the people behind<br />Kite & Key
           </h1>
-          <p className="mt-5 text-lg text-[#6B647F] max-w-2xl mx-auto">
-            Calm, capable educators guided by structure, care, and long-term thinking.
+
+          <p className="mt-6 text-lg md:text-xl text-[#6B647F] max-w-3xl mx-auto leading-relaxed">
+            Calm, capable educators guided by structure, care, and long-term thinking —
+            each committed to unlocking student potential through the KEY Method.
           </p>
         </div>
       </section>
 
-      {/* Leadership Section */}
-      <section ref={leadershipAnim.ref} className="py-16">
+      {/* Team Stats - New Section */}
+      <section ref={statsAnim.ref} className="py-16 border-t border-[#E6E8F0]">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className={`grid gap-6 md:grid-cols-3 transition-all duration-700 ${statsAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}>
+            {[
+              {
+                icon: Award,
+                value: "97.4",
+                label: "Average ATAR",
+                description: "Across our entire team",
+              },
+              {
+                icon: Heart,
+                value: "100%",
+                label: "Trained in KEY Method",
+                description: "Psychology-informed teaching",
+              },
+              {
+                icon: BookOpen,
+                value: "9",
+                label: "Expert Educators",
+                description: "Passionate about student success",
+              },
+            ].map((stat, index) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-[#E6E1F2] bg-white/90 backdrop-blur-sm p-8 text-center transition-all hover:border-[#D9CFF2] hover:shadow-lg"
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574]">
+                  <stat.icon size={26} strokeWidth={2} />
+                </div>
+                <div className="text-4xl font-bold bg-gradient-to-br from-[#5E5574] to-[#7C6B94] bg-clip-text text-transparent mb-2">
+                  {stat.value}
+                </div>
+                <div className="font-semibold text-[#3F3A52] mb-1">
+                  {stat.label}
+                </div>
+                <div className="text-sm text-[#8C84A8]">
+                  {stat.description}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Section - Enhanced */}
+      <section ref={leadershipAnim.ref} className="py-20 bg-gradient-to-b from-white to-[#FAFBFF]">
         <div className="mx-auto max-w-7xl px-6">
           <SectionDivider label="Leadership" isVisible={leadershipAnim.isVisible} />
 
-          <div className="mt-10 grid gap-8 lg:grid-cols-2">
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
             {leadership.map((member, i) => (
               <LeaderCard
                 key={member.name}
@@ -319,12 +372,12 @@ export default function MeetTheTeamPage() {
         </div>
       </section>
 
-      {/* Tutors Section */}
-      <section ref={tutorsAnim.ref} className="py-16 bg-[#FAFBFF]">
+      {/* Tutors Section - Enhanced */}
+      <section ref={tutorsAnim.ref} className="py-20 bg-[#FAFBFF] border-t border-[#E6E8F0]">
         <div className="mx-auto max-w-7xl px-6">
-          <SectionDivider label="Tutors" isVisible={tutorsAnim.isVisible} />
+          <SectionDivider label="Our Tutors" isVisible={tutorsAnim.isVisible} />
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
             {tutors.map((member, i) => (
               <TutorCard
                 key={member.name}
@@ -337,28 +390,34 @@ export default function MeetTheTeamPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold text-[#3F3A52]">
-            Ready to find the right tutor?
-          </h2>
-          <p className="mt-3 text-[#6B647F]">
-            Book a free consultation and we'll match your child with the perfect fit.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/consultation"
-              className="inline-flex items-center rounded-xl bg-[#5E5574] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[#4F4865] hover:shadow-lg"
-            >
-              Book a Free Consultation
-            </Link>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-[#D9CFF2] bg-white px-6 py-3 text-sm font-semibold text-[#5E5574] transition-all hover:bg-[#F7F5FB]"
-            >
-              View Pricing
-            </Link>
+      {/* CTA Section - Enhanced */}
+      <section className="py-24 border-t border-[#E6E8F0]">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="rounded-3xl border-2 border-[#D9CFF2] bg-gradient-to-br from-[#F7F5FB] via-white to-[#FAFAFA] p-10 md:p-14 text-center shadow-xl">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+              Ready to find the right tutor?
+            </h2>
+            <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
+              Book a free consultation and we'll match your child with the perfect fit
+              based on learning style, personality, and academic goals.
+            </p>
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              <Link
+                href="/consultation"
+                className="group inline-flex items-center gap-2 rounded-xl bg-[#5E5574] px-8 py-4 text-base font-semibold text-white transition-all hover:bg-[#4F4865] hover:shadow-lg hover:shadow-[#5E5574]/20 hover:-translate-y-0.5"
+              >
+                Book a Free Consultation
+                <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center rounded-xl border border-[#D9CFF2] bg-white px-8 py-4 text-base font-semibold text-[#5E5574] transition-all hover:bg-[#F7F5FB] hover:border-[#5E5574]/40 hover:-translate-y-0.5"
+              >
+                View Pricing
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -366,25 +425,24 @@ export default function MeetTheTeamPage() {
   );
 }
 
-/* ---------- Section Divider ---------- */
+/* ---------- Section Divider - Enhanced ---------- */
 
 function SectionDivider({ label, isVisible }: { label: string; isVisible: boolean }) {
   return (
     <div
-      className={`flex items-center gap-4 transition-all duration-700 ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`flex items-center gap-4 transition-all duration-700 ${isVisible ? "opacity-100" : "opacity-0"
+        }`}
     >
-      <div className="h-px flex-1 bg-[#E6E0F2]" />
-      <span className="text-xs font-semibold tracking-[0.15em] uppercase text-[#8C84A8]">
+      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#E6E0F2] to-[#E6E0F2]" />
+      <span className="text-sm font-bold tracking-[0.15em] uppercase text-[#8C84A8]">
         {label}
       </span>
-      <div className="h-px flex-1 bg-[#E6E0F2]" />
+      <div className="h-px flex-1 bg-gradient-to-l from-transparent via-[#E6E0F2] to-[#E6E0F2]" />
     </div>
   );
 }
 
-/* ---------- Leader Card ---------- */
+/* ---------- Leader Card - Premium Redesign ---------- */
 
 function LeaderCard({
   member,
@@ -399,110 +457,126 @@ function LeaderCard({
 
   return (
     <div
-      className={`rounded-2xl border border-[#E6E0F2] bg-white p-8 transition-all duration-500 hover:border-[#D9CFF2] hover:shadow-lg hover:shadow-[#5E5574]/5 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
+      className={`group relative overflow-hidden rounded-3xl border-2 border-[#E6E0F2] bg-white transition-all duration-500 hover:border-[#D9CFF2] hover:shadow-2xl hover:shadow-[#5E5574]/15 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      {/* Header */}
-      <div className="flex items-start gap-6">
-        <div className="relative shrink-0">
-          <div className="h-24 w-24 overflow-hidden rounded-2xl border border-[#E6E0F2]">
-            <Image
-              src={member.image}
-              alt={member.name}
-              width={96}
-              height={96}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          {member.atar && (
-            <div className="absolute -bottom-2 -right-2 flex items-center gap-1 rounded-lg bg-[#5E5574] px-2.5 py-1 text-xs font-bold text-white shadow-md">
-              <GraduationCap size={12} />
-              {member.atar}
+      {/* Decorative gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#F7F5FB]/50 via-transparent to-[#EEEAF8]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Hero Image Section */}
+      <div className="relative h-64 overflow-hidden bg-gradient-to-br from-[#F7F5FB] to-[#EEEAF8]">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative">
+            {/* Glow effect behind image */}
+            <div className="absolute inset-0 rounded-full bg-[#D9CFF2]/40 blur-3xl scale-110" />
+
+            {/* Profile Image */}
+            <div className="relative h-44 w-44 overflow-hidden rounded-full border-4 border-white shadow-2xl">
+              <Image
+                src={member.image}
+                alt={member.name}
+                width={176}
+                height={176}
+                className="h-full w-full object-cover"
+              />
             </div>
-          )}
+
+            {/* ATAR Badge */}
+            {member.atar && (
+              <div className="absolute -bottom-2 -right-2 flex items-center gap-2 rounded-full bg-gradient-to-br from-[#5E5574] to-[#7C6B94] px-4 py-2.5 text-base font-bold text-white shadow-xl border-4 border-white">
+                <GraduationCap size={20} />
+                {member.atar}
+              </div>
+            )}
+          </div>
         </div>
 
-        <div className="flex-1 min-w-0">
-          <h3 className="text-xl font-semibold text-[#3F3A52]">{member.name}</h3>
-          <p className="text-sm font-medium text-[#5E5574]">{member.role}</p>
-          <p className="text-sm text-[#8C84A8] mt-1">
-            {member.degree} · {member.university}
-          </p>
+        {/* Decorative elements */}
+        <div className="absolute top-4 left-4 h-16 w-16 rounded-full bg-[#D9CFF2]/20 blur-2xl" />
+        <div className="absolute bottom-4 right-4 h-20 w-20 rounded-full bg-[#E6E0F5]/30 blur-2xl" />
+      </div>
 
-          {member.subjects.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {member.subjects.map((subject) => (
-                <span
-                  key={subject}
-                  className="rounded-md bg-[#F4F1FB] px-2.5 py-1 text-xs font-medium text-[#5E5574]"
-                >
-                  {subject}
-                </span>
-              ))}
-            </div>
-          )}
+      {/* Content Section */}
+      <div className="relative p-8">
+        {/* Name & Role */}
+        <div className="text-center mb-6">
+          <h3 className="text-3xl font-bold text-[#3F3A52] mb-2">{member.name}</h3>
+          <p className="text-lg font-semibold text-[#5E5574] mb-3">{member.role}</p>
+          <p className="text-sm text-[#8C84A8]">
+            {member.degree}
+          </p>
+          <p className="text-sm text-[#8C84A8]">
+            {member.university}
+          </p>
         </div>
-      </div>
 
-      {/* Standout Feature */}
-      <div className="mt-6 flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#F7F5FB] to-[#EEEAF8] px-5 py-4">
-        <Sparkles size={18} className="text-[#5E5574] shrink-0" />
-        <span className="text-sm font-semibold text-[#3F3A52]">
-          {member.standoutFeature}
-        </span>
-      </div>
-
-      {/* Highlights */}
-      <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {member.highlights.map((highlight, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 text-sm text-[#6B647F] bg-[#FAFBFF] rounded-lg px-3 py-2"
-          >
-            <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#D9CFF2]" />
-            <span className="truncate">{highlight}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Expand Button */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-[#E6E0F2] py-3 text-sm font-medium text-[#5E5574] transition-colors hover:bg-[#F7F5FB]"
-      >
-        {expanded ? "Show less" : "Read full bio"}
-        <ChevronDown
-          size={16}
-          className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
-        />
-      </button>
-
-      {/* Expanded Bio */}
-      <div
-        className={`overflow-hidden transition-all duration-500 ${
-          expanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="mt-6 border-t border-[#E6E0F2] pt-6">
-          <p className="text-sm text-[#5E5574] leading-[1.8] whitespace-pre-line">
-            {member.bio}
-          </p>
-
-          <div className="mt-6 flex items-center gap-3">
-            <span className="text-xs font-semibold text-[#8C84A8] uppercase tracking-wider">
-              Interests:
+        {/* Standout Feature - Prominent */}
+        <div className="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#5E5574] to-[#7C6B94] p-6 text-center shadow-lg">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_50%)]" />
+          <div className="relative flex items-center justify-center gap-3">
+            <Award size={24} className="text-white shrink-0" />
+            <span className="text-base font-bold text-white">
+              {member.standoutFeature}
             </span>
-            <div className="flex flex-wrap gap-2">
-              {member.interests.map((interest) => (
-                <span
-                  key={interest}
-                  className="rounded-full border border-[#E6E0F2] bg-white px-3 py-1 text-xs text-[#6B647F]"
-                >
-                  {interest}
+          </div>
+        </div>
+
+        {/* Highlights Grid */}
+        <div className="grid grid-cols-1 gap-3 mb-6">
+          {member.highlights.map((highlight, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#F7F5FB] to-[#FAFBFF] px-4 py-3 border border-[#E6E1F2] transition-all hover:border-[#D9CFF2] hover:shadow-sm"
+            >
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#5E5574]/10">
+                <div className="h-2 w-2 rounded-full bg-[#5E5574]" />
+              </div>
+              <span className="text-sm font-medium text-[#3F3A52]">{highlight}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Expand Button */}
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F7F5FB] to-[#EEEAF8] border-2 border-[#E6E0F2] py-4 text-sm font-bold text-[#5E5574] transition-all hover:border-[#D9CFF2] hover:shadow-md"
+        >
+          {expanded ? "Show less" : "Read full bio"}
+          <ChevronDown
+            size={18}
+            className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+          />
+        </button>
+
+        {/* Expanded Bio */}
+        <div
+          className={`overflow-hidden transition-all duration-500 ${expanded ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+            }`}
+        >
+          <div className="mt-6 pt-6 border-t-2 border-[#E6E0F2]">
+            <p className="text-sm text-[#5E5574] leading-[1.8] whitespace-pre-line mb-8">
+              {member.bio}
+            </p>
+
+            {/* Interests */}
+            <div className="rounded-2xl bg-gradient-to-br from-[#F7F5FB] to-white p-6 border border-[#E6E1F2]">
+              <div className="flex items-center gap-2 mb-4">
+                <Heart size={18} className="text-[#5E5574]" />
+                <span className="text-xs font-bold text-[#8C84A8] uppercase tracking-wider">
+                  Personal Interests
                 </span>
-              ))}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {member.interests.map((interest) => (
+                  <span
+                    key={interest}
+                    className="rounded-full bg-white border-2 border-[#E6E0F2] px-4 py-2 text-xs font-semibold text-[#5E5574] shadow-sm"
+                  >
+                    {interest}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -511,7 +585,7 @@ function LeaderCard({
   );
 }
 
-/* ---------- Tutor Card ---------- */
+/* ---------- Tutor Card - Enhanced ---------- */
 
 function TutorCard({
   member,
@@ -530,32 +604,31 @@ function TutorCard({
 
   return (
     <div
-      className={`relative rounded-2xl border bg-white p-6 lg:p-8 transition-all duration-500 hover:shadow-lg hover:shadow-[#5E5574]/5 ${
-        isTopPerformer
-          ? "border-[#D9CFF2]"
-          : "border-[#E6E0F2] hover:border-[#D9CFF2]"
-      } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      className={`relative rounded-2xl border-2 bg-white p-6 lg:p-8 transition-all duration-500 hover:shadow-xl hover:shadow-[#5E5574]/10 ${isTopPerformer
+        ? "border-[#D9CFF2] shadow-lg shadow-[#5E5574]/5"
+        : "border-[#E6E0F2] hover:border-[#D9CFF2]"
+        } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{ transitionDelay: `${index * 75}ms` }}
     >
-      {/* Top performer badge */}
+      {/* Top performer badge - Enhanced */}
       {isTopPerformer && (
-        <div className="absolute -top-3 left-6">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#5E5574] px-3 py-1.5 text-xs font-semibold text-white shadow-md">
-            <Sparkles size={12} />
+        <div className="absolute -top-4 left-6">
+          <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#5E5574] to-[#7C6B94] px-4 py-2 text-xs font-bold text-white shadow-lg">
+            <Star size={14} />
             Top Performer
           </span>
         </div>
       )}
 
-      {/* Header */}
-      <div className={`flex items-start gap-5 ${isTopPerformer ? "mt-3" : ""}`}>
+      {/* Header - Enhanced */}
+      <div className={`flex items-start gap-5 ${isTopPerformer ? "mt-4" : ""}`}>
         <div className="relative shrink-0">
-          <div className="h-20 w-20 overflow-hidden rounded-xl border border-[#E6E0F2]">
+          <div className="h-24 w-24 overflow-hidden rounded-2xl border-2 border-[#E6E0F2] shadow-md">
             <Image
               src={member.image}
               alt={member.name}
-              width={80}
-              height={80}
+              width={96}
+              height={96}
               className="h-full w-full object-cover"
             />
           </div>
@@ -564,25 +637,25 @@ function TutorCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h3 className="text-lg font-semibold text-[#3F3A52]">{member.name}</h3>
-              <p className="text-sm text-[#8C84A8]">
+              <h3 className="text-xl font-bold text-[#3F3A52]">{member.name}</h3>
+              <p className="text-sm text-[#8C84A8] mt-1">
                 {member.degree} · {member.university}
               </p>
             </div>
             {member.atar && (
-              <div className="shrink-0 flex items-center gap-1.5 rounded-lg bg-[#F4F1FB] border border-[#E6E0F2] px-3 py-1.5 text-sm font-bold text-[#5E5574]">
-                <GraduationCap size={14} />
+              <div className="shrink-0 flex items-center gap-2 rounded-xl bg-[#F4F1FB] border-2 border-[#E6E0F2] px-3 py-2 text-sm font-bold text-[#5E5574]">
+                <GraduationCap size={16} />
                 {member.atar}
               </div>
             )}
           </div>
 
-          {/* Subjects */}
-          <div className="mt-3 flex flex-wrap gap-2">
+          {/* Subjects - Enhanced */}
+          <div className="mt-4 flex flex-wrap gap-2">
             {member.subjects.map((subject) => (
               <span
                 key={subject}
-                className="rounded-md bg-[#F4F1FB] px-2.5 py-1 text-xs font-medium text-[#5E5574]"
+                className="rounded-lg bg-[#F4F1FB] px-3 py-1.5 text-xs font-semibold text-[#5E5574] border border-[#E6E0F2]"
               >
                 {subject}
               </span>
@@ -591,95 +664,58 @@ function TutorCard({
         </div>
       </div>
 
-      {/* Standout Feature */}
-      <div className="mt-5 rounded-xl bg-[#F7F5FB] px-5 py-4">
+      {/* Standout Feature - Enhanced */}
+      <div className="mt-6 rounded-xl bg-gradient-to-r from-[#F7F5FB] to-[#EEEAF8] px-5 py-4 border border-[#E6E0F2]">
         <div className="flex items-center gap-3">
-          <Sparkles size={16} className="text-[#5E5574] shrink-0" />
-          <span className="text-sm font-semibold text-[#3F3A52]">
+          <Award size={18} className="text-[#5E5574] shrink-0" />
+          <span className="text-sm font-bold text-[#3F3A52]">
             {member.standoutFeature}
           </span>
         </div>
       </div>
 
-      {/* Highlights row */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        {member.highlights.map((highlight, i) => (
-          <span
-            key={i}
-            className="text-xs text-[#6B647F] bg-white border border-[#E6E0F2] px-3 py-1.5 rounded-lg"
-          >
-            {highlight}
-          </span>
-        ))}
-      </div>
-
-      {/* Expand Button */}
+      {/* Expand Button - Enhanced */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-[#E6E0F2] py-3 text-sm font-medium text-[#5E5574] transition-colors hover:bg-[#F7F5FB]"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#E6E0F2] py-3.5 text-sm font-bold text-[#5E5574] transition-all hover:bg-[#F7F5FB] hover:border-[#D9CFF2]"
       >
         {expanded ? "Show less" : "Read more"}
         <ChevronDown
-          size={14}
+          size={16}
           className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
         />
       </button>
 
-      {/* Expanded Content */}
+      {/* Expanded Content - Enhanced */}
       <div
-        className={`overflow-hidden transition-all duration-500 ${
-          expanded ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-500 ${expanded ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
-        <div className="mt-5 border-t border-[#E6E0F2] pt-5">
-          {/* Bio - displayed in a more readable format */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main bio */}
-            <div className="lg:col-span-2">
-              <p className="text-xs font-semibold text-[#8C84A8] uppercase tracking-wider mb-3">
-                About {member.name.split(" ")[0]}
-              </p>
-              <p className="text-sm text-[#5E5574] leading-[1.8] whitespace-pre-line">
-                {member.bio}
-              </p>
-            </div>
+        <div className="mt-6 border-t-2 border-[#E6E0F2] pt-6">
+          {/* Bio */}
+          <div>
+            <p className="text-xs font-bold text-[#8C84A8] uppercase tracking-wider mb-4">
+              About {member.name.split(" ")[0]}
+            </p>
+            <p className="text-sm text-[#5E5574] leading-relaxed whitespace-pre-line">
+              {member.bio}
+            </p>
+          </div>
 
-            {/* Sidebar */}
-            <div className="space-y-5">
-              {/* Key Strengths */}
-              <div>
-                <p className="text-xs font-semibold text-[#8C84A8] uppercase tracking-wider mb-3">
-                  Key Strengths
-                </p>
-                <div className="space-y-2">
-                  {member.highlights.map((highlight, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2 text-sm text-[#5E5574]"
-                    >
-                      <div className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#5E5574]" />
-                      {highlight}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Interests */}
-              <div>
-                <p className="text-xs font-semibold text-[#8C84A8] uppercase tracking-wider mb-3">
-                  Outside of Tutoring
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {member.interests.map((interest) => (
-                    <span
-                      key={interest}
-                      className="rounded-full border border-[#E6E0F2] bg-[#FAFBFF] px-3 py-1 text-xs text-[#6B647F]"
-                    >
-                      {interest}
-                    </span>
-                  ))}
-                </div>
-              </div>
+          {/* Interests - Enhanced */}
+          <div className="mt-8">
+            <p className="text-xs font-bold text-[#8C84A8] uppercase tracking-wider mb-4">
+              Outside of Tutoring
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {member.interests.map((interest) => (
+                <span
+                  key={interest}
+                  className="rounded-full border-2 border-[#E6E0F2] bg-[#FAFBFF] px-4 py-2 text-xs font-medium text-[#6B647F]"
+                >
+                  {interest}
+                </span>
+              ))}
             </div>
           </div>
         </div>

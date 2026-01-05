@@ -9,7 +9,7 @@ import {
   Users,
   Target,
   ChevronDown,
-  Sparkles,
+
   Clock,
   Shield,
   BookOpen,
@@ -173,11 +173,10 @@ function LiftNavbar() {
 
       {/* Background */}
       <div
-        className={`absolute inset-0 border-b transition-all duration-300 ${
-          scrolled
+        className={`absolute inset-0 border-b transition-all duration-300 ${scrolled
             ? "bg-gradient-to-r from-[#EEF6F8]/98 via-[#E0EFF3]/98 to-[#EEF6F8]/98 border-[#C5DEE4] shadow-lg shadow-[#5B9AAD]/5"
             : "bg-gradient-to-r from-[#EEF6F8]/90 via-[#E0EFF3]/85 to-[#EEF6F8]/90 border-[#D1E8ED]"
-        } backdrop-blur-xl`}
+          } backdrop-blur-xl`}
       />
 
       <nav className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -266,9 +265,8 @@ export default function LiftInitiativePage() {
 
           <div
             ref={heroAnim.ref}
-            className={`relative mx-auto max-w-5xl px-6 text-center transition-all duration-700 ${
-              heroAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+            className={`relative mx-auto max-w-5xl px-6 text-center transition-all duration-700 ${heroAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              }`}
           >
             {/* Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-[#C5DEE4] bg-white/80 px-4 py-2 text-sm font-medium text-[#5B9AAD] shadow-sm backdrop-blur-sm mb-8">
@@ -285,7 +283,7 @@ export default function LiftInitiativePage() {
             </p>
 
             <p className="mt-6 text-lg text-[#6A9AA8] max-w-2xl mx-auto leading-relaxed">
-              Specialist 1:1 tutoring for students with ADHD, dyslexia, and learning 
+              Specialist 1:1 tutoring for students with ADHD, dyslexia, and learning
               difficulties — delivered by someone who truly understands.
             </p>
 
@@ -331,9 +329,8 @@ export default function LiftInitiativePage() {
             <div className="grid gap-16 lg:grid-cols-2 items-center">
               {/* Left content */}
               <div
-                className={`transition-all duration-700 ${
-                  problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-                }`}
+                className={`transition-all duration-700 ${problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+                  }`}
               >
                 <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-4">
                   The Challenge
@@ -343,11 +340,11 @@ export default function LiftInitiativePage() {
                   <span className="text-[#5B9AAD]">fails students</span> who learn differently
                 </h2>
                 <p className="mt-6 text-lg text-[#6A9AA8] leading-relaxed">
-                  Students with ADHD, dyslexia, and learning difficulties don't need 
+                  Students with ADHD, dyslexia, and learning difficulties don't need
                   <em> more</em> of the same — they need something <strong>completely different</strong>.
                 </p>
                 <p className="mt-4 text-[#6A9AA8] leading-relaxed">
-                  Standard methods can actually make things worse: increasing frustration, 
+                  Standard methods can actually make things worse: increasing frustration,
                   damaging confidence, and reinforcing the belief that they're "not smart enough."
                 </p>
 
@@ -367,9 +364,8 @@ export default function LiftInitiativePage() {
 
               {/* Right - Signs */}
               <div
-                className={`transition-all duration-700 delay-200 ${
-                  problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-                }`}
+                className={`transition-all duration-700 delay-200 ${problemAnim.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+                  }`}
               >
                 <div className="rounded-3xl border border-[#C5DEE4] bg-gradient-to-br from-[#EEF6F8] to-white p-8 md:p-10">
                   <h3 className="text-lg font-bold text-[#2C5F6B] mb-6">
@@ -404,9 +400,8 @@ export default function LiftInitiativePage() {
         <section ref={challengesAnim.ref} className="py-24 bg-[#F5FAFB]">
           <div className="mx-auto max-w-6xl px-6">
             <div
-              className={`text-center mb-14 transition-all duration-700 ${
-                challengesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`text-center mb-14 transition-all duration-700 ${challengesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-4">
                 Specialist Support
@@ -415,7 +410,7 @@ export default function LiftInitiativePage() {
                 Challenges we specialise in
               </h2>
               <p className="mt-4 text-lg text-[#6A9AA8] max-w-2xl mx-auto">
-                Adam has years of experience helping students with a range of 
+                Adam has years of experience helping students with a range of
                 learning differences and neurodevelopmental conditions.
               </p>
             </div>
@@ -424,9 +419,8 @@ export default function LiftInitiativePage() {
               {supportedChallenges.map((challenge, index) => (
                 <div
                   key={challenge.title}
-                  className={`group rounded-2xl border border-[#D1E8ED] bg-white p-7 transition-all duration-500 hover:border-[#7AB4C4] hover:shadow-xl hover:shadow-[#5B9AAD]/10 hover:-translate-y-1 ${
-                    challengesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                  }`}
+                  className={`group rounded-2xl border border-[#D1E8ED] bg-white p-7 transition-all duration-500 hover:border-[#7AB4C4] hover:shadow-xl hover:shadow-[#5B9AAD]/10 hover:-translate-y-1 ${challengesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                    }`}
                   style={{ transitionDelay: `${index * 80}ms` }}
                 >
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#EEF6F8] to-[#D1E8ED] text-[#5B9AAD] mb-5 transition-transform group-hover:scale-110">
@@ -440,12 +434,11 @@ export default function LiftInitiativePage() {
 
             {/* Note */}
             <div
-              className={`mt-12 rounded-2xl border border-[#C5DEE4] bg-white px-8 py-6 text-center transition-all duration-700 delay-500 ${
-                challengesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`mt-12 rounded-2xl border border-[#C5DEE4] bg-white px-8 py-6 text-center transition-all duration-700 delay-500 ${challengesAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <p className="text-[#5B9AAD] font-medium">
-                <Sparkles size={16} className="inline mr-2" />
+                <CheckCircle2 size={16} className="inline mr-2" />
                 <strong>No formal diagnosis required.</strong> If your child is struggling, we can help.
               </p>
             </div>
@@ -456,9 +449,8 @@ export default function LiftInitiativePage() {
         <section id="approach" ref={approachAnim.ref} className="py-24">
           <div className="mx-auto max-w-5xl px-6">
             <div
-              className={`text-center mb-14 transition-all duration-700 ${
-                approachAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`text-center mb-14 transition-all duration-700 ${approachAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-4">
                 The Lift Approach
@@ -467,7 +459,7 @@ export default function LiftInitiativePage() {
                 How we work differently
               </h2>
               <p className="mt-4 text-lg text-[#6A9AA8] max-w-2xl mx-auto">
-                Connection and understanding come first. Students who've struggled 
+                Connection and understanding come first. Students who've struggled
                 need to feel safe before they can learn.
               </p>
             </div>
@@ -477,9 +469,8 @@ export default function LiftInitiativePage() {
               {approachSteps.map((step, index) => (
                 <div
                   key={step.number}
-                  className={`relative rounded-2xl border border-[#D1E8ED] bg-white p-8 transition-all duration-500 hover:border-[#7AB4C4] hover:shadow-lg ${
-                    approachAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                  }`}
+                  className={`relative rounded-2xl border border-[#D1E8ED] bg-white p-8 transition-all duration-500 hover:border-[#7AB4C4] hover:shadow-lg ${approachAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                    }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   {/* Number badge */}
@@ -500,9 +491,8 @@ export default function LiftInitiativePage() {
 
             {/* Session example */}
             <div
-              className={`mt-14 rounded-3xl border border-[#C5DEE4] bg-gradient-to-r from-[#EEF6F8] to-[#E0EFF3] p-8 md:p-10 transition-all duration-700 delay-400 ${
-                approachAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`mt-14 rounded-3xl border border-[#C5DEE4] bg-gradient-to-r from-[#EEF6F8] to-[#E0EFF3] p-8 md:p-10 transition-all duration-700 delay-400 ${approachAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <h3 className="text-lg font-bold text-[#2C5F6B] mb-6 text-center">
                 A typical session might look like:
@@ -537,9 +527,8 @@ export default function LiftInitiativePage() {
         <section id="adam" ref={adamAnim.ref} className="py-24 bg-[#F5FAFB]">
           <div className="mx-auto max-w-5xl px-6">
             <div
-              className={`rounded-3xl border border-[#C5DEE4] bg-white overflow-hidden shadow-xl shadow-[#5B9AAD]/5 transition-all duration-700 ${
-                adamAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`rounded-3xl border border-[#C5DEE4] bg-white overflow-hidden shadow-xl shadow-[#5B9AAD]/5 transition-all duration-700 ${adamAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <div className="grid lg:grid-cols-5">
                 {/* Image placeholder */}
@@ -590,18 +579,18 @@ export default function LiftInitiativePage() {
                   {/* Bio */}
                   <div className="mt-6 space-y-4 text-[#6A9AA8] leading-relaxed">
                     <p>
-                      "I became a teacher because I wanted to help students. But I 
-                      quickly realised the students who needed help most were being 
+                      "I became a teacher because I wanted to help students. But I
+                      quickly realised the students who needed help most were being
                       left behind by a system that wasn't built for them."
                     </p>
                     <p>
-                      After years working in mainstream education and special education 
-                      settings, I've seen hundreds of bright kids lose confidence 
+                      After years working in mainstream education and special education
+                      settings, I've seen hundreds of bright kids lose confidence
                       because they learned differently.
                     </p>
                     <p>
-                      <strong className="text-[#2C5F6B]">Lift Initiative</strong> is my way of providing the kind of 
-                      support I wish every struggling student could access — patient, 
+                      <strong className="text-[#2C5F6B]">Lift Initiative</strong> is my way of providing the kind of
+                      support I wish every struggling student could access — patient,
                       adapted, and genuinely understanding.
                     </p>
                   </div>
@@ -629,9 +618,8 @@ export default function LiftInitiativePage() {
         <section ref={differenceAnim.ref} className="py-24">
           <div className="mx-auto max-w-5xl px-6">
             <div
-              className={`text-center mb-14 transition-all duration-700 ${
-                differenceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`text-center mb-14 transition-all duration-700 ${differenceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6B]">
                 What makes Lift different
@@ -639,9 +627,8 @@ export default function LiftInitiativePage() {
             </div>
 
             <div
-              className={`rounded-3xl border border-[#C5DEE4] overflow-hidden transition-all duration-700 delay-100 ${
-                differenceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`rounded-3xl border border-[#C5DEE4] overflow-hidden transition-all duration-700 delay-100 ${differenceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               {/* Comparison table */}
               <div className="grid md:grid-cols-2">
@@ -709,8 +696,8 @@ export default function LiftInitiativePage() {
                 ))}
               </div>
               <blockquote className="text-xl md:text-2xl text-[#2C5F6B] font-medium italic max-w-2xl mx-auto leading-relaxed">
-                "For the first time in years, my son doesn't dread learning. Adam 
-                understands him in a way no other tutor ever has. The change in 
+                "For the first time in years, my son doesn't dread learning. Adam
+                understands him in a way no other tutor ever has. The change in
                 his confidence has been incredible."
               </blockquote>
               <p className="mt-8 text-[#7AB4C4] font-medium">
@@ -724,9 +711,8 @@ export default function LiftInitiativePage() {
         <section id="faq" ref={faqAnim.ref} className="py-24 bg-[#F5FAFB]">
           <div className="mx-auto max-w-3xl px-6">
             <div
-              className={`text-center mb-12 transition-all duration-700 ${
-                faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`text-center mb-12 transition-all duration-700 ${faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               <h2 className="text-3xl font-bold text-[#2C5F6B]">
                 Frequently asked questions
@@ -740,9 +726,8 @@ export default function LiftInitiativePage() {
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className={`rounded-2xl border border-[#D1E8ED] bg-white overflow-hidden transition-all duration-500 ${
-                    faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                  }`}
+                  className={`rounded-2xl border border-[#D1E8ED] bg-white overflow-hidden transition-all duration-500 ${faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                    }`}
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
                   <button
@@ -754,16 +739,14 @@ export default function LiftInitiativePage() {
                     </span>
                     <ChevronDown
                       size={20}
-                      className={`shrink-0 text-[#7AB4C4] transition-transform duration-300 ${
-                        openFaq === index ? "rotate-180" : ""
-                      }`}
+                      className={`shrink-0 text-[#7AB4C4] transition-transform duration-300 ${openFaq === index ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
                   <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      openFaq === index ? "max-h-[500px]" : "max-h-0"
-                    }`}
+                    className={`overflow-hidden transition-all duration-300 ${openFaq === index ? "max-h-[500px]" : "max-h-0"
+                      }`}
                   >
                     <div className="px-6 pb-5 text-[#6A9AA8] leading-relaxed border-t border-[#EEF6F8] pt-4">
                       {faq.answer}
@@ -779,9 +762,8 @@ export default function LiftInitiativePage() {
         <section ref={ctaAnim.ref} className="py-24">
           <div className="mx-auto max-w-4xl px-6">
             <div
-              className={`relative overflow-hidden rounded-3xl transition-all duration-700 ${
-                ctaAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-              }`}
+              className={`relative overflow-hidden rounded-3xl transition-all duration-700 ${ctaAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
             >
               {/* Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#5B9AAD] to-[#3D8494]" />
@@ -810,7 +792,7 @@ export default function LiftInitiativePage() {
                 </h2>
 
                 <p className="mt-6 text-lg text-white/80 max-w-xl mx-auto leading-relaxed">
-                  Book a free consultation to talk about your child's needs and 
+                  Book a free consultation to talk about your child's needs and
                   see if Lift Initiative is the right fit.
                 </p>
 
@@ -843,8 +825,8 @@ export default function LiftInitiativePage() {
         <section className="py-10 border-t border-[#E0EFF3]">
           <div className="mx-auto max-w-4xl px-6 text-center">
             <p className="text-sm text-[#7AB4C4]">
-              <strong className="text-[#5B9AAD]">Lift Initiative</strong> is a specialist program 
-              within <Link href="/" className="underline hover:text-[#5B9AAD]">Kite & Key Academy</Link>, 
+              <strong className="text-[#5B9AAD]">Lift Initiative</strong> is a specialist program
+              within <Link href="/" className="underline hover:text-[#5B9AAD]">Kite & Key Academy</Link>,
               dedicated to students who need adapted learning support.
             </p>
           </div>

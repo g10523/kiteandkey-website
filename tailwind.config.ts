@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        cormorant: ["Cormorant Garamond", "Georgia", "serif"],
+        inter: ["Inter", "system-ui", "sans-serif"],
+      },
       colors: {
         ink: "#0B1020",
         mist: "#F7F8FC",
@@ -18,14 +22,37 @@ const config: Config = {
           light: "#D9CFF2",
           dark: "#3E4A6F",
         },
+
+        // Additional lavender palette for articles
+        lavender: {
+          deep: "#5E5574",
+          mid: "#7D7491",
+          soft: "#B8B0C9",
+          pale: "#E8E4F0",
+          whisper: "#F7F5FA",
+        },
       },
       boxShadow: {
         soft: "0 10px 40px rgba(11,16,32,0.18)",
+        glass: "0 4px 24px rgba(94, 85, 116, 0.08)",
+        "glass-lg": "0 8px 32px rgba(94, 85, 116, 0.12)",
       },
       borderRadius: {
         xl: "1.25rem",
         "2xl": "1.75rem",
         "3xl": "2.25rem",
+      },
+      typography: {
+        article: {
+          css: {
+            "--tw-prose-body": "#4A4358",
+            "--tw-prose-headings": "#2D2640",
+            "--tw-prose-links": "#5E5574",
+            "--tw-prose-bold": "#2D2640",
+            "--tw-prose-quotes": "#5E5574",
+            maxWidth: "65ch",
+          },
+        },
       },
       animation: {
         float: "float 6s ease-in-out infinite",
