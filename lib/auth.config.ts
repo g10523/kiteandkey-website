@@ -23,5 +23,8 @@ export const authConfig = {
     session: {
         strategy: "jwt",
     },
+    // This tells NextAuth to trust the host header from Vercel
+    // and automatically use the correct URL (no need for NEXTAUTH_URL env var)
+    trustHost: true,
     providers: [], // Empty providers for middleware compatibility
 } satisfies NextAuthConfig
