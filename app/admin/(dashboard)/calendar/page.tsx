@@ -1,8 +1,10 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import prisma from '@/lib/prisma'
-import { Plus, Calendar as CalendarIcon, Clock } from 'lucide-react'
+import { Calendar as CalendarIcon, Clock } from 'lucide-react'
 import ConsultationActions from './ConsultationActions'
+import AddSlotModal from './AddSlotModal'
+import DeleteSlotButton from './DeleteSlotButton'
 
 export default async function AdminCalendarPage() {
     const session = await auth()
@@ -12,39 +14,63 @@ export default async function AdminCalendarPage() {
     }
 
     // Fetch availability slots and consultations
-    const [slots, consultations] = await Promise.all([
-        prisma.availabilitySlot.findMany({
-            where: {
-                startTime: {
-                    gte: new Date(),
+    // Fetch availability slots and consultations
+    let slots: any[] = []
+    let consultations: any[] = []
+    let openCount = 0
+    let bookedCount = 0
+
+    try {
+        [slots, consultations, openCount, bookedCount] = await Promise.all([
+            prisma.availabilitySlot.findMany({
+                where: {
+                    startTime: {
+                        gte: new Date(),
+                    },
                 },
-            },
-            orderBy: {
-                startTime: 'asc',
-            },
-            take: 50,
-        }),
-        prisma.consultation.findMany({
-            where: {
-                scheduledAt: {
-                    gte: new Date(),
+                orderBy: {
+                    startTime: 'asc',
                 },
-                status: 'SCHEDULED',
-            },
-            include: {
-                lead: true,
-            },
-            orderBy: {
-                scheduledAt: 'asc',
-            },
-        }),
-    ])
+                take: 50,
+            }),
+            prisma.consultation.findMany({
+                where: {
+                    scheduledAt: {
+                        gte: new Date(),
+                    },
+                    status: 'SCHEDULED',
+                },
+                include: {
+                    lead: true,
+                },
+                orderBy: {
+                    scheduledAt: 'asc',
+                },
+            }),
+            prisma.availabilitySlot.count({
+                where: {
+                    startTime: { gte: new Date() },
+                    isBooked: false,
+                    isEnabled: true
+                }
+            }),
+            prisma.availabilitySlot.count({
+                where: {
+                    startTime: { gte: new Date() },
+                    isBooked: true
+                }
+            })
+        ])
+    } catch (error) {
+        console.error('Failed to fetch calendar data:', error)
+    }
 
     function formatDate(date: Date) {
         return new Date(date).toLocaleDateString('en-AU', {
             weekday: 'short',
             month: 'short',
             day: 'numeric',
+            timeZone: 'Australia/Sydney',
         })
     }
 
@@ -52,18 +78,20 @@ export default async function AdminCalendarPage() {
         return new Date(date).toLocaleTimeString('en-AU', {
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Australia/Sydney',
         })
     }
 
     // Group slots by date
-    const slotsByDate = slots.reduce((acc, slot) => {
+    // Group slots by date
+    const slotsByDate = slots.reduce((acc: any, slot: any) => {
         const dateKey = new Date(slot.startTime).toDateString()
         if (!acc[dateKey]) {
             acc[dateKey] = []
         }
         acc[dateKey].push(slot)
         return acc
-    }, {} as Record<string, typeof slots>)
+    }, {} as Record<string, any[]>)
 
     return (
         <div className="space-y-8">
@@ -137,10 +165,7 @@ export default async function AdminCalendarPage() {
                 <div className="space-y-6">
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-bold text-[#3F3A52]">Available Slots</h2>
-                        <button className="flex items-center gap-2 rounded-xl bg-[#5E5574] px-3 py-2 text-xs font-bold text-white transition-all hover:shadow-lg hover:scale-105">
-                            <Plus size={14} />
-                            Add Slots
-                        </button>
+                        <AddSlotModal />
                     </div>
 
                     <div className="kk-glass-strong p-6 rounded-3xl space-y-6 max-h-[600px] overflow-y-auto">
@@ -149,13 +174,13 @@ export default async function AdminCalendarPage() {
                                 No slots configured
                             </div>
                         ) : (
-                            Object.entries(slotsByDate).map(([dateKey, dateSlots]) => (
+                            Object.entries(slotsByDate).map(([dateKey, dateSlots]: [string, any[]]) => (
                                 <div key={dateKey}>
                                     <div className="sticky top-0 bg-white/95 backdrop-blur-sm py-2 mb-3 text-xs font-bold uppercase tracking-wider text-[#6B647F] border-b border-[#E6E0F2]">
                                         {formatDate(new Date(dateKey))}
                                     </div>
                                     <div className="grid grid-cols-1 gap-2">
-                                        {dateSlots.map((slot) => (
+                                        {dateSlots.map((slot: any) => (
                                             <div
                                                 key={slot.id}
                                                 className={`flex items-center justify-between rounded-xl border p-3 text-sm transition-all ${slot.isBooked
@@ -168,9 +193,14 @@ export default async function AdminCalendarPage() {
                                                 <div className="font-semibold">
                                                     {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
                                                 </div>
-                                                <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${slot.isBooked ? 'bg-gray-200' : 'bg-green-200 text-green-800'
-                                                    }`}>
-                                                    {slot.isBooked ? 'BOOKED' : 'OPEN'}
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${slot.isBooked ? 'bg-gray-200 text-gray-600' : 'bg-green-200 text-green-800'
+                                                        }`}>
+                                                        {slot.isBooked ? 'BOOKED' : 'OPEN'}
+                                                    </div>
+                                                    {!slot.isBooked && (
+                                                        <DeleteSlotButton slotId={slot.id} isBooked={slot.isBooked} />
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -184,13 +214,13 @@ export default async function AdminCalendarPage() {
                     <div className="grid grid-cols-2 gap-3">
                         <div className="kk-glass p-4 text-center">
                             <div className="text-2xl font-bold text-[#3F3A52]">
-                                {slots.filter(s => !s.isBooked && s.isEnabled).length}
+                                {openCount}
                             </div>
                             <div className="text-xs text-[#6B647F]">Open Slots</div>
                         </div>
                         <div className="kk-glass p-4 text-center">
                             <div className="text-2xl font-bold text-[#3F3A52]">
-                                {slots.filter(s => s.isBooked).length}
+                                {bookedCount}
                             </div>
                             <div className="text-xs text-[#6B647F]">Booked</div>
                         </div>

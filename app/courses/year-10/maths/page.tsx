@@ -190,7 +190,7 @@ export default function Year10MathsPage() {
             NSW Syllabus Aligned
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#3F3A52]">
+          <h1 className="font-julius text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#3F3A52]">
             Year 10 Mathematics
           </h1>
 
@@ -252,7 +252,7 @@ export default function Year10MathsPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Our Approach
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               The KEY Method in Mathematics
             </h2>
             <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto leading-relaxed">
@@ -293,7 +293,7 @@ export default function Year10MathsPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Proven Results
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Real outcomes from our students
             </h2>
           </div>
@@ -326,7 +326,7 @@ export default function Year10MathsPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               How We Teach
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Designed for sustainable learning
             </h2>
           </div>
@@ -359,7 +359,7 @@ export default function Year10MathsPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Course Structure
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Forty lessons across four terms
             </h2>
             <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto">
@@ -377,15 +377,15 @@ export default function Year10MathsPage() {
                     key={term}
                     onClick={() => setActiveTerm(term)}
                     className={`group relative w-full rounded-2xl border p-5 text-left transition-all duration-200 ${term === activeTerm
-                        ? "border-[#5E5574]/30 bg-[#F7F5FB] shadow-md"
-                        : "border-[#E6E1F2] bg-white hover:border-[#D9CFF2] hover:bg-[#FAFAFA]"
+                      ? "border-[#5E5574]/30 bg-[#F7F5FB] shadow-md"
+                      : "border-[#E6E1F2] bg-white hover:border-[#D9CFF2] hover:bg-[#FAFAFA]"
                       }`}
                   >
                     <div className="flex items-start gap-4">
                       <div
                         className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-bold transition-colors ${term === activeTerm
-                            ? "bg-[#5E5574] text-white"
-                            : "bg-[#F4F1FB] text-[#6B647F]"
+                          ? "bg-[#5E5574] text-white"
+                          : "bg-[#F4F1FB] text-[#6B647F]"
                           }`}
                       >
                         {index + 1}
@@ -488,7 +488,7 @@ export default function Year10MathsPage() {
       <section className="py-24 border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-3xl px-6">
           <div className="rounded-3xl border-2 border-[#D9CFF2] bg-gradient-to-br from-[#F7F5FB] via-white to-[#FAFAFA] p-10 md:p-14 text-center shadow-xl">
-            <h3 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h3 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Ready to begin?
             </h3>
 

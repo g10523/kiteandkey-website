@@ -1,4 +1,3 @@
-import Link from "next/link";
 import ConsultationForm from "./ConsultationForm";
 import { getAvailableSlots } from "./actions";
 

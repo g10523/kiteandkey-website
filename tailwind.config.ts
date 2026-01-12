@@ -9,8 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        cormorant: ["Cormorant Garamond", "Georgia", "serif"],
-        inter: ["Inter", "system-ui", "sans-serif"],
+        cormorant: ["var(--font-cormorant)", "Georgia", "serif"], // Updated to use var
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"], // Updated to use var
+        julius: ["var(--font-julius)", "sans-serif"],
       },
       colors: {
         ink: "#0B1020",

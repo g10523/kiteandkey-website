@@ -168,7 +168,7 @@ export default function PricingPage() {
             Simple, term-based pricing
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-[#3F3A52]">
+          <h1 className="font-julius text-4xl md:text-5xl text-[#3F3A52]">
             Transparent pricing.{" "}
             <span className="text-[#5E5574]">Flexible hours.</span>
           </h1>
@@ -218,8 +218,8 @@ export default function PricingPage() {
 
                   <div
                     className={`h-full rounded-lg sm:rounded-xl md:rounded-2xl border bg-white p-2 sm:p-4 md:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-[#5E5574]/10 ${pkg.popular
-                        ? "border-[#5E5574] shadow-lg shadow-[#5E5574]/10"
-                        : "border-[#E6E0F2] hover:border-[#D9CFF2]"
+                      ? "border-[#5E5574] shadow-lg shadow-[#5E5574]/10"
+                      : "border-[#E6E0F2] hover:border-[#D9CFF2]"
                       }`}
                   >
                     {/* Header */}
@@ -276,8 +276,8 @@ export default function PricingPage() {
                     <Link
                       href="/enrol"
                       className={`flex w-full items-center justify-center rounded-md sm:rounded-lg md:rounded-xl py-1.5 sm:py-2 md:py-3.5 text-[8px] sm:text-xs md:text-sm font-semibold transition-all ${pkg.popular
-                          ? "bg-[#5E5574] text-white hover:bg-[#4F4865]"
-                          : "bg-[#F4F1FB] text-[#5E5574] hover:bg-[#E6E0F5]"
+                        ? "bg-[#5E5574] text-white hover:bg-[#4F4865]"
+                        : "bg-[#F4F1FB] text-[#5E5574] hover:bg-[#E6E0F5]"
                         }`}
                     >
                       Enrol
@@ -315,7 +315,7 @@ export default function PricingPage() {
             className={`text-center mb-10 transition-all duration-700 ${flexibilityAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
-            <h2 className="text-3xl font-semibold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl text-[#3F3A52]">
               Flexible subject allocation
             </h2>
             <p className="mt-3 text-[#6B647F] max-w-xl mx-auto">
@@ -335,8 +335,8 @@ export default function PricingPage() {
                   key={pkg.name}
                   onClick={() => setSelectedPackage(index)}
                   className={`rounded-xl px-5 py-2.5 text-sm font-medium transition-all ${selectedPackage === index
-                      ? "bg-[#5E5574] text-white shadow-md"
-                      : "bg-white text-[#6B647F] border border-[#E6E0F2] hover:border-[#D9CFF2]"
+                    ? "bg-[#5E5574] text-white shadow-md"
+                    : "bg-white text-[#6B647F] border border-[#E6E0F2] hover:border-[#D9CFF2]"
                     }`}
                 >
                   {pkg.name} ({pkg.hoursPerWeek}hr{pkg.hoursPerWeek > 1 ? "s" : ""})
@@ -383,7 +383,7 @@ export default function PricingPage() {
             className={`text-center mb-10 transition-all duration-700 ${featuresAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
-            <h2 className="text-3xl font-semibold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl text-[#3F3A52]">
               Everything included in every package
             </h2>
             <p className="mt-3 text-[#6B647F]">
@@ -436,7 +436,7 @@ export default function PricingPage() {
             className={`text-center mb-10 transition-all duration-700 ${faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
-            <h2 className="text-3xl font-semibold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl text-[#3F3A52]">
               Frequently asked questions
             </h2>
             <p className="mt-3 text-[#6B647F]">
@@ -507,7 +507,7 @@ export default function PricingPage() {
                 Not sure which to choose?
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-semibold text-white">
+              <h2 className="font-julius text-3xl md:text-4xl text-white">
                 Let&apos;s find the right fit together
               </h2>
 

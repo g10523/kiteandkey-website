@@ -23,25 +23,39 @@ export function useBackground() {
   const ctx = useContext(BackgroundContext);
   if (!ctx) throw new Error("useBackground must be used inside BackgroundProvider");
   return ctx;
-node_modules
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Next.js
-.next/
-out/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# Node
-node_modules/
+# testing
+/coverage
 
-# OS
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
 .DS_Store
+*.pem
 
-# Vercel
-.vercel/
-
-# Logs
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/lib/generated/prisma
+# local env files
+.env
+.env*.local
+
+# vercel
 .vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

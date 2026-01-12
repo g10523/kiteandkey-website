@@ -284,7 +284,7 @@ export default function MindPrintPage() {
                 Cognitive Intelligence System
               </div>
 
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#3F3A52]">
+              <h1 className="font-julius text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#3F3A52]">
                 MindPrint
                 <span className="text-[#5E5574]">™</span>
               </h1>
@@ -494,7 +494,7 @@ export default function MindPrintPage() {
               <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
                 The Problem We Solve
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52] leading-tight">
+              <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52] leading-tight">
                 Most students who struggle aren&apos;t incapable.
                 <span className="text-[#5E5574]"> They&apos;re mismatched to the method.</span>
               </h2>
@@ -533,7 +533,7 @@ export default function MindPrintPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               The Cognitive Model
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Eight dimensions of cognitive intelligence
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
@@ -595,7 +595,7 @@ export default function MindPrintPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Initial Assessment
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Five assessments, one complete profile
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
@@ -681,7 +681,7 @@ export default function MindPrintPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Learning Archetypes
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               Fifteen ways of learning
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
@@ -765,7 +765,7 @@ export default function MindPrintPage() {
             <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
               Sample Cognitive Report
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
               From assessment to actionable insight
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">

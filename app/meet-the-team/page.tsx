@@ -295,7 +295,7 @@ export default function MeetTheTeamPage() {
             Our Team
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#3F3A52]">
+          <h1 className="font-julius text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#3F3A52]">
             Meet the people behind<br />Kite & Key
           </h1>
 
@@ -394,7 +394,7 @@ export default function MeetTheTeamPage() {
       <section className="py-24 border-t border-[#E6E8F0]">
         <div className="mx-auto max-w-4xl px-6">
           <div className="rounded-3xl border-2 border-[#D9CFF2] bg-gradient-to-br from-[#F7F5FB] via-white to-[#FAFAFA] p-10 md:p-14 text-center shadow-xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#3F3A52]">
+            <h2 className="font-julius text-3xl md:text-4xl font-light text-[#3F3A52]">
               Ready to find the right tutor?
             </h2>
             <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto">
@@ -501,7 +501,7 @@ function LeaderCard({
       <div className="relative p-8">
         {/* Name & Role */}
         <div className="text-center mb-6">
-          <h3 className="text-3xl font-bold text-[#3F3A52] mb-2">{member.name}</h3>
+          <h3 className="font-julius text-3xl font-medium text-[#3F3A52] mb-2">{member.name}</h3>
           <p className="text-lg font-semibold text-[#5E5574] mb-3">{member.role}</p>
           <p className="text-sm text-[#8C84A8]">
             {member.degree}
@@ -511,12 +511,13 @@ function LeaderCard({
           </p>
         </div>
 
-        {/* Standout Feature - Prominent */}
-        <div className="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#5E5574] to-[#7C6B94] p-6 text-center shadow-lg">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.1),transparent_50%)]" />
-          <div className="relative flex items-center justify-center gap-3">
-            <Award size={24} className="text-white shrink-0" />
-            <span className="text-base font-bold text-white">
+        {/* Standout Feature - Refined */}
+        <div className="mb-6 rounded-xl border-2 border-[#D9CFF2] bg-white/90 backdrop-blur-sm p-5 text-center">
+          <div className="flex items-center justify-center gap-2.5">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F4F1FB]">
+              <Award size={16} className="text-[#5E5574]" />
+            </div>
+            <span className="text-sm font-medium text-[#5E5574]">
               {member.standoutFeature}
             </span>
           </div>
@@ -664,11 +665,13 @@ function TutorCard({
         </div>
       </div>
 
-      {/* Standout Feature - Enhanced */}
-      <div className="mt-6 rounded-xl bg-gradient-to-r from-[#F7F5FB] to-[#EEEAF8] px-5 py-4 border border-[#E6E0F2]">
+      {/* Standout Feature - Refined */}
+      <div className="mt-6 rounded-xl border border-[#E6E0F2] bg-white px-5 py-4">
         <div className="flex items-center gap-3">
-          <Award size={18} className="text-[#5E5574] shrink-0" />
-          <span className="text-sm font-bold text-[#3F3A52]">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F4F1FB]">
+            <Award size={14} className="text-[#5E5574]" />
+          </div>
+          <span className="text-sm font-medium text-[#5E5574]">
             {member.standoutFeature}
           </span>
         </div>

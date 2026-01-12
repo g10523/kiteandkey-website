@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import {
   Brain,
   Zap,
@@ -13,12 +14,28 @@ import {
   Compass,
   Clock,
   ArrowRight,
-  ChevronRight,
-  Activity,
   TrendingUp,
   Users,
-  User,
 } from "lucide-react";
+
+/* =========================
+   Animation Variants
+========================= */
+
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
 
 /* =========================
    Data
@@ -31,7 +48,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Memory",
     description: "Holding & manipulating information",
     icon: Brain,
-    color: "#5E5574", // Primary Kite Lavender
+    color: "#5E5574",
     score: 72,
   },
   {
@@ -40,7 +57,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Speed",
     description: "How quickly information is processed",
     icon: Zap,
-    color: "#6B7280", // Cool Grey
+    color: "#6B7280",
     score: 65,
   },
   {
@@ -49,7 +66,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Executive",
     description: "Planning & self-regulation",
     icon: Target,
-    color: "#5E5574", // Repeated Primary
+    color: "#5E5574",
     score: 81,
   },
   {
@@ -58,7 +75,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Verbal",
     description: "Language-based understanding",
     icon: BookOpen,
-    color: "#8B7FA8", // Light Lavender Slate
+    color: "#8B7FA8",
     score: 78,
   },
   {
@@ -67,7 +84,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Spatial",
     description: "Visual-spatial thinking",
     icon: Eye,
-    color: "#6B7280", // Cool Grey
+    color: "#6B7280",
     score: 85,
   },
   {
@@ -85,7 +102,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Focus",
     description: "Sustained & selective attention",
     icon: Compass,
-    color: "#4F4865", // Darker Kite
+    color: "#4F4865",
     score: 58,
   },
   {
@@ -119,34 +136,18 @@ const ARCHETYPES_PREVIEW = [
 ========================= */
 
 export default function MindPrintSection() {
-  const [isVisible, setIsVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [animatedStats, setAnimatedStats] = useState(STATS.map(() => 0));
   const [hoveredDimension, setHoveredDimension] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const { scrollY } = useScroll();
 
-  // Intersection observer
+  // Parallax for orbs
+  const y1 = useTransform(scrollY, [0, 2000], [0, -200]);
+  const y2 = useTransform(scrollY, [0, 2000], [0, 300]);
+
+  // Animate stats on mount
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Animate stats on visibility
-  useEffect(() => {
-    if (!isVisible) return;
-
     STATS.forEach((stat, index) => {
       const duration = 2000;
       const steps = 60;
@@ -165,7 +166,7 @@ export default function MindPrintSection() {
         });
       }, duration / steps);
     });
-  }, [isVisible]);
+  }, []);
 
   // Auto-rotate active dimension
   useEffect(() => {
@@ -180,69 +181,107 @@ export default function MindPrintSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-28 md:py-36 overflow-hidden bg-white"
+      className="relative border-t border-[#E6E8F0] py-24 md:py-32 overflow-hidden"
     >
-      {/* Enhanced background layers matches page.tsx */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#F7F5FB] to-white" />
+      {/* Enhanced background matching homepage */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#FAFBFF] to-white" />
 
-      {/* Subtle animated gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#E6E1F2]/10 via-transparent to-[#EEEAF8]/20 opacity-40" />
+      {/* Animated orbs with Framer Motion */}
+      <motion.div
+        className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] rounded-full bg-[#E6E0F5]/30 blur-[120px] pointer-events-none"
+        animate={{
+          x: [0, 100, 0],
+          y: [0, 50, 0],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        style={{ y: y1 }}
+      />
 
-      {/* Floating orbs - kept subtle */}
-      <div className="absolute top-20 right-1/4 h-[500px] w-[500px] rounded-full bg-[#E6E1F2]/20 blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
-      <div className="absolute bottom-20 left-1/4 h-96 w-96 rounded-full bg-[#E6E0F5]/20 blur-3xl animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+      <motion.div
+        className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-[#D9CFF2]/20 blur-[100px] pointer-events-none"
+        animate={{
+          x: [0, -50, 0],
+          y: [0, -100, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        style={{ y: y2 }}
+      />
 
       <div className="relative mx-auto max-w-7xl px-6">
-        {/* Header - Aesthetics: Cormorant + Inter */}
-        <div
-          className={`text-center max-w-3xl mx-auto mb-20 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+        {/* Header with Framer Motion */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={staggerContainer}
+          className="text-center max-w-3xl mx-auto mb-20"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/60 px-5 py-2.5 text-xs tracking-widest uppercase font-medium text-[#5E5574] backdrop-blur-sm mb-6">
-            <Brain size={16} className="text-[#5E5574]" />
-            Cognitive Intelligence System
-          </div>
+          <motion.div variants={fadeInUp}>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/80 px-5 py-2.5 text-xs tracking-[0.2em] uppercase font-medium text-[#5E5574] backdrop-blur-sm mb-6 shadow-sm">
+              <Brain size={16} className="text-[#5E5574]" />
+              Cognitive Intelligence System
+            </span>
+          </motion.div>
 
-          <h2 className="font-cormorant text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#3F3A52]">
+          <motion.h2
+            variants={fadeInUp}
+            className="font-cormorant text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#3F3A52] leading-[1.1]"
+          >
             MindPrint<span className="text-[#5E5574] italic">™</span>
-          </h2>
+          </motion.h2>
 
-          <p className="mt-6 text-lg md:text-xl text-[#6B647F] leading-relaxed font-light">
+          <motion.p
+            variants={fadeInUp}
+            className="mt-6 text-lg md:text-xl text-[#6B647F] leading-relaxed font-light"
+          >
             A proprietary framework that maps <em className="text-[#5E5574] not-italic font-medium">how</em> your child learns —
             transforming cognition into an actionable blueprint.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        {/* Animated Stats Bar - Glassmorphism */}
-        <div
-          className={`mb-20 transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
+        {/* Animated Stats Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-20"
         >
-          <div className="rounded-3xl border border-[#E6E0F2] bg-white/60 backdrop-blur-md p-8 md:p-10 shadow-glass">
+          <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/60 backdrop-blur-md p-8 md:p-10 shadow-lg shadow-[#5E5574]/5">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
               {STATS.map((stat, index) => (
-                <div key={stat.label} className="text-center group">
-                  <div className="font-cormorant text-5xl md:text-6xl text-[#5E5574] tabular-nums transition-transform group-hover:scale-110 duration-500">
+                <motion.div
+                  key={stat.label}
+                  className="text-center group"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="font-cormorant text-5xl md:text-6xl text-[#5E5574] tabular-nums">
                     {animatedStats[index]}
                     <span className="text-[#8B7FA8] text-4xl">{stat.suffix}</span>
                   </div>
-                  <div className="mt-3 text-sm font-medium text-[#6B647F] uppercase tracking-wide opacity-80">{stat.label}</div>
-                </div>
+                  <div className="mt-3 text-sm font-medium text-[#6B647F] uppercase tracking-wide">{stat.label}</div>
+                </motion.div>
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Main Infographic Grid */}
+        {/* Main Grid */}
         <div className="grid gap-8 lg:grid-cols-12">
-          {/* Left: Cognitive Wheel Visualization */}
-          <div
-            className={`lg:col-span-5 transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-              }`}
+          {/* Left: Cognitive Wheel */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="lg:col-span-5"
           >
-            <div className="rounded-3xl border border-[#E6E0F2] bg-white/80 backdrop-blur-sm p-10 h-full shadow-glass">
+            <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-sm p-10 h-full shadow-lg shadow-[#5E5574]/5">
               <div className="text-center mb-8">
-                <h3 className="font-cormorant text-2xl font-medium text-[#3F3A52]">
+                <h3 className="font-cormorant text-2xl md:text-3xl font-light text-[#3F3A52]">
                   8 Cognitive Dimensions
                 </h3>
                 <p className="text-sm text-[#8B7FA8] mt-2 font-light">
@@ -254,21 +293,26 @@ export default function MindPrintSection() {
               <div className="relative w-full aspect-square max-w-[340px] mx-auto">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative">
-                    <div
-                      className="absolute inset-0 rounded-full blur-xl transition-all duration-700 opacity-20"
-                      style={{
+                    <motion.div
+                      className="absolute inset-0 rounded-full blur-xl"
+                      animate={{
                         backgroundColor: activeDimension.color,
-                        transform: 'scale(1.2)',
+                        scale: [1.2, 1.3, 1.2],
+                        opacity: [0.2, 0.3, 0.2]
                       }}
+                      transition={{ duration: 2, repeat: Infinity }}
                     />
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#E6E0F2] bg-white shadow-soft transition-all duration-500">
+                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#E6E0F2] bg-white shadow-lg">
                       <div className="text-center">
-                        <div
-                          className="font-cormorant text-4xl font-medium transition-all duration-500"
+                        <motion.div
+                          key={activeIndex}
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          className="font-cormorant text-4xl font-medium"
                           style={{ color: activeDimension.color }}
                         >
                           {activeDimension.score}
-                        </div>
+                        </motion.div>
                         <div className="text-[10px] text-[#8C84A8] uppercase tracking-wider font-semibold">
                           Score
                         </div>
@@ -277,7 +321,7 @@ export default function MindPrintSection() {
                   </div>
                 </div>
 
-                {/* Orbiting dimension nodes */}
+                {/* Orbiting nodes */}
                 {COGNITIVE_DIMENSIONS.map((dim, index) => {
                   const Icon = dim.icon;
                   const angle = (index / COGNITIVE_DIMENSIONS.length) * 2 * Math.PI - Math.PI / 2;
@@ -288,35 +332,39 @@ export default function MindPrintSection() {
                   const isHovered = hoveredDimension === index;
 
                   return (
-                    <div
+                    <motion.div
                       key={dim.id}
-                      className="absolute transition-all duration-500"
+                      className="absolute"
                       style={{
                         top: `calc(50% + ${y}px)`,
                         left: `calc(50% + ${x}px)`,
-                        transform: `translate(-50%, -50%) scale(${isActive || isHovered ? 1.1 : 1})`,
+                      }}
+                      animate={{
+                        scale: isActive || isHovered ? 1.15 : 1,
                         zIndex: isActive || isHovered ? 20 : 10,
                       }}
+                      transition={{ duration: 0.3 }}
                     >
                       <button
                         onClick={() => setActiveIndex(index)}
                         onMouseEnter={() => setHoveredDimension(index)}
                         onMouseLeave={() => setHoveredDimension(null)}
-                        className={`group relative flex h-14 w-14 items-center justify-center rounded-full border bg-white shadow-sm transition-all duration-500 ${isActive
-                          ? "border-[#5E5574] ring-2 ring-[#5E5574]/10"
+                        className={`group relative flex h-14 w-14 items-center justify-center rounded-full border bg-white shadow-sm transition-all duration-300 ${isActive
+                          ? "border-[#5E5574] ring-2 ring-[#5E5574]/20"
                           : "border-[#E6E0F2] hover:border-[#D9CFF2]"
                           }`}
                         style={{
                           color: isActive ? dim.color : "#8B7FA8",
+                          transform: "translate(-50%, -50%)",
                         }}
                       >
                         <Icon size={20} strokeWidth={1.5} />
                       </button>
-                    </div>
+                    </motion.div>
                   );
                 })}
 
-                {/* Connection lines */}
+                {/* SVG connections and ring */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none">
                   {COGNITIVE_DIMENSIONS.map((_, index) => {
                     const angle = (index / COGNITIVE_DIMENSIONS.length) * 2 * Math.PI - Math.PI / 2;
@@ -332,16 +380,12 @@ export default function MindPrintSection() {
                         x2={x}
                         y2={y}
                         stroke={index === activeIndex ? activeDimension.color : "#E6E0F2"}
-                        strokeWidth={index === activeIndex ? "1" : "1"}
+                        strokeWidth="1"
                         className="transition-all duration-700"
-                        opacity={index === activeIndex ? 0.3 : 0.2}
+                        opacity={index === activeIndex ? 0.3 : 0.15}
                       />
                     );
                   })}
-                </svg>
-
-                {/* Outer ring */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 340 340">
                   <circle
                     cx="170"
                     cy="170"
@@ -367,24 +411,32 @@ export default function MindPrintSection() {
               </div>
 
               {/* Active dimension detail */}
-              <div className="mt-10 text-center">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-10 text-center"
+              >
                 <div className="font-cormorant text-xl text-[#3F3A52] font-medium mb-1">
                   {activeDimension.name}
                 </div>
                 <p className="text-sm text-[#6B647F] font-light">
                   {activeDimension.description}
                 </p>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right: Info Panels */}
-          <div
-            className={`lg:col-span-7 space-y-6 transition-all duration-700 delay-300 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-              }`}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="lg:col-span-7 space-y-6"
           >
             {/* How It Works */}
-            <div className="rounded-3xl border border-[#E6E0F2] bg-white/80 backdrop-blur-sm p-8 shadow-glass">
+            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-[#5E5574]/5">
               <h3 className="font-cormorant text-2xl text-[#3F3A52] mb-6 flex items-center gap-3">
                 <Brain size={24} className="text-[#5E5574] opacity-80" strokeWidth={1} />
                 The Assessment Process
@@ -396,30 +448,28 @@ export default function MindPrintSection() {
                     step: "01",
                     title: "Assess",
                     description: "5 online modules measuring core cognitive systems.",
-                    icon: Brain,
                   },
                   {
                     step: "02",
                     title: "Profile",
                     description: "We map strengths and friction points.",
-                    icon: Layers,
                   },
                   {
                     step: "03",
                     title: "Refine",
                     description: "Bi-weekly updates based on progress.",
-                    icon: TrendingUp,
                   },
-                ].map((item) => (
-                  <div
+                ].map((item, index) => (
+                  <motion.div
                     key={item.step}
-                    className="relative rounded-2xl border border-[#E6E0F2] bg-[#FAFAFA] p-6 hover:border-[#D9CFF2] hover:bg-white transition-all group"
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative rounded-2xl border border-[#E6E0F2] bg-[#FAFAFA] p-6 hover:border-[#D9CFF2] hover:bg-white hover:shadow-md transition-all"
                   >
-                    <div className="absolute top-4 right-4 text-xs font-bold text-[#E6E0F2] group-hover:text-[#D9CFF2]">
+                    <div className="absolute top-4 right-4 text-xs font-bold text-[#E6E0F2]">
                       {item.step}
                     </div>
                     <div className="mt-2">
-                      {/* Icon replaced with step number or simple icon */}
                       <div className="font-cormorant text-xl text-[#3F3A52] mb-2 font-medium">
                         {item.title}
                       </div>
@@ -427,13 +477,13 @@ export default function MindPrintSection() {
                         {item.description}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            {/* Learning Archetypes Preview */}
-            <div className="rounded-3xl border border-[#E6E0F2] bg-white/80 backdrop-blur-sm p-8 shadow-glass">
+            {/* Learning Archetypes */}
+            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-[#5E5574]/5">
               <h3 className="font-cormorant text-2xl text-[#3F3A52] mb-4 flex items-center gap-3">
                 <Users size={24} className="text-[#5E5574] opacity-80" strokeWidth={1} />
                 Cognitive Archetypes
@@ -444,7 +494,7 @@ export default function MindPrintSection() {
               </p>
 
               <div className="flex flex-wrap gap-3 mb-6">
-                {ARCHETYPES_PREVIEW.map((archetype, index) => (
+                {ARCHETYPES_PREVIEW.map((archetype) => (
                   <span
                     key={archetype}
                     className="rounded-full border border-[#E6E0F2] bg-white px-4 py-1.5 text-xs text-[#5E5574] transition-all hover:border-[#D9CFF2] hover:bg-[#F7F5FB]"
@@ -456,12 +506,12 @@ export default function MindPrintSection() {
                   + 10 others
                 </span>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Sample Profile Preview */}
-            <div className="rounded-3xl border border-[#E6E0F2] bg-white p-8 shadow-soft">
+            {/* Sample Profile */}
+            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#E6E0F2] bg-white p-8 shadow-lg">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-cormorant text-2xl text-[#3F3A52] flex items-center gap-3">
+                <h3 className="font-cormorant text-2xl text-[#3F3A52]">
                   Sample Insight
                 </h3>
                 <span className="text-xs font-medium text-[#8B7FA8] bg-[#F7F5FB] px-3 py-1.5 rounded-full">
@@ -469,10 +519,9 @@ export default function MindPrintSection() {
                 </span>
               </div>
 
-              {/* Minimal bar chart */}
               <div className="space-y-5 mb-8">
                 {COGNITIVE_DIMENSIONS.slice(0, 3).map((dim, index) => (
-                  <div key={dim.id} className="group">
+                  <div key={dim.id}>
                     <div className="flex items-center justify-between text-xs mb-2">
                       <span className="text-[#5E5574] font-medium tracking-wide">
                         {dim.name}
@@ -480,13 +529,13 @@ export default function MindPrintSection() {
                       <span className="text-[#3F3A52] font-mono">{dim.score}</span>
                     </div>
                     <div className="h-1.5 rounded-full bg-[#F1ECFA] overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-1000"
-                        style={{
-                          width: isVisible ? `${dim.score}%` : "0%",
-                          backgroundColor: dim.color,
-                          transitionDelay: `${index * 150 + 500}ms`,
-                        }}
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${dim.score}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: index * 0.15 + 0.5 }}
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: dim.color }}
                       />
                     </div>
                   </div>
@@ -495,49 +544,16 @@ export default function MindPrintSection() {
 
               <Link
                 href="/mindprint"
-                className="group flex items-center justify-center gap-2 w-full rounded-xl bg-[#F7F5FB] border border-[#E6E0F2] py-4 text-sm font-medium text-[#5E5574] transition-all hover:bg-[#5E5574] hover:text-white hover:border-transparent"
+                className="group flex items-center justify-center gap-2 w-full rounded-xl bg-[#F7F5FB] border border-[#E6E0F2] py-4 text-sm font-medium text-[#5E5574] transition-all hover:bg-[#5E5574] hover:text-white hover:border-transparent hover:-translate-y-0.5"
               >
                 View Full Sample Report
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* Bottom CTA */}
-        <div
-          className={`mt-20 transition-all duration-700 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-        >
-          <div className="rounded-[2rem] bg-[#5E5574] p-10 md:p-14 text-center relative overflow-hidden shadow-2xl">
-            {/* Minimalist background */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-[#ffffff]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
-            <div className="relative z-10">
-              <h3 className="font-cormorant text-3xl md:text-5xl text-white mb-6 font-light">
-                Understanding predicts success.
-              </h3>
-              <p className="text-white/80 max-w-2xl mx-auto leading-relaxed font-light mb-10 text-lg">
-                Stop guessing. Start teaching based on real cognitive data.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link
-                  href="/consultation"
-                  className="inline-flex justify-center items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-semibold text-[#5E5574] transition-all hover:bg-[#F1ECFA] hover:-translate-y-0.5"
-                >
-                  Book Free Consultation
-                </Link>
-                <Link
-                  href="/mindprint"
-                  className="inline-flex justify-center items-center gap-2 rounded-full border border-white/30 bg-transparent px-8 py-4 text-sm font-medium text-white transition-all hover:bg-white/10"
-                >
-                  Learn More
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

@@ -174,8 +174,8 @@ function LiftNavbar() {
       {/* Background */}
       <div
         className={`absolute inset-0 border-b transition-all duration-300 ${scrolled
-            ? "bg-gradient-to-r from-[#EEF6F8]/98 via-[#E0EFF3]/98 to-[#EEF6F8]/98 border-[#C5DEE4] shadow-lg shadow-[#5B9AAD]/5"
-            : "bg-gradient-to-r from-[#EEF6F8]/90 via-[#E0EFF3]/85 to-[#EEF6F8]/90 border-[#D1E8ED]"
+          ? "bg-gradient-to-r from-[#EEF6F8]/98 via-[#E0EFF3]/98 to-[#EEF6F8]/98 border-[#C5DEE4] shadow-lg shadow-[#5B9AAD]/5"
+          : "bg-gradient-to-r from-[#EEF6F8]/90 via-[#E0EFF3]/85 to-[#EEF6F8]/90 border-[#D1E8ED]"
           } backdrop-blur-xl`}
       />
 
@@ -274,7 +274,7 @@ export default function LiftInitiativePage() {
               Specialist Learning Support
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#2C5F6B]">
+            <h1 className="font-julius text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#2C5F6B]">
               Lift Initiative
             </h1>
 
@@ -335,7 +335,7 @@ export default function LiftInitiativePage() {
                 <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-4">
                   The Challenge
                 </p>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6B] leading-tight">
+                <h2 className="font-julius text-3xl md:text-4xl text-[#2C5F6B] leading-tight">
                   Traditional tutoring often{" "}
                   <span className="text-[#5B9AAD]">fails students</span> who learn differently
                 </h2>
@@ -406,7 +406,7 @@ export default function LiftInitiativePage() {
               <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-4">
                 Specialist Support
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6B]">
+              <h2 className="font-julius text-3xl md:text-4xl text-[#2C5F6B]">
                 Challenges we specialise in
               </h2>
               <p className="mt-4 text-lg text-[#6A9AA8] max-w-2xl mx-auto">
@@ -455,7 +455,7 @@ export default function LiftInitiativePage() {
               <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-4">
                 The Lift Approach
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6B]">
+              <h2 className="font-julius text-3xl md:text-4xl text-[#2C5F6B]">
                 How we work differently
               </h2>
               <p className="mt-4 text-lg text-[#6A9AA8] max-w-2xl mx-auto">
@@ -554,7 +554,7 @@ export default function LiftInitiativePage() {
                   <p className="text-sm font-semibold tracking-[0.15em] uppercase text-[#7AB4C4] mb-2">
                     Meet Your Tutor
                   </p>
-                  <h2 className="text-3xl font-bold text-[#2C5F6B]">Adam Walker</h2>
+                  <h2 className="font-julius text-3xl text-[#2C5F6B]">Adam Walker</h2>
                   <p className="text-[#5B9AAD] font-semibold mt-1">
                     Specialist Learning Support Educator
                   </p>
@@ -621,7 +621,7 @@ export default function LiftInitiativePage() {
               className={`text-center mb-14 transition-all duration-700 ${differenceAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 }`}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6B]">
+              <h2 className="font-julius text-3xl md:text-4xl text-[#2C5F6B]">
                 What makes Lift different
               </h2>
             </div>
@@ -714,7 +714,7 @@ export default function LiftInitiativePage() {
               className={`text-center mb-12 transition-all duration-700 ${faqAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                 }`}
             >
-              <h2 className="text-3xl font-bold text-[#2C5F6B]">
+              <h2 className="font-julius text-3xl font-bold text-[#2C5F6B]">
                 Frequently asked questions
               </h2>
               <p className="mt-3 text-[#6A9AA8]">
@@ -787,7 +787,7 @@ export default function LiftInitiativePage() {
                   Every child deserves support that understands them
                 </div>
 
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                <h2 className="font-julius text-3xl md:text-4xl lg:text-5xl text-white leading-tight">
                   Ready to give your child<br />the support they deserve?
                 </h2>
 

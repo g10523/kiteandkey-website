@@ -765,7 +765,7 @@ export default function CoursesPage() {
           <p className="text-sm font-medium tracking-[0.2em] uppercase text-[#8C84A8] mb-4">
             Structured Learning Pathways
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#3F3A52]">
+          <h1 className="font-julius text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#3F3A52]">
             Courses at Kite &amp; Key
           </h1>
           <p className="mt-4 text-xl md:text-2xl text-[#5E5574] font-medium">
@@ -820,8 +820,8 @@ export default function CoursesPage() {
                 key={subj.id}
                 onClick={() => setActiveSubject(subj.id)}
                 className={`group relative rounded-2xl border p-6 text-left transition-all duration-300 ${activeSubject === subj.id
-                    ? "border-[#5E5574] bg-white shadow-lg scale-[1.02]"
-                    : "border-[#E6E1F2] bg-white hover:border-[#D9CFF2] hover:shadow-md"
+                  ? "border-[#5E5574] bg-white shadow-lg scale-[1.02]"
+                  : "border-[#E6E1F2] bg-white hover:border-[#D9CFF2] hover:shadow-md"
                   }`}
                 style={{ transitionDelay: `${index * 75}ms` }}
               >
@@ -855,8 +855,8 @@ export default function CoursesPage() {
                 key={year}
                 onClick={() => setActiveYear(year)}
                 className={`rounded-xl px-6 py-3 font-semibold transition-all ${activeYear === year
-                    ? "text-white shadow-lg"
-                    : "border border-[#E6E1F2] bg-white text-[#5E5574] hover:border-[#D9CFF2]"
+                  ? "text-white shadow-lg"
+                  : "border border-[#E6E1F2] bg-white text-[#5E5574] hover:border-[#D9CFF2]"
                   }`}
                 style={{
                   backgroundColor: activeYear === year ? subject.color : undefined,

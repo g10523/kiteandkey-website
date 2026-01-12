@@ -9,9 +9,10 @@ import StainedGlassBackground from './AnimatedGlassLayer'
 export default function PublicLayoutWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
     const isAdminRoute = pathname?.startsWith('/admin')
+    const isDashboardRoute = pathname?.startsWith('/dashboard')
 
-    if (isAdminRoute) {
-        // For admin routes, just render children without public nav/footer
+    if (isAdminRoute || isDashboardRoute) {
+        // For admin and dashboard routes, just render children without public nav/footer
         return <>{children}</>
     }
 

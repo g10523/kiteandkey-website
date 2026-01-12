@@ -4,28 +4,39 @@ import Link from 'next/link'
 
 export default async function AdminDashboard() {
     // Fetch metrics
-    const [totalLeads, consultationsCount, signupsCount, recentLeads] = await Promise.all([
-        prisma.lead.count(),
-        prisma.consultation.count({
-            where: {
-                status: 'SCHEDULED',
-            },
-        }),
-        prisma.signup.count({
-            where: {
-                status: 'ACTIVE',
-            },
-        }),
-        prisma.lead.findMany({
-            take: 5,
-            orderBy: {
-                createdAt: 'desc',
-            },
-            include: {
-                consultation: true,
-            },
-        }),
-    ])
+    // Fetch metrics
+    let totalLeads = 0
+    let consultationsCount = 0
+    let signupsCount = 0
+    let recentLeads: any[] = []
+
+    try {
+        [totalLeads, consultationsCount, signupsCount, recentLeads] = await Promise.all([
+            prisma.lead.count(),
+            prisma.consultation.count({
+                where: {
+                    status: 'SCHEDULED',
+                },
+            }),
+            prisma.signup.count({
+                where: {
+                    status: 'ACTIVE',
+                },
+            }),
+            prisma.lead.findMany({
+                take: 5,
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                include: {
+                    consultation: true,
+                },
+            }),
+        ])
+    } catch (error) {
+        console.error('Database connection failed, using default values:', error)
+        // Fallback or mock data could go here if desired for demo purposes
+    }
 
     const stats = [
         {

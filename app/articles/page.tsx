@@ -149,7 +149,7 @@ export default function ArticlesPage() {
 
           {/* Hero Content */}
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="font-cormorant text-5xl md:text-6xl font-medium text-[#2D2640] mb-6">
+            <h1 className="font-julius text-5xl md:text-6xl font-medium text-[#2D2640] mb-6">
               Articles
             </h1>
             <p className="text-lg text-[#6B647F] leading-relaxed">
@@ -226,7 +226,7 @@ export default function ArticlesPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-cormorant text-xl text-[#4A4358] mb-2">
+              <h3 className="font-julius text-xl text-[#4A4358] mb-2">
                 No articles found
               </h3>
               <p className="text-[#7A7189]">
@@ -305,7 +305,7 @@ export default function ArticlesPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
               </svg>
             </div>
-            <h2 className="font-cormorant text-2xl text-[#2D2640] mb-3">
+            <h2 className="font-julius text-2xl text-[#2D2640] mb-3">
               Stay Informed
             </h2>
             <p className="text-[#6B647F] mb-8">
@@ -364,7 +364,7 @@ function ArticleCard({ article }: ArticleCardProps) {
 
         {/* Content */}
         <div className="p-6 flex flex-col flex-1">
-          <h3 className="font-cormorant text-xl font-semibold text-[#2D2640] mb-3 leading-tight group-hover:text-[#5E5574] transition-colors">
+          <h3 className="font-julius text-xl font-semibold text-[#2D2640] mb-3 leading-tight group-hover:text-[#5E5574] transition-colors">
             {article.title}
           </h3>
           

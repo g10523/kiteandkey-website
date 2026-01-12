@@ -12,17 +12,172 @@ datasource db {
 }
 
 // Admin Users
+
+// ==========================================
+// USER & AUTHENTICATION
+// ==========================================
+
+enum UserRole {
+  STUDENT
+  PARENT
+  TUTOR
+  ADMIN
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  password  String   // Hashed with bcrypt
-  role      String   @default("ADMIN")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String    // Hashed
+  name          String?
+  role          UserRole  @default(STUDENT) // Default to lowest priv
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Profile Relations (1:1)
+  studentProfile StudentProfile?
+  parentProfile  ParentProfile?
+  tutorProfile   TutorProfile?
+}
+
+// ==========================================
+// PROFILES
+// ==========================================
+
+model StudentProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  parentId        String?
+  parent          ParentProfile? @relation(fields: [parentId], references: [id])
+  
+  // Demographics
+  gradeLevel      String?
+  school          String?
+  dateOfBirth     DateTime?
+  
+  // Relations
+  mindPrint       MindPrintProfile?
+  attendances     Attendance[]
+  
+  // Link to Lead (if converted)
+  leadId          String? @unique
+  lead            Lead?   @relation(fields: [leadId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ParentProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  phone           String?
+  address         String?
+  stripeCustomerId String? // For billing
+
+  students        StudentProfile[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model TutorProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  bio             String?
+  subjects        String[] // E.g. ["Maths Year 10", "English Year 7"]
+  qualifications  String?
+  
+  // Schedule
+  availability    AvailabilitySlot[]
+  classes         ClassSession[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ==========================================
+// MINDPRINT™ ENGINE
+// ==========================================
+
+model MindPrintProfile {
+  id              String   @id @default(cuid())
+  studentId       String   @unique
+  student         StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  // Core Cognitive Scores (0-100)
+  workingMemory     Int
+  processingSpeed   Int
+  verbalReasoning   Int
+  abstractReasoning Int
+  attention         Int
+  
+  // Analysis & Synthesis (Stored as JSON for flexibility)
+  // Structure: { archetype: string, modalities: { visual: number... }, recommendations: string[] }
+  learningStyle     Json?     
+  strengths         String[]
+  weaknesses        String[]
+  strategies        String[]
+
+  lastAssessedAt    DateTime  @default(now())
+  version           Int       @default(1)
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// ==========================================
+// LEARNING & SCHEDULING
+// ==========================================
+
+model ClassSession {
+  id              String   @id @default(cuid())
+  
+  tutorId         String
+  tutor           TutorProfile @relation(fields: [tutorId], references: [id])
+  
+  subject         String
+  startTime       DateTime
+  endTime         DateTime
+  
+  status          String   @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED, NO_SHOW
+  
+  attendances     Attendance[]
+  
+  topic           String?
+  tutorNotes      String?  // Private notes for tutor
+  homework        String?  // Assignment description
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Attendance {
+  id              String   @id @default(cuid())
+  sessionId       String
+  session         ClassSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  studentId       String
+  student         StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  status          String   @default("PRESENT") // PRESENT, ABSENT, LATE, EXCUSED
+  feedback        String?  // Feedback visible to parent/student for this session
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([sessionId, studentId])
 }
 
 
+// ==========================================
+// EXISTING MODULES (Leads & Sales)
+// ==========================================
 
 // Lead Management
 model Lead {
@@ -53,6 +208,9 @@ model Lead {
   consultation Consultation?
   signup       Signup?
   
+  // Converted Student Link
+  studentProfile StudentProfile?
+  
   // Metadata
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -61,8 +219,6 @@ model Lead {
   @@index([status])
   @@index([createdAt])
 }
-
-
 
 // Consultation Bookings
 model Consultation {
@@ -97,8 +253,6 @@ model Consultation {
   @@index([status])
 }
 
-
-
 // Student Signups
 model Signup {
   id             String       @id @default(cuid())
@@ -132,11 +286,13 @@ model Signup {
   updatedAt      DateTime     @updatedAt
 }
 
-
-
-// Availability Slots for Consultations
+// Availability Slots for Consultations & Tutors
 model AvailabilitySlot {
   id              String   @id @default(cuid())
+  
+  // Optional Link to Tutor
+  tutorId         String?
+  tutor           TutorProfile? @relation(fields: [tutorId], references: [id])
   
   // Slot Details
   startTime       DateTime
@@ -159,3 +315,4 @@ model AvailabilitySlot {
   @@index([isBooked])
   @@index([isEnabled])
 }
+

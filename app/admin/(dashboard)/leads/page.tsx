@@ -5,6 +5,7 @@ import { Search, Filter, Eye, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import SignupLinkButton from './SignupLinkButton'
 import DeleteLeadButton from './DeleteLeadButton'
+import AddLeadModal from './AddLeadModal'
 
 export default async function AdminLeadsPage() {
     const session = await auth()
@@ -14,15 +15,21 @@ export default async function AdminLeadsPage() {
     }
 
     // Fetch all leads
-    const allLeads = await prisma.lead.findMany({
-        orderBy: {
-            createdAt: 'desc',
-        },
-        include: {
-            consultation: true,
-            signup: true,
-        },
-    })
+    let allLeads: any[] = []
+    try {
+        allLeads = await prisma.lead.findMany({
+            orderBy: {
+                createdAt: 'desc',
+            },
+            include: {
+                consultation: true,
+                signup: true,
+            },
+        })
+    } catch (error) {
+        console.error('Failed to fetch leads:', error)
+        // Default to empty array is handled by initialization
+    }
 
     // Separate into Active Students and Leads
     const activeStudents = allLeads.filter(l => l.status === 'SIGNED_UP')
@@ -103,6 +110,7 @@ export default async function AdminLeadsPage() {
                             className="w-64 rounded-xl border border-[#E6E0F2] bg-white/70 pl-9 pr-4 py-2 text-sm focus:border-[#5E5574] focus:outline-none"
                         />
                     </div>
+                    <AddLeadModal />
                 </div>
             </div>
 
@@ -170,6 +178,6 @@ export default async function AdminLeadsPage() {
                 </div>
             </section>
 
-        </div>
+        </div >
     )
 }

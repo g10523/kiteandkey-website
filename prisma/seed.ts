@@ -15,7 +15,7 @@ async function main() {
             email: "admin@kiteandkey.com.au",
             name: "Admin User",
             password: hashedPassword,
-            role: "SUPER_ADMIN",
+            role: "ADMIN",
         },
     })
 

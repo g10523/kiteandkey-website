@@ -177,7 +177,7 @@ function EnrollmentContent() {
                 {/* Progress Bar Background */}
                 <div className="absolute top-16 left-0 w-full h-0.5 bg-[#F7F5FB] -z-0 hidden md:block" />
               </div>
-              <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#3F3A52] text-center mt-8">
+              <h1 className="text-3xl md:text-4xl font-julius text-[#3F3A52] text-center mt-8">
                 {STEPS[currentStep].title}
               </h1>
             </div>
@@ -288,7 +288,7 @@ function WelcomeOverlay({ studentName, onComplete }: { studentName: string, onCo
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl md:text-6xl font-serif text-[#3F3A52] mb-6">
+          <h1 className="text-4xl md:text-6xl font-julius text-[#3F3A52] mb-6">
             {studentName ? `Welcome back, ${studentName.split(' ')[0]}.` : 'Welcome to Kite & Key.'}
           </h1>
           <p className="text-xl text-[#6B647F] mb-12 font-light">
