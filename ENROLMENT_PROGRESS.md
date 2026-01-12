@@ -37,21 +37,43 @@
 
 ---
 
-## 🚧 **Next Steps: Phase 2-5**
+## ✅ **Phase 2: COMPLETED** - Consultation Form Refactor
 
-### Phase 2: Refactor Consultation Form
-**Files to modify:**
-- `app/consultation/ConsultationForm.tsx`
-- `app/consultation/actions.ts`
+### What We Built:
 
-**Changes:**
-- Replace current form with new Tier A fields
-- Add 3 goal checkbox groups (max 3 each)
-- Support multiple students (1-4)
-- Save to new `Enrolment` table
-- Update status to `CONSULTATION_SCHEDULED`
+#### 1. **New Consultation Form** (`ConsultationFormV2.tsx`)
+- ✅ Multi-student support (1-4 students)
+- ✅ Three goal checkbox groups (max 3 each)
+- ✅ Parent/guardian details (Tier A)
+- ✅ Student information per child
+- ✅ Time slot selection
+- ✅ Privacy consent
+- ✅ 4-step wizard with progress indicator
+
+#### 2. **Server Actions** (`actions-v2.ts`)
+- ✅ `submitConsultationV2()` - Creates Enrolment record
+- ✅ `getAvailableSlotsV2()` - Fetches available slots
+- ✅ Email notifications with all 3 goal categories
+- ✅ Zod validation integration
+
+#### 3. **Reusable Components**
+- ✅ `GoalCheckboxGroup` - Visual goal selector with limits
+- ✅ Input/Select field helpers
+
+**Key Features:**
+- Saves to new `Enrolment` table (not old `Lead`)
+- Status set to `CONSULTATION_SCHEDULED` when slot selected
+- Creates multiple `EnrolmentStudent` records
+- Structured goal arrays (no free-form text)
+
+---
+
+## 🚧 **Next Steps: Phase 3-5**
 
 ### Phase 3: Refactor Sign-Up Form
+**Status:** Not Started
+**Estimated Time:** 1.5 hours
+
 **Files to modify:**
 - `app/enrol/page.tsx`
 - `app/enrol/actions.ts`
@@ -65,6 +87,9 @@
 - Update to use `Enrolment` table
 
 ### Phase 4: Build Package Configurator Component
+**Status:** Not Started
+**Estimated Time:** 45 minutes
+
 **New file:**
 - `components/PackageConfigurator.tsx`
 
@@ -76,6 +101,9 @@
 - Per-student configuration
 
 ### Phase 5: Admin CRM Enhancements
+**Status:** Not Started
+**Estimated Time:** 1 hour
+
 **Files to modify:**
 - `app/admin/(dashboard)/leads/page.tsx`
 - `app/admin/(dashboard)/leads/actions.ts`
@@ -98,11 +126,12 @@
 
 ### Code:
 - ✅ Validation schemas ready
-- ⏳ Forms still using old system
+- ✅ Consultation form using new system
+- ⏳ Sign-up form still using old system
 - ⏳ Admin still showing old Lead table
 
 ### Next Action:
-**Refactor Consultation Form** to use new `Enrolment` model
+**Refactor Sign-Up Form** to use new `Enrolment` model with token pre-fill
 
 ---
 
@@ -112,12 +141,12 @@ When complete, the system will:
 1. ✅ Capture identical fields in both forms (no duplication)
 2. ✅ Support 1-4 students per enrolment
 3. ✅ Enforce goal limits (max 3 per group)
-4. ✅ Enforce package rules strictly
-5. ✅ Enable seamless consultation → sign-up flow
-6. ✅ Provide admin visibility into full pipeline
-7. ✅ Allow direct sign-up (skip consultation)
+4. ⏳ Enforce package rules strictly
+5. ⏳ Enable seamless consultation → sign-up flow
+6. ⏳ Provide admin visibility into full pipeline
+7. ⏳ Allow direct sign-up (skip consultation)
 
 ---
 
-**Estimated Remaining Time:** 2-3 hours
-**Current Progress:** ~25% complete
+**Estimated Remaining Time:** 3-4 hours
+**Current Progress:** ~50% complete
