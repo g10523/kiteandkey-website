@@ -308,6 +308,9 @@ model AvailabilitySlot {
   createdBy       String?
   notes           String?
   
+  // Relations
+  enrolments      Enrolment[] // New enrolment system
+  
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   
@@ -316,3 +319,114 @@ model AvailabilitySlot {
   @@index([isEnabled])
 }
 
+// ==========================================
+// PROGRESSIVE ENROLMENT SYSTEM (V2)
+// ==========================================
+
+enum EnrolmentStatus {
+  CONSULTATION_REQUESTED
+  CONSULTATION_SCHEDULED
+  CONSULTATION_COMPLETED
+  PENDING_SIGNUP
+  SIGNUP_STARTED
+  SIGNUP_COMPLETED
+  ENROLLED
+  CANCELLED
+}
+
+enum EnrolmentStage {
+  CONSULTATION
+  SIGNUP
+  ACTIVE
+}
+
+enum LearningPackage {
+  ELEVATE
+  GLIDE
+  SOAR
+}
+
+// Unified Enrolment Record
+model Enrolment {
+  id                String   @id @default(cuid())
+  
+  // Status Flow
+  status            EnrolmentStatus @default(CONSULTATION_REQUESTED)
+  stage             EnrolmentStage  @default(CONSULTATION)
+  
+  // Parent/Guardian (Tier A - captured in both consultation and sign-up)
+  parentFirstName   String
+  parentLastName    String
+  parentEmail       String
+  parentPhone       String
+  
+  // Discovery (Tier A)
+  howDidYouHear     String?
+  
+  // Goals (Tier A - structured arrays, max 3 per group)
+  academicGoals     String[] // Academic Performance Goals
+  learningGoals     String[] // Learning & Study Skills
+  personalGoals     String[] // Personal & Social Development
+  
+  // Students (Tier A for consultation, expanded in sign-up)
+  students          EnrolmentStudent[]
+  
+  // Consultation Details (if booked)
+  consultationSlotId String?
+  consultationSlot   AvailabilitySlot? @relation(fields: [consultationSlotId], references: [id])
+  consultationNotes  String?
+  
+  // Sign-Up Details (Tier B - only filled during sign-up)
+  password          String?  // Hashed, only for sign-up
+  termsAccepted     Boolean  @default(false)
+  
+  // Continuation Token (for post-consultation sign-up)
+  continuationToken String?  @unique
+  tokenUsed         Boolean  @default(false)
+  tokenExpiresAt    DateTime?
+  
+  // Metadata
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@index([parentEmail])
+  @@index([status])
+  @@index([stage])
+  @@index([continuationToken])
+  @@index([createdAt])
+}
+
+// Individual Student within an Enrolment
+model EnrolmentStudent {
+  id              String   @id @default(cuid())
+  enrolmentId     String
+  enrolment       Enrolment @relation(fields: [enrolmentId], references: [id], onDelete: Cascade)
+  
+  // Tier A (Both consultation and sign-up)
+  firstName       String
+  lastName        String
+  gradeIn2026     String   // "Year 5", "Year 6", etc.
+  school          String?
+  
+  // Tier B (Sign-up only - required for LMS account)
+  email           String?  // Required during sign-up
+  
+  // Package Configuration (Sign-up only)
+  package         LearningPackage?
+  subjects        String[] // ["Maths", "English", "Science"]
+  weeklyHours     Float?   // Total hours per week
+  hourAllocation  Json?    // {"Maths": 1.5, "English": 1.5}
+  
+  // Pricing Snapshot (captured at sign-up)
+  hourlyRate      Float?
+  weeklyTotal     Float?
+  
+  // Scheduling Preferences (Sign-up)
+  preferredDays   String[] // ["Monday", "Wednesday"]
+  preferredTimes  String[] // ["3:30 PM", "5:30 PM"]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([enrolmentId])
+}
