@@ -22,38 +22,47 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     const { email, password } = loginSchema.parse(credentials)
 
-                    // FALLBACK: Master Admin for Development/Recovery
-                    // This allows login even if the database is down
+                    // 1. MASTER ADMIN (Works without Database)
                     if (email === 'admin@kiteandkey.com.au' && password === 'admin123') {
+                        console.log('🔓 Master Admin Login');
                         return {
                             id: 'master-admin',
                             email: 'admin@kiteandkey.com.au',
-                            name: 'Admin User',
+                            name: 'Master Admin',
                             role: 'ADMIN',
                         }
                     }
 
-                    const user = await prisma.user.findUnique({
-                        where: { email },
-                    })
+                    // 2. DATABASE USERS
+                    try {
+                        const user = await prisma.user.findUnique({
+                            where: { email },
+                        })
 
-                    if (!user) {
-                        throw new Error("Invalid credentials")
+                        if (!user) {
+                            return null; // Invalid email
+                        }
+
+                        const isValidPassword = await bcrypt.compare(password, user.password)
+
+                        if (!isValidPassword) {
+                            return null; // Invalid pass
+                        }
+
+                        return {
+                            id: user.id,
+                            email: user.email,
+                            name: user.name,
+                            role: user.role,
+                        }
+                    } catch (dbError) {
+                        console.error('⚠️ Database Error during login:', dbError);
+                        // If DB fails, only Master Admin can login (which was handled above)
+                        return null;
                     }
 
-                    const isValidPassword = await bcrypt.compare(password, user.password)
-
-                    if (!isValidPassword) {
-                        throw new Error("Invalid credentials")
-                    }
-
-                    return {
-                        id: user.id,
-                        email: user.email,
-                        name: user.name,
-                        role: user.role,
-                    }
                 } catch (error) {
+                    console.error('Login Error:', error);
                     return null
                 }
             },
