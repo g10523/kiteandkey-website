@@ -27,7 +27,7 @@ export async function sendConsultationEmail(data: {
     try {
         await resend.emails.send({
             from: 'Kite & Key Website <system@kiteandkey.com.au>', // Ensure this domain is verified in Resend
-            to: ['hello@kiteandkey.com.au', 'giovannitc88@gmail.com'],
+            to: ['hello@kiteandkey.com.au', 'giovannitc88@gmail.com', 'kkewalram777@gmail.com'],
             subject: `New Consultation: ${data.studentName}`,
             html: `
                 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
