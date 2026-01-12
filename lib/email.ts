@@ -1,6 +1,9 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend safely (prevents build crash if key is missing)
+const resend = process.env.RESEND_API_KEY
+    ? new Resend(process.env.RESEND_API_KEY)
+    : new Resend('re_123456789'); // Dummy key for build time
 
 export async function sendConsultationEmail(data: {
     parentName: string;
