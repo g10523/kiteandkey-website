@@ -85,7 +85,7 @@ function HeroSection() {
       <div className="absolute bottom-20 left-1/4 h-80 w-80 rounded-full bg-[#DDD4F2]/30 blur-3xl" />
 
       <motion.div
-        className="relative z-10 mx-auto max-w-4xl px-6 text-center"
+        className="relative z-10 mx-auto max-w-5xl px-6 text-center"
         style={{ opacity: heroOpacity, y: heroY }}
       >
         <motion.div
@@ -102,17 +102,75 @@ function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-julius text-4xl md:text-6xl lg:text-7xl font-light leading-[1.1] text-[#3F3A52] tracking-tight mb-8"
+          className="font-julius text-4xl md:text-6xl lg:text-7xl font-light leading-[1.1] text-[#3F3A52] tracking-tight mb-12"
         >
           Learning that adapts
           <br />
           <span className="italic text-[#5E5574]">to the learner.</span>
         </motion.h1>
 
+        {/* KEY Acronym with Stained Glass Squares */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-12"
+        >
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
+            {/* K - Knowledge */}
+            <div className="flex items-center gap-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#7C6B94] to-[#5E5574] rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
+                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#E6E1F2] via-[#D9CFF2] to-[#C4B5DA] backdrop-blur-sm border-2 border-white/40 shadow-2xl flex items-center justify-center">
+                  <span className="text-4xl md:text-5xl font-bold text-[#5E5574]">K</span>
+                </div>
+              </div>
+              <div className="text-left">
+                <div className="text-lg md:text-xl font-semibold text-[#3F3A52]">Knowledge</div>
+                <div className="text-sm text-[#8C84A8]">Foundation first</div>
+              </div>
+            </div>
+
+            {/* Connector */}
+            <div className="hidden md:block w-8 h-[2px] bg-gradient-to-r from-[#D9CFF2] to-[#E6E1F2]" />
+
+            {/* E - Engage */}
+            <div className="flex items-center gap-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8B7FA8] to-[#6B5F85] rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
+                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#E6E1F2] via-[#D9CFF2] to-[#C4B5DA] backdrop-blur-sm border-2 border-white/40 shadow-2xl flex items-center justify-center">
+                  <span className="text-4xl md:text-5xl font-bold text-[#5E5574]">E</span>
+                </div>
+              </div>
+              <div className="text-left">
+                <div className="text-lg md:text-xl font-semibold text-[#3F3A52]">Engage</div>
+                <div className="text-sm text-[#8C84A8]">Active learning</div>
+              </div>
+            </div>
+
+            {/* Connector */}
+            <div className="hidden md:block w-8 h-[2px] bg-gradient-to-r from-[#D9CFF2] to-[#E6E1F2]" />
+
+            {/* Y - Yield */}
+            <div className="flex items-center gap-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#9B8FB5] to-[#7C6B94] rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
+                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#E6E1F2] via-[#D9CFF2] to-[#C4B5DA] backdrop-blur-sm border-2 border-white/40 shadow-2xl flex items-center justify-center">
+                  <span className="text-4xl md:text-5xl font-bold text-[#5E5574]">Y</span>
+                </div>
+              </div>
+              <div className="text-left">
+                <div className="text-lg md:text-xl font-semibold text-[#3F3A52]">Yield</div>
+                <div className="text-sm text-[#8C84A8]">Results emerge</div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
           className="text-lg md:text-xl text-[#6B647F] font-light leading-relaxed max-w-2xl mx-auto mb-12"
         >
           A structured, adaptive learning system that aligns how a student learns
@@ -122,7 +180,7 @@ function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           className="flex flex-wrap justify-center gap-4"
         >
           <Link
@@ -147,6 +205,7 @@ function HeroSection() {
     </section>
   );
 }
+
 
 /* ==========================================
    2. THE PROBLEM SECTION
