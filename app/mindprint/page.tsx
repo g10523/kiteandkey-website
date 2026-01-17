@@ -1117,7 +1117,7 @@ export default function MindPrintPage() {
 
           {/* Stats Row */}
           <div
-            className={`grid grid-cols-3 gap-6 mb-16 transition-all duration-700 delay-100 ${trackingAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 transition-all duration-700 delay-100 ${trackingAnim.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
           >
             {[
