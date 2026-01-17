@@ -226,7 +226,7 @@ Outside of uni, I'm at the gym, playing basketball or spending time with family 
     name: "Ghashika Ramesh",
     role: "Tutor · Years 7–10",
     image: "/team/ghashika.jpg",
-    atar: "95+",
+    atar: "95.00",
     university: "University of Sydney",
     degree: "Science (Anatomy & Immunology)",
     subjects: ["Science"],
@@ -241,7 +241,7 @@ Outside of uni, I'm at the gym, playing basketball or spending time with family 
 
 I'm Ghashika, a current first year at USYD completing a Bachelor of Science majoring in Anatomy/Histology and Immunology/Pathology.
 
-I'm a 2024 HSC graduate, receiving a 95+ ATAR, and I am excited to share my knowledge with students. I have always had a deep appreciation for science, and I'm keen on continuing that spark in both myself and others.
+I'm a 2024 HSC graduate, receiving a 95 ATAR, and I am excited to share my knowledge with students. I have always had a deep appreciation for science, and I'm keen on continuing that spark in both myself and others.
 
 I'm strongly interested in dance and music, even pursuing an Advanced Diploma of Performing Arts at Brent Street! I'm an avid reader (fantasy on top!), and love creating music on the side!
 
@@ -314,7 +314,7 @@ export default function MeetTheTeamPage() {
             {[
               {
                 icon: Award,
-                value: "97.4",
+                value: "97.29",
                 label: "Average ATAR",
                 description: "Across our entire team",
               },
@@ -326,7 +326,7 @@ export default function MeetTheTeamPage() {
               },
               {
                 icon: BookOpen,
-                value: "9",
+                value: "7",
                 label: "Expert Educators",
                 description: "Passionate about student success",
               },
@@ -373,7 +373,7 @@ export default function MeetTheTeamPage() {
       </section>
 
       {/* Tutors Section - Enhanced */}
-      <section ref={tutorsAnim.ref} className="py-20 bg-[#FAFBFF] border-t border-[#E6E8F0]">
+      <section ref={tutorsAnim.ref} className="py-20 bg-[#FAFBFF]">
         <div className="mx-auto max-w-7xl px-6">
           <SectionDivider label="Our Tutors" isVisible={tutorsAnim.isVisible} />
 

@@ -16,6 +16,7 @@ import {
   ArrowRight,
   TrendingUp,
   Users,
+  CheckCircle2,
 } from "lucide-react";
 
 /* =========================
@@ -48,7 +49,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Memory",
     description: "Holding & manipulating information",
     icon: Brain,
-    color: "#5E5574",
+    color: "#7C3AED",
     score: 72,
   },
   {
@@ -57,7 +58,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Speed",
     description: "How quickly information is processed",
     icon: Zap,
-    color: "#6B7280",
+    color: "#3B82F6",
     score: 65,
   },
   {
@@ -66,7 +67,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Executive",
     description: "Planning & self-regulation",
     icon: Target,
-    color: "#5E5574",
+    color: "#10B981",
     score: 81,
   },
   {
@@ -75,7 +76,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Verbal",
     description: "Language-based understanding",
     icon: BookOpen,
-    color: "#8B7FA8",
+    color: "#F59E0B",
     score: 78,
   },
   {
@@ -84,7 +85,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Spatial",
     description: "Visual-spatial thinking",
     icon: Eye,
-    color: "#6B7280",
+    color: "#EC4899",
     score: 85,
   },
   {
@@ -93,7 +94,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Patterns",
     description: "Identifying structures & relationships",
     icon: Layers,
-    color: "#5E5574",
+    color: "#8B5CF6",
     score: 89,
   },
   {
@@ -102,7 +103,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Focus",
     description: "Sustained & selective attention",
     icon: Compass,
-    color: "#4F4865",
+    color: "#06B6D4",
     score: 58,
   },
   {
@@ -111,7 +112,7 @@ const COGNITIVE_DIMENSIONS = [
     shortName: "Endurance",
     description: "Mental stamina over time",
     icon: Clock,
-    color: "#8B7FA8",
+    color: "#EF4444",
     score: 62,
   },
 ];
@@ -183,31 +184,27 @@ export default function MindPrintSection() {
       ref={sectionRef}
       className="relative border-t border-[#E6E8F0] py-24 md:py-32 overflow-hidden"
     >
-      {/* Enhanced background matching homepage */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white via-[#FAFBFF] to-white" />
+      {/* Enhanced background matching /mindprint page */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F5F3F9] via-[#FAFAFA] to-white" />
 
-      {/* Animated orbs with Framer Motion */}
-      <motion.div
-        className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] rounded-full bg-[#E6E0F5]/30 blur-[120px] pointer-events-none"
-        animate={{
-          x: [0, 100, 0],
-          y: [0, 50, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        style={{ y: y1 }}
-      />
+      {/* Floating orbs */}
+      <div className="absolute top-20 right-1/4 h-96 w-96 rounded-full bg-[#E6E1F2]/50 blur-3xl animate-pulse" />
+      <div className="absolute bottom-0 left-1/4 h-80 w-80 rounded-full bg-[#DDD4F2]/40 blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-40 left-1/3 h-64 w-64 rounded-full bg-[#D9CFF2]/30 blur-3xl animate-pulse delay-500" />
 
-      <motion.div
-        className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full bg-[#D9CFF2]/20 blur-[100px] pointer-events-none"
-        animate={{
-          x: [0, -50, 0],
-          y: [0, -100, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        style={{ y: y2 }}
-      />
+      {/* Grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(94, 85, 116, 0.5) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(94, 85, 116, 0.5) 1px, transparent 1px)
+            `,
+            backgroundSize: "60px 60px",
+          }}
+        />
+      </div>
 
       <div className="relative mx-auto max-w-7xl px-6">
         {/* Header with Framer Motion */}
@@ -219,7 +216,7 @@ export default function MindPrintSection() {
           className="text-center max-w-3xl mx-auto mb-20"
         >
           <motion.div variants={fadeInUp}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#D9CFF2] bg-white/80 px-5 py-2.5 text-xs tracking-[0.2em] uppercase font-medium text-[#5E5574] backdrop-blur-sm mb-6 shadow-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#DDD4F2] bg-white/80 px-5 py-2.5 text-xs tracking-[0.2em] uppercase font-medium text-[#5E5574] backdrop-blur-sm mb-6 shadow-sm">
               <Brain size={16} className="text-[#5E5574]" />
               Cognitive Intelligence System
             </span>
@@ -227,7 +224,7 @@ export default function MindPrintSection() {
 
           <motion.h2
             variants={fadeInUp}
-            className="font-cormorant text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#3F3A52] leading-[1.1]"
+            className="font-julius text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#3F3A52] leading-[1.1]"
           >
             MindPrint<span className="text-[#5E5574] italic">™</span>
           </motion.h2>
@@ -249,7 +246,7 @@ export default function MindPrintSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-20"
         >
-          <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/60 backdrop-blur-md p-8 md:p-10 shadow-lg shadow-[#5E5574]/5">
+          <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-md p-8 md:p-10 shadow-lg shadow-[#5E5574]/5">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
               {STATS.map((stat, index) => (
                 <motion.div
@@ -258,7 +255,7 @@ export default function MindPrintSection() {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="font-cormorant text-5xl md:text-6xl text-[#5E5574] tabular-nums">
+                  <div className="font-julius text-5xl md:text-6xl text-[#5E5574] tabular-nums">
                     {animatedStats[index]}
                     <span className="text-[#8B7FA8] text-4xl">{stat.suffix}</span>
                   </div>
@@ -279,9 +276,9 @@ export default function MindPrintSection() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="lg:col-span-5"
           >
-            <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-sm p-10 h-full shadow-lg shadow-[#5E5574]/5">
+            <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/90 backdrop-blur-sm p-10 h-full shadow-lg shadow-[#5E5574]/5">
               <div className="text-center mb-8">
-                <h3 className="font-cormorant text-2xl md:text-3xl font-light text-[#3F3A52]">
+                <h3 className="font-julius text-2xl md:text-3xl font-light text-[#3F3A52]">
                   8 Cognitive Dimensions
                 </h3>
                 <p className="text-sm text-[#8B7FA8] mt-2 font-light">
@@ -302,13 +299,13 @@ export default function MindPrintSection() {
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#E6E0F2] bg-white shadow-lg">
+                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#D9CFF2] bg-white shadow-lg">
                       <div className="text-center">
                         <motion.div
                           key={activeIndex}
                           initial={{ scale: 0.8, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
-                          className="font-cormorant text-4xl font-medium"
+                          className="font-julius text-4xl font-medium"
                           style={{ color: activeDimension.color }}
                         >
                           {activeDimension.score}
@@ -349,7 +346,7 @@ export default function MindPrintSection() {
                         onClick={() => setActiveIndex(index)}
                         onMouseEnter={() => setHoveredDimension(index)}
                         onMouseLeave={() => setHoveredDimension(null)}
-                        className={`group relative flex h-14 w-14 items-center justify-center rounded-full border bg-white shadow-sm transition-all duration-300 ${isActive
+                        className={`group relative flex h-14 w-14 items-center justify-center rounded-full border-2 bg-white shadow-sm transition-all duration-300 ${isActive
                           ? "border-[#5E5574] ring-2 ring-[#5E5574]/20"
                           : "border-[#E6E0F2] hover:border-[#D9CFF2]"
                           }`}
@@ -417,7 +414,7 @@ export default function MindPrintSection() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mt-10 text-center"
               >
-                <div className="font-cormorant text-xl text-[#3F3A52] font-medium mb-1">
+                <div className="font-julius text-xl text-[#3F3A52] font-medium mb-1">
                   {activeDimension.name}
                 </div>
                 <p className="text-sm text-[#6B647F] font-light">
@@ -436,8 +433,8 @@ export default function MindPrintSection() {
             className="lg:col-span-7 space-y-6"
           >
             {/* How It Works */}
-            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-[#5E5574]/5">
-              <h3 className="font-cormorant text-2xl text-[#3F3A52] mb-6 flex items-center gap-3">
+            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#D9CFF2]/80 bg-white/90 backdrop-blur-sm p-8 shadow-lg shadow-[#5E5574]/5">
+              <h3 className="font-julius text-2xl text-[#3F3A52] mb-6 flex items-center gap-3">
                 <Brain size={24} className="text-[#5E5574] opacity-80" strokeWidth={1} />
                 The Assessment Process
               </h3>
@@ -470,7 +467,7 @@ export default function MindPrintSection() {
                       {item.step}
                     </div>
                     <div className="mt-2">
-                      <div className="font-cormorant text-xl text-[#3F3A52] mb-2 font-medium">
+                      <div className="font-julius text-xl text-[#3F3A52] mb-2 font-medium">
                         {item.title}
                       </div>
                       <p className="text-sm text-[#6B647F] leading-relaxed font-light">
@@ -483,8 +480,8 @@ export default function MindPrintSection() {
             </motion.div>
 
             {/* Learning Archetypes */}
-            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#D9CFF2]/80 bg-white/80 backdrop-blur-sm p-8 shadow-lg shadow-[#5E5574]/5">
-              <h3 className="font-cormorant text-2xl text-[#3F3A52] mb-4 flex items-center gap-3">
+            <motion.div variants={fadeInUp} className="rounded-3xl border border-[#D9CFF2]/80 bg-white/90 backdrop-blur-sm p-8 shadow-lg shadow-[#5E5574]/5">
+              <h3 className="font-julius text-2xl text-[#3F3A52] mb-4 flex items-center gap-3">
                 <Users size={24} className="text-[#5E5574] opacity-80" strokeWidth={1} />
                 Cognitive Archetypes
               </h3>
@@ -511,7 +508,7 @@ export default function MindPrintSection() {
             {/* Sample Profile */}
             <motion.div variants={fadeInUp} className="rounded-3xl border border-[#E6E0F2] bg-white p-8 shadow-lg">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-cormorant text-2xl text-[#3F3A52]">
+                <h3 className="font-julius text-2xl text-[#3F3A52]">
                   Sample Insight
                 </h3>
                 <span className="text-xs font-medium text-[#8B7FA8] bg-[#F7F5FB] px-3 py-1.5 rounded-full">

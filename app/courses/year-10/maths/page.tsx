@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import TextbookPreview from "../../../../components/TextbookPreview";
-import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock } from "lucide-react";
+import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock, Calculator, PieChart, Ruler } from "lucide-react";
 
 /* =========================
    Data
@@ -11,137 +11,365 @@ import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock } f
 
 type TermKey = "Term 1" | "Term 2" | "Term 3" | "Term 4";
 
-const TERMS: Record<
-  TermKey,
-  { title: string; subtitle: string; lessons: string[] }
-> = {
+interface Lesson {
+  topic: string;
+  outcomes: string[];
+}
+
+const TERMS: Record<TermKey, { title: string; subtitle: string; lessons: Lesson[] }> = {
   "Term 1": {
-    title: "Foundations & Fluency",
-    subtitle: "Build the base so everything later feels lighter.",
+    title: "Algebra & Indices",
+    subtitle: "Algebra mastery, manipulation, and proof",
     lessons: [
-      "Algebra refresh: simplifying & factorising",
-      "Linear equations & rearranging formulas",
-      "Inequalities & number line reasoning",
-      "Linear graphs: gradient, intercepts, and meaning",
-      "Simultaneous equations (graphical + algebraic)",
-      "Indices & surds (skills + patterns)",
-      "Expanding & factorising (advanced)",
-      "Quadratic intro: structure and interpretation",
-      "Problem solving: translating words to algebra",
-      "Term checkpoint: mixed exam-style set",
-    ],
+      {
+        topic: "Review of Algebraic Expressions",
+        outcomes: [
+          "Expanding brackets",
+          "Factorising common factors",
+          "Simplify complex expressions"
+        ]
+      },
+      {
+        topic: "Factorisation Techniques",
+        outcomes: [
+          "Difference of two squares",
+          "Simple quadratics (intro)",
+          "Apply factorisation strategies"
+        ]
+      },
+      {
+        topic: "Index Laws",
+        outcomes: [
+          "Multiplying, dividing, powers of powers",
+          "Negative indices",
+          "Apply index laws fluently"
+        ]
+      },
+      {
+        topic: "Surds",
+        outcomes: [
+          "Simplifying surds",
+          "Operations with surds",
+          "Rationalise denominators"
+        ]
+      },
+      {
+        topic: "Algebraic Fractions",
+        outcomes: [
+          "Simplifying",
+          "Substitution",
+          "Apply fraction skills to algebra"
+        ]
+      },
+      {
+        topic: "Linear Equations",
+        outcomes: [
+          "Multi-step equations",
+          "Equations with variables on both sides",
+          "Check solutions"
+        ]
+      },
+      {
+        topic: "Problem Solving with Algebra",
+        outcomes: [
+          "Translating word problems",
+          "Logical structure",
+          "Justify solution strategies"
+        ]
+      },
+      {
+        topic: "Algebraic Reasoning & Proof",
+        outcomes: [
+          "Justifying steps",
+          "Explaining solutions clearly",
+          "Mathematical communication"
+        ]
+      },
+      {
+        topic: "Exam Preparation",
+        outcomes: ["Algebra drills", "Common mistakes", "Exam strategy"]
+      },
+      {
+        topic: "Term 1 Exam",
+        outcomes: ["Assessment of algebra & indices", "Reasoning-based questions"]
+      }
+    ]
   },
   "Term 2": {
-    title: "Quadratics & Trigonometry",
-    subtitle: "More structure, more control — learn the 'why'.",
+    title: "Linear Relationships & Measurement",
+    subtitle: "Graphs, formulas, applications",
     lessons: [
-      "Quadratic graphs: features & transformations",
-      "Solving quadratics by factorising",
-      "Completing the square",
-      "Quadratic formula",
-      "Applications of quadratics",
-      "Trigonometry foundations",
-      "Sine & cosine rule (introduction)",
-      "Bearings & angles of elevation",
-      "Algebra + trigonometry integration",
-      "Checkpoint & error review",
-    ],
+      {
+        topic: "Coordinate Geometry",
+        outcomes: [
+          "Plotting points",
+          "Interpreting graphs",
+          "Identify key features"
+        ]
+      },
+      {
+        topic: "Linear Relationships",
+        outcomes: [
+          "Tables of values",
+          "Straight-line graphs",
+          "Recognize linear patterns"
+        ]
+      },
+      {
+        topic: "Gradient",
+        outcomes: [
+          "Rate of change",
+          "Meaning in context",
+          "Calculate gradient from graphs"
+        ]
+      },
+      {
+        topic: "Linear Equations of Lines",
+        outcomes: [
+          "y = mx + b",
+          "Graphing from equations",
+          "Interpret gradient and y-intercept"
+        ]
+      },
+      {
+        topic: "Distance, Speed & Time",
+        outcomes: [
+          "Formula manipulation",
+          "Real-world problems",
+          "Rearrange formulas"
+        ]
+      },
+      {
+        topic: "Perimeter & Area",
+        outcomes: [
+          "Composite figures",
+          "Algebraic expressions in formulas",
+          "Apply area formulas"
+        ]
+      },
+      {
+        topic: "Volume & Surface Area",
+        outcomes: [
+          "Prisms and cylinders",
+          "Apply volume formulas",
+          "Calculate surface area"
+        ]
+      },
+      {
+        topic: "Measurement Problem Solving",
+        outcomes: [
+          "Multi-step applications",
+          "Choose appropriate formulas",
+          "Justify solution methods"
+        ]
+      },
+      {
+        topic: "Exam Preparation",
+        outcomes: ["Graph interpretation", "Formula rearrangement", "Measurement reasoning"]
+      },
+      {
+        topic: "Term 2 Exam",
+        outcomes: ["Assessment of linear relationships & measurement"]
+      }
+    ]
   },
   "Term 3": {
-    title: "Measurement & Statistics",
-    subtitle: "Accuracy, interpretation, confidence.",
+    title: "Trigonometry, Geometry & Probability",
+    subtitle: "Formal geometry and trigonometric applications",
     lessons: [
-      "Pythagoras & distance",
-      "Coordinate geometry connections",
-      "Area & composite shapes",
-      "Surface area & scaling",
-      "Rates & ratio problems",
-      "Mean, median, interquartile range",
-      "Box plots & data displays",
-      "Scatterplots & correlation",
-      "Probability foundations",
-      "Data interpretation checkpoint",
-    ],
+      {
+        topic: "Angle Relationships",
+        outcomes: [
+          "Parallel lines",
+          "Formal reasoning",
+          "Apply angle relationships"
+        ]
+      },
+      {
+        topic: "Triangles",
+        outcomes: [
+          "Congruency tests",
+          "Angle properties",
+          "Prove triangle relationships"
+        ]
+      },
+      {
+        topic: "Quadrilaterals",
+        outcomes: [
+          "Properties",
+          "Geometric proofs",
+          "Apply quadrilateral properties"
+        ]
+      },
+      {
+        topic: "Pythagoras' Theorem",
+        outcomes: [
+          "Solving unknown sides",
+          "Word problems",
+          "Apply theorem in context"
+        ]
+      },
+      {
+        topic: "Trigonometry",
+        outcomes: [
+          "Sine, cosine, tangent",
+          "Right-angled triangles",
+          "Use trigonometric ratios"
+        ]
+      },
+      {
+        topic: "Trigonometric Applications",
+        outcomes: [
+          "Multi-step problems",
+          "Angles of elevation and depression",
+          "Apply trigonometry in context"
+        ]
+      },
+      {
+        topic: "Probability",
+        outcomes: [
+          "Theoretical probability",
+          "Combined events",
+          "Calculate probabilities"
+        ]
+      },
+      {
+        topic: "Probability Investigations",
+        outcomes: [
+          "Sample spaces",
+          "Justifying results",
+          "Compare theoretical and experimental"
+        ]
+      },
+      {
+        topic: "Exam Preparation",
+        outcomes: ["Geometry & trigonometry drills", "Diagram interpretation", "Proof practice"]
+      },
+      {
+        topic: "Term 3 Exam",
+        outcomes: ["Assessment of trigonometry, geometry & probability"]
+      }
+    ]
   },
   "Term 4": {
-    title: "Exam Readiness & Mastery",
-    subtitle: "Refine method. Reduce mistakes.",
+    title: "Quadratics, Statistics & Consolidation",
+    subtitle: "Modelling, interpretation, full-year mastery",
     lessons: [
-      "Exam layout & clarity strategies",
-      "Top 10 common errors",
-      "Timed paper 1 + debrief",
-      "Targeted reteaching session",
-      "Timed paper 2 + review",
-      "Multi-step reasoning practice",
-      "Written response technique",
-      "Spaced retrieval consolidation",
-      "Final mock examination",
-      "Personalised revision roadmap",
-    ],
-  },
+      {
+        topic: "Quadratic Expressions",
+        outcomes: [
+          "Expanding & factorising",
+          "Recognize quadratic patterns",
+          "Apply factorisation techniques"
+        ]
+      },
+      {
+        topic: "Quadratic Equations",
+        outcomes: [
+          "Solving simple quadratics",
+          "Zero-product rule",
+          "Check solutions"
+        ]
+      },
+      {
+        topic: "Quadratic Graphs",
+        outcomes: [
+          "Shape & key features",
+          "Interpreting meaning",
+          "Identify vertex and intercepts"
+        ]
+      },
+      {
+        topic: "Statistics",
+        outcomes: [
+          "Mean, median, mode",
+          "Range & interpretation",
+          "Apply statistical measures"
+        ]
+      },
+      {
+        topic: "Scatter Plots & Correlation",
+        outcomes: [
+          "Line of best fit",
+          "Strength of correlation",
+          "Interpret scatter plots"
+        ]
+      },
+      {
+        topic: "Financial Mathematics",
+        outcomes: [
+          "Simple interest",
+          "Percentage increase & decrease",
+          "Apply financial formulas"
+        ]
+      },
+      {
+        topic: "Mathematical Modelling",
+        outcomes: [
+          "Interpreting limitations",
+          "Real-world applications",
+          "Justify modelling choices"
+        ]
+      },
+      {
+        topic: "Full Year Revision",
+        outcomes: ["Algebra", "Graphs", "Trigonometry", "Statistics & probability"]
+      },
+      {
+        topic: "Yearly Exam Preparation",
+        outcomes: ["Full practice exam", "Time management & accuracy", "Strategy refinement"]
+      },
+      {
+        topic: "Yearly Exam",
+        outcomes: ["Comprehensive Stage 5 assessment", "High reasoning & problem-solving focus"]
+      }
+    ]
+  }
 };
-
-const APPROACH_FEATURES = [
-  {
-    icon: Target,
-    title: "Calm structure",
-    description: "Predictable lesson flow reduces cognitive load and builds confidence.",
-  },
-  {
-    icon: Brain,
-    title: "MindPrint-informed",
-    description: "Teaching adapts to how each student thinks and processes information.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Tutor diagnostics",
-    description: "Small checkpoints reveal misunderstandings before they compound.",
-  },
-  {
-    icon: CheckCircle,
-    title: "Visible progress",
-    description: "Micro-wins tracked beyond grades — effort and understanding matter.",
-  },
-];
 
 const KEY_METHOD_BENEFITS = [
   {
     icon: BookOpen,
-    title: "Structured Knowledge Building",
-    description: "Each concept is introduced in a deliberate sequence that mirrors how the brain naturally builds mathematical understanding.",
+    title: "Algebraic Mastery",
+    description: "Complete algebra fluency including quadratics, surds, and algebraic fractions — essential for all Year 11 mathematics pathways.",
   },
   {
     icon: Users,
-    title: "Cognitive Pacing",
-    description: "Lesson speed adjusts based on real-time feedback, ensuring mastery before moving forward — no student left behind or held back.",
+    title: "Trigonometric Proficiency",
+    description: "Comprehensive trigonometry skills with real-world applications, preparing for Advanced and Extension mathematics.",
   },
   {
     icon: Zap,
-    title: "Active Engagement",
-    description: "Students don't just watch — they solve, explain, and apply. This builds confidence and reveals gaps early.",
+    title: "Quadratic Reasoning",
+    description: "Deep understanding of quadratic expressions, equations, and graphs — foundational for senior mathematics.",
   },
   {
     icon: TrendingUp,
-    title: "Measurable Yield",
-    description: "Progress is tracked through micro-assessments, not just end-of-term exams. Students see their growth in real-time.",
+    title: "HSC Pathway Ready",
+    description: "Strategic preparation for Mathematics Standard, Advanced, or Extension 1 with strong emphasis on reasoning and proof.",
   },
 ];
 
-const STUDENT_OUTCOMES = [
+const APPROACH_FEATURES = [
   {
-    metric: "92%",
-    label: "Students report increased confidence",
-    description: "After 12 weeks of tutoring",
+    icon: Calculator,
+    title: "Formal proof",
+    description: "Develop rigorous mathematical reasoning and proof skills essential for senior mathematics.",
   },
   {
-    metric: "2.3x",
-    label: "Faster concept retention",
-    description: "Compared to traditional methods",
+    icon: Brain,
+    title: "Multi-step reasoning",
+    description: "Complex problem-solving tasks build resilience and prepare for HSC-level questions.",
   },
   {
-    metric: "15+",
-    label: "Average grade improvement",
-    description: "Within one academic year",
+    icon: Target,
+    title: "Stage 5 completion",
+    description: "Full coverage of NSW Mathematics K–10 Stage 5 outcomes preparing for Year 11.",
+  },
+  {
+    icon: CheckCircle,
+    title: "Pathway preparation",
+    description: "Yearly exam and continuous assessment ensure readiness for chosen HSC pathway.",
   },
 ];
 
@@ -152,6 +380,16 @@ const STUDENT_OUTCOMES = [
 export default function Year10MathsPage() {
   const [activeTerm, setActiveTerm] = useState<TermKey>("Term 1");
   const active = TERMS[activeTerm];
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#FAFAFA]">
@@ -195,12 +433,10 @@ export default function Year10MathsPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg text-[#6B647F] leading-relaxed">
-            A calm, structured pathway through the NSW Mathematics syllabus — built
-            on the{" "}
-            <span className="text-[#5E5574] font-medium">KEY Method</span> and
-            refined through{" "}
-            <span className="text-[#5E5574] font-medium">MindPrint</span> cognitive
-            profiling.
+            Finishing Stage 5 strongly — mastering{" "}
+            <span className="text-[#5E5574] font-medium">quadratics</span>,{" "}
+            <span className="text-[#5E5574] font-medium">trigonometry</span>, and{" "}
+            <span className="text-[#5E5574] font-medium">formal proof</span> for HSC pathway success.
           </p>
 
           {/* Course overview stats */}
@@ -245,112 +481,11 @@ export default function Year10MathsPage() {
         </div>
       </section>
 
-      {/* ================= THE KEY METHOD IN ACTION ================= */}
-      <section className="py-24 border-t border-[#E6E1F2] bg-white">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center mb-16">
-            <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
-              Our Approach
-            </p>
-            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
-              The KEY Method in Mathematics
-            </h2>
-            <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto leading-relaxed">
-              Every lesson is designed around three principles: structured Knowledge,
-              active Engagement, and measurable Yield.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {KEY_METHOD_BENEFITS.map((benefit, index) => (
-              <div
-                key={benefit.title}
-                className="group rounded-2xl border border-[#E6E1F2] bg-gradient-to-br from-white to-[#FAFAFA] p-8 transition-all hover:border-[#D9CFF2] hover:shadow-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574] transition-transform group-hover:scale-110">
-                    <benefit.icon size={26} strokeWidth={2} />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-[#3F3A52] mb-2">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-sm text-[#6B647F] leading-relaxed">
-                      {benefit.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ================= STUDENT OUTCOMES ================= */}
-      <section className="py-20 border-t border-[#E6E1F2] bg-gradient-to-b from-[#F7F5FB] to-white">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
-              Proven Results
-            </p>
-            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
-              Real outcomes from our students
-            </h2>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {STUDENT_OUTCOMES.map((outcome) => (
-              <div
-                key={outcome.label}
-                className="rounded-2xl border border-[#E6E1F2] bg-white/90 backdrop-blur-sm p-8 text-center transition-all hover:border-[#D9CFF2] hover:shadow-md"
-              >
-                <div className="text-5xl font-bold bg-gradient-to-br from-[#5E5574] to-[#7C6B94] bg-clip-text text-transparent mb-3">
-                  {outcome.metric}
-                </div>
-                <div className="font-semibold text-[#3F3A52] mb-2">
-                  {outcome.label}
-                </div>
-                <div className="text-sm text-[#8C84A8]">
-                  {outcome.description}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ================= APPROACH FEATURES ================= */}
-      <section className="py-20 border-t border-[#E6E1F2]">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
-              How We Teach
-            </p>
-            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
-              Designed for sustainable learning
-            </h2>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {APPROACH_FEATURES.map((feature) => (
-              <div
-                key={feature.title}
-                className="group rounded-2xl border border-[#E6E1F2] bg-white/80 p-6 backdrop-blur-sm transition-all hover:border-[#D9CFF2] hover:shadow-md"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574] mb-4 transition-transform group-hover:scale-110">
-                  <feature.icon size={22} />
-                </div>
-                <h3 className="font-bold text-[#3F3A52] mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-[#6B647F] leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Blue sticky line for Mathematics */}
+      <div
+        className={`h-1 bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ${isSticky ? 'fixed top-[72px] left-0 right-0 z-40' : 'relative'
+          }`}
+      />
 
       {/* ================= TERM STRUCTURE ================= */}
       <section className="py-24 bg-white border-t border-[#E6E1F2]">
@@ -363,8 +498,7 @@ export default function Year10MathsPage() {
               Forty lessons across four terms
             </h2>
             <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto">
-              Each term builds on the last, creating a seamless progression from
-              foundations to exam readiness.
+              Each term focuses on a different strand of mathematics, completing Stage 5 and preparing for Year 11 pathways.
             </p>
           </div>
 
@@ -425,18 +559,30 @@ export default function Year10MathsPage() {
                   <p className="text-[#6B647F] mt-1">{active.subtitle}</p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {active.lessons.map((lesson, i) => (
                     <div
-                      key={lesson}
-                      className="group flex items-center gap-4 rounded-xl border border-[#E6E1F2] bg-white p-4 transition-all hover:border-[#D9CFF2] hover:shadow-sm"
+                      key={i}
+                      className="group rounded-xl border border-[#E6E1F2] bg-white p-5 transition-all hover:border-[#D9CFF2] hover:shadow-sm"
                     >
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F4F1FB] text-sm font-semibold text-[#6B647F] group-hover:bg-[#E6E0F5] group-hover:text-[#5E5574] transition-colors">
-                        {i + 1}
+                      <div className="flex items-start gap-4 mb-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F4F1FB] text-sm font-semibold text-[#6B647F] group-hover:bg-[#E6E0F5] group-hover:text-[#5E5574] transition-colors">
+                          {i + 1}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-[#3F3A52] mb-2">
+                            {lesson.topic}
+                          </h4>
+                          <ul className="space-y-1.5">
+                            {lesson.outcomes.map((outcome, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-sm text-[#6B647F]">
+                                <CheckCircle size={14} className="text-[#8B7FA8] shrink-0 mt-0.5" />
+                                <span>{outcome}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                      <span className="text-sm text-[#4A4458] group-hover:text-[#3F3A52] transition-colors">
-                        {lesson}
-                      </span>
                     </div>
                   ))}
                 </div>
@@ -467,6 +613,105 @@ export default function Year10MathsPage() {
       {/* ================= TEXTBOOK PREVIEW ================= */}
       <TextbookPreview />
 
+      {/* ================= THE KEY METHOD IN ACTION ================= */}
+      <section className="py-24 border-t border-[#E6E1F2] bg-white">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-16">
+            <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
+              Our Approach
+            </p>
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
+              The KEY Method in Mathematics
+            </h2>
+            <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto leading-relaxed">
+              Every lesson is designed around three principles: structured <span className="text-[#5E5574] font-medium">Knowledge</span>,
+              active <span className="text-[#5E5574] font-medium">Engagement</span>, and measurable <span className="text-[#5E5574] font-medium">Yield</span> — all informed by your child's{" "}
+              <span className="text-[#5E5574] font-medium">MindPrint</span> cognitive profile.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {KEY_METHOD_BENEFITS.map((benefit) => (
+              <div
+                key={benefit.title}
+                className="group rounded-2xl border border-[#E6E1F2] bg-gradient-to-br from-white to-[#FAFAFA] p-8 transition-all hover:border-[#D9CFF2] hover:shadow-lg"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574] transition-transform group-hover:scale-110">
+                    <benefit.icon size={26} strokeWidth={2} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-[#3F3A52] mb-2">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-sm text-[#6B647F] leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* MindPrint Integration Callout */}
+          <div className="mt-12 rounded-2xl border-2 border-[#D9CFF2] bg-gradient-to-br from-[#F7F5FB] to-white p-8">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#5E5574] to-[#7C6B94] text-white">
+                <Brain size={24} />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-[#3F3A52] mb-2">Powered by MindPrint™</h3>
+                <p className="text-[#6B647F] leading-relaxed mb-4">
+                  Every lesson is tailored to your child's unique cognitive profile. MindPrint assessment reveals how your child processes information, allowing us to adapt pacing, structure, and task design to their specific strengths and challenges.
+                </p>
+                <Link
+                  href="/mindprint"
+                  className="inline-flex items-center gap-2 text-[#5E5574] font-semibold hover:text-[#4F4865] transition-colors group"
+                >
+                  Learn About MindPrint
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= APPROACH FEATURES ================= */}
+      <section className="py-20 border-t border-[#E6E1F2]">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm font-medium tracking-[0.15em] uppercase text-[#8C84A8] mb-4">
+              How We Teach
+            </p>
+            <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
+              Designed for HSC pathway success
+            </h2>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {APPROACH_FEATURES.map((feature) => (
+              <div
+                key={feature.title}
+                className="group rounded-2xl border border-[#E6E1F2] bg-white/80 p-6 backdrop-blur-sm transition-all hover:border-[#D9CFF2] hover:shadow-md"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574] mb-4 transition-transform group-hover:scale-110">
+                  <feature.icon size={22} />
+                </div>
+                <h3 className="font-bold text-[#3F3A52] mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-[#6B647F] leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ================= SYLLABUS NOTE ================= */}
       <section className="py-16 border-t border-[#E6E1F2]">
         <div className="mx-auto max-w-3xl px-6 text-center">
@@ -476,9 +721,9 @@ export default function Year10MathsPage() {
             </p>
             <p className="text-[#4A4458] leading-relaxed">
               This course follows the{" "}
-              <strong className="text-[#3F3A52]">NSW Mathematics Syllabus</strong>{" "}
-              for Stage 5, covering all outcomes for Year 10 students. Content is
-              sequenced for optimal understanding and long-term retention.
+              <strong className="text-[#3F3A52]">NSW Mathematics K–10 Syllabus</strong>{" "}
+              for Stage 5 (Year 10), covering all outcomes and preparing students for
+              Mathematics Standard, Advanced, or Extension 1 pathways in Year 11.
             </p>
           </div>
         </div>

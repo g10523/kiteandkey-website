@@ -10,9 +10,10 @@ export default function PublicLayoutWrapper({ children }: { children: React.Reac
     const pathname = usePathname()
     const isAdminRoute = pathname?.startsWith('/admin')
     const isDashboardRoute = pathname?.startsWith('/dashboard')
+    const isEnrollRoute = pathname?.startsWith('/enrol')
 
-    if (isAdminRoute || isDashboardRoute) {
-        // For admin and dashboard routes, just render children without public nav/footer
+    if (isAdminRoute || isDashboardRoute || isEnrollRoute) {
+        // For admin, dashboard, and enrollment routes, just render children without public nav/footer
         return <>{children}</>
     }
 

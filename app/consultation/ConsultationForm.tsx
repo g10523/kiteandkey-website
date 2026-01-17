@@ -302,7 +302,7 @@ export default function ConsultationForm({ availableSlots }: { availableSlots: a
                         {currentStep === 1 && (
                             <div className="space-y-8">
                                 <div>
-                                    <h2 className="font-julius text-2xl md:text-3xl text-[#3F3A52]">Your Details</h2>
+                                    <h2 className="font-julius text-2xl md:text-3xl text-[#3F3A52]">Parent Details</h2>
                                     <p className="mt-2 text-sm text-[#8C84A8]">Let's start with your contact information</p>
                                 </div>
                                 <div className="grid gap-6 sm:grid-cols-2">

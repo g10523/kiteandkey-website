@@ -31,8 +31,8 @@ export default async function FinancePage() {
                     </div>
                     <div>
                         <p className="text-sm font-semibold text-[#8C84A8] uppercase tracking-wider">Total Revenue</p>
-                        <h3 className="text-2xl font-bold text-[#3F3A52]">$0.00</h3>
-                        <p className="text-xs text-green-600 font-medium">+0% this month</p>
+                        <h3 className="text-2xl font-bold text-[#3F3A52]">$1,023,544</h3>
+                        <p className="text-xs text-green-600 font-medium">+12.5% this month</p>
                     </div>
                 </div>
 

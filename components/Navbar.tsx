@@ -21,6 +21,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
+  const [mobileYearAccordion, setMobileYearAccordion] = useState<string | null>(null);
 
   // Refs for timeout handling
   const keyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,6 +47,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setMobileAccordion(null);
+    setMobileYearAccordion(null);
   }, [pathname]);
 
   /* ---------- Prevent body scroll when mobile menu is open ---------- */
@@ -87,9 +89,8 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          isScrolled ? "py-0" : "py-0"
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "py-0" : "py-0"
+          }`}
       >
         {/* Scroll progress bar */}
         <div className="fixed left-0 top-0 z-[60] w-full">
@@ -102,11 +103,10 @@ export default function Navbar() {
 
         {/* Stained glass backdrop */}
         <div
-          className={`absolute inset-0 transition-all duration-300 ${
-            isScrolled
-              ? "bg-gradient-to-r from-[#E7E0F6]/95 via-[#DDD4F2]/95 to-[#F2EEFA]/95 shadow-[0_8px_32px_rgba(126,110,170,0.15)]"
-              : "bg-gradient-to-r from-[#E7E0F6]/90 via-[#DDD4F2]/85 to-[#F2EEFA]/90"
-          } backdrop-blur-xl border-b border-[#CFC6EA]/80`}
+          className={`absolute inset-0 transition-all duration-300 ${isScrolled
+            ? "bg-gradient-to-br from-[#E7E0F6]/95 via-[#F2EEFA]/90 to-[#DDD4F2]/95 shadow-[0_8px_32px_rgba(126,110,170,0.15)]"
+            : "bg-gradient-to-br from-[#E7E0F6]/95 via-[#F2EEFA]/90 to-[#DDD4F2]/95"
+            } backdrop-blur-xl border-b border-[#CFC6EA]/80`}
         />
 
         <nav className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -121,7 +121,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="font-julius text-[16.5px] tracking-[0.16em] uppercase text-[#3F3A52] transition-colors group-hover:text-[#5E5574]">
+            <span className="font-julius text-lg font-bold tracking-[0.16em] uppercase text-[#3F3A52] transition-colors group-hover:text-[#5E5574]">
               Kite & Key Academy
             </span>
           </Link>
@@ -135,15 +135,13 @@ export default function Navbar() {
               onMouseLeave={handleKeyLeave}
             >
               <button
-                className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
-                  openKey ? "text-[#3F3A52]" : "text-[#6B647F] hover:text-[#3F3A52]"
-                }`}
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${openKey ? "text-[#3F3A52]" : "text-[#6B647F] hover:text-[#3F3A52]"
+                  }`}
               >
                 The KEY Method
                 <svg
-                  className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                    openKey ? "rotate-180" : ""
-                  }`}
+                  className={`h-3.5 w-3.5 transition-transform duration-200 ${openKey ? "rotate-180" : ""
+                    }`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -162,11 +160,10 @@ export default function Navbar() {
 
               {/* Dropdown */}
               <div
-                className={`absolute left-1/2 top-[calc(100%+12px)] w-[400px] -translate-x-1/2 transition-all duration-200 ${
-                  openKey
-                    ? "opacity-100 translate-y-0 pointer-events-auto"
-                    : "opacity-0 -translate-y-2 pointer-events-none"
-                }`}
+                className={`absolute left-1/2 top-[calc(100%+12px)] w-[400px] -translate-x-1/2 transition-all duration-200 ${openKey
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
               >
                 <div className="rounded-2xl border border-[#D9CFF2]/80 bg-white/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(94,85,116,0.18)] overflow-hidden">
                   <div className="p-4 space-y-1">
@@ -181,12 +178,6 @@ export default function Navbar() {
                       icon={<BrainIcon />}
                       title="MindPrint"
                       description="Cognitive learning profiles refined through diagnostics."
-                    />
-                    <DropdownBlock
-                      href="/lift-initiative"
-                      icon={<RocketIcon />}
-                      title="Lift Initiative"
-                      description="Confidence, discipline, and momentum systems."
                     />
                     <DropdownBlock
                       href="/kite-and-key-in-the-community"
@@ -212,15 +203,13 @@ export default function Navbar() {
               onMouseLeave={handleCoursesLeave}
             >
               <button
-                className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
-                  openCourses ? "text-[#3F3A52]" : "text-[#6B647F] hover:text-[#3F3A52]"
-                }`}
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${openCourses ? "text-[#3F3A52]" : "text-[#6B647F] hover:text-[#3F3A52]"
+                  }`}
               >
                 Courses
                 <svg
-                  className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                    openCourses ? "rotate-180" : ""
-                  }`}
+                  className={`h-3.5 w-3.5 transition-transform duration-200 ${openCourses ? "rotate-180" : ""
+                    }`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -239,11 +228,10 @@ export default function Navbar() {
 
               {/* Dropdown */}
               <div
-                className={`absolute left-1/2 top-[calc(100%+12px)] w-[520px] -translate-x-1/2 transition-all duration-200 ${
-                  openCourses
-                    ? "opacity-100 translate-y-0 pointer-events-auto"
-                    : "opacity-0 -translate-y-2 pointer-events-none"
-                }`}
+                className={`absolute left-1/2 top-[calc(100%+12px)] w-[520px] -translate-x-1/2 transition-all duration-200 ${openCourses
+                  ? "opacity-100 translate-y-0 pointer-events-auto"
+                  : "opacity-0 -translate-y-2 pointer-events-none"
+                  }`}
               >
                 <div className="rounded-2xl border border-[#D9CFF2]/80 bg-white/95 backdrop-blur-xl shadow-[0_24px_70px_rgba(94,85,116,0.22)] overflow-hidden">
                   <div className="grid grid-cols-5">
@@ -258,17 +246,15 @@ export default function Navbar() {
                           <div
                             key={year}
                             onMouseEnter={() => setActiveYear(year)}
-                            className={`cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 flex items-center justify-between ${
-                              activeYear === year
-                                ? "bg-[#5E5574] text-white shadow-md"
-                                : "text-[#6B647F] hover:bg-[#F4F1FB] hover:text-[#3F3A52]"
-                            }`}
+                            className={`cursor-pointer rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 flex items-center justify-between ${activeYear === year
+                              ? "bg-[#5E5574] text-white shadow-md"
+                              : "text-[#6B647F] hover:bg-[#F4F1FB] hover:text-[#3F3A52]"
+                              }`}
                           >
                             {year}
                             <svg
-                              className={`h-4 w-4 transition-opacity ${
-                                activeYear === year ? "opacity-100" : "opacity-0"
-                              }`}
+                              className={`h-4 w-4 transition-opacity ${activeYear === year ? "opacity-100" : "opacity-0"
+                                }`}
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -296,9 +282,13 @@ export default function Navbar() {
                           {YEAR_TO_SUBJECTS[activeYear].map((subject) => (
                             <Link
                               key={subject}
-                              href={`/courses/${activeYear
-                                .toLowerCase()
-                                .replace(" ", "-")}/${subject.toLowerCase()}`}
+                              href={
+                                subject === "Selective"
+                                  ? "/courses/selective"
+                                  : `/courses/${activeYear
+                                    .toLowerCase()
+                                    .replace(" ", "-")}/${subject.toLowerCase()}`
+                              }
                               className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#6B647F] transition-all hover:bg-[#F4F1FB] hover:text-[#3F3A52] group"
                             >
                               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F4F1FB] group-hover:bg-[#E6E0F5]">
@@ -307,7 +297,7 @@ export default function Navbar() {
                               <div>
                                 <div className="font-medium">{subject}</div>
                                 <div className="text-xs text-[#9A95AF]">
-                                  {activeYear} curriculum
+                                  {subject === "Selective" ? "Coming Soon" : `${activeYear} curriculum`}
                                 </div>
                               </div>
                             </Link>
@@ -393,19 +383,16 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-1.5">
               <span
-                className={`h-0.5 w-5 bg-[#5E5574] transition-all duration-300 ${
-                  mobileMenuOpen ? "translate-y-2 rotate-45" : ""
-                }`}
+                className={`h-0.5 w-5 bg-[#5E5574] transition-all duration-300 ${mobileMenuOpen ? "translate-y-2 rotate-45" : ""
+                  }`}
               />
               <span
-                className={`h-0.5 w-5 bg-[#5E5574] transition-all duration-300 ${
-                  mobileMenuOpen ? "opacity-0" : ""
-                }`}
+                className={`h-0.5 w-5 bg-[#5E5574] transition-all duration-300 ${mobileMenuOpen ? "opacity-0" : ""
+                  }`}
               />
               <span
-                className={`h-0.5 w-5 bg-[#5E5574] transition-all duration-300 ${
-                  mobileMenuOpen ? "-translate-y-2 -rotate-45" : ""
-                }`}
+                className={`h-0.5 w-5 bg-[#5E5574] transition-all duration-300 ${mobileMenuOpen ? "-translate-y-2 -rotate-45" : ""
+                  }`}
               />
             </div>
           </button>
@@ -414,9 +401,8 @@ export default function Navbar() {
 
       {/* ================= MOBILE MENU ================= */}
       <div
-        className={`fixed inset-0 z-40 lg:hidden transition-all duration-300 ${
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-40 lg:hidden transition-all duration-300 ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
       >
         {/* Backdrop */}
         <div
@@ -426,9 +412,8 @@ export default function Navbar() {
 
         {/* Menu panel */}
         <div
-          className={`absolute right-0 top-0 h-full w-full max-w-sm bg-gradient-to-b from-[#F7F5FB] to-[#EEEAF8] shadow-2xl transition-transform duration-300 ${
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute right-0 top-0 h-full w-full max-w-sm bg-gradient-to-b from-[#F7F5FB] to-[#EEEAF8] shadow-2xl transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex h-full flex-col overflow-y-auto pt-24 pb-8 px-6">
             {/* Mobile nav links */}
@@ -443,7 +428,6 @@ export default function Navbar() {
               >
                 <MobileDropdownLink href="/key-method" label="The KEY Method" />
                 <MobileDropdownLink href="/mindprint" label="MindPrint" />
-                <MobileDropdownLink href="/lift-initiative" label="Lift Initiative" />
                 <MobileDropdownLink href="/kite-and-key-in-the-community" label="Kite & Key in the Community" />
                 <MobileDropdownLink href="/articles" label="Articles" />
               </MobileAccordion>
@@ -457,18 +441,26 @@ export default function Navbar() {
                 }
               >
                 {YEAR_GROUPS.map((year) => (
-                  <div key={year} className="mb-3">
-                    <div className="text-xs font-semibold text-[#8C84A8] uppercase tracking-wider mb-2 px-3">
-                      {year}
-                    </div>
+                  <MobileNestedAccordion
+                    key={year}
+                    title={year}
+                    isOpen={mobileYearAccordion === year}
+                    onToggle={() =>
+                      setMobileYearAccordion(mobileYearAccordion === year ? null : year)
+                    }
+                  >
                     {YEAR_TO_SUBJECTS[year].map((subject) => (
                       <MobileDropdownLink
                         key={`${year}-${subject}`}
-                        href={`/courses/${year.toLowerCase().replace(" ", "-")}/${subject.toLowerCase()}`}
+                        href={
+                          subject === "Selective"
+                            ? "/courses/selective"
+                            : `/courses/${year.toLowerCase().replace(" ", "-")}/${subject.toLowerCase()}`
+                        }
                         label={subject}
                       />
                     ))}
-                  </div>
+                  </MobileNestedAccordion>
                 ))}
               </MobileAccordion>
 
@@ -565,6 +557,14 @@ function ScienceIcon() {
   );
 }
 
+function SelectiveIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+    </svg>
+  );
+}
+
 /* ==================== Helper Components ==================== */
 
 function NavLink({
@@ -581,9 +581,8 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`relative text-sm font-medium transition-colors ${
-        isActive ? "text-[#3F3A52]" : "text-[#6B647F] hover:text-[#3F3A52]"
-      }`}
+      className={`relative text-sm font-medium transition-colors ${isActive ? "text-[#3F3A52]" : "text-[#6B647F] hover:text-[#3F3A52]"
+        }`}
     >
       {label}
       {isActive && (
@@ -661,15 +660,13 @@ function MobileAccordion({
     <div className="rounded-xl overflow-hidden">
       <button
         onClick={onToggle}
-        className={`flex w-full items-center justify-between px-4 py-3 text-base font-medium transition-colors ${
-          isOpen ? "bg-white/70 text-[#3F3A52]" : "text-[#3F3A52] hover:bg-white/50"
-        }`}
+        className={`flex w-full items-center justify-between px-4 py-3 text-base font-medium transition-colors ${isOpen ? "bg-white/70 text-[#3F3A52]" : "text-[#3F3A52] hover:bg-white/50"
+          }`}
       >
         {title}
         <svg
-          className={`h-4 w-4 text-[#9A95AF] transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`h-4 w-4 text-[#9A95AF] transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -684,11 +681,53 @@ function MobileAccordion({
       </button>
 
       <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
-        <div className="bg-white/50 px-2 py-2">{children}</div>
+        <div className="bg-white/50 px-2 py-2 max-h-[700px] overflow-y-auto">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function MobileNestedAccordion({
+  title,
+  isOpen,
+  onToggle,
+  children,
+}: {
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="mb-1">
+      <button
+        onClick={onToggle}
+        className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isOpen ? "bg-[#F4F1FB] text-[#3F3A52]" : "text-[#6B647F] hover:bg-[#F4F1FB]/50 hover:text-[#3F3A52]"
+          }`}
+      >
+        {title}
+        <svg
+          className={`h-3.5 w-3.5 text-[#9A95AF] transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      <div
+        className={`overflow-hidden transition-all duration-200 ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+      >
+        <div className="pl-3 py-1 space-y-0.5">{children}</div>
       </div>
     </div>
   );
@@ -710,8 +749,8 @@ function MobileDropdownLink({ href, label }: { href: string; label: string }) {
 const YEAR_GROUPS = ["Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"];
 
 const YEAR_TO_SUBJECTS: Record<string, string[]> = {
-  "Year 5": ["English", "Maths"],
-  "Year 6": ["English", "Maths"],
+  "Year 5": ["English", "Maths", "Selective"],
+  "Year 6": ["English", "Maths", "Selective"],
   "Year 7": ["English", "Maths", "Science"],
   "Year 8": ["English", "Maths", "Science"],
   "Year 9": ["English", "Maths", "Science"],
@@ -722,4 +761,5 @@ const SUBJECT_ICONS: Record<string, React.ReactNode> = {
   English: <EnglishIcon />,
   Maths: <MathsIcon />,
   Science: <ScienceIcon />,
+  Selective: <SelectiveIcon />,
 };

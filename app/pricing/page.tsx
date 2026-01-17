@@ -259,7 +259,7 @@ export default function PricingPage() {
                       {/* Savings indicator for Soar */}
                       {pkg.name === "Soar" && (
                         <div className="mt-1 sm:mt-2 md:mt-3 hidden sm:inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 text-[8px] sm:text-[10px] md:text-xs font-medium text-green-700">
-                          Save $30/week
+                          Save $300/term
                         </div>
                       )}
                     </div>

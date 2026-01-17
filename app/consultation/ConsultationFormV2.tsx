@@ -226,8 +226,8 @@ export default function ConsultationFormV2({ availableSlots }: { availableSlots:
                         ].map((item) => (
                             <div key={item.step} className="flex flex-col items-center relative z-10">
                                 <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-all ${currentStep >= item.step
-                                        ? 'bg-[#5E5574] text-white shadow-lg'
-                                        : 'bg-white border-2 border-[#E6E1F2] text-[#8C84A8]'
+                                    ? 'bg-[#5E5574] text-white shadow-lg'
+                                    : 'bg-white border-2 border-[#E6E1F2] text-[#8C84A8]'
                                     }`}>
                                     {currentStep > item.step ? <CheckCircle2 size={20} /> : item.step}
                                 </div>
@@ -250,7 +250,7 @@ export default function ConsultationFormV2({ availableSlots }: { availableSlots:
                         {currentStep === 1 && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="font-julius text-2xl md:text-3xl text-[#3F3A52]">Your Details</h2>
+                                    <h2 className="font-julius text-2xl md:text-3xl text-[#3F3A52]">Parent Details</h2>
                                     <p className="mt-2 text-sm text-[#8C84A8]">Let's start with your contact information</p>
                                 </div>
                                 <div className="grid gap-6 sm:grid-cols-2">
@@ -426,8 +426,8 @@ export default function ConsultationFormV2({ availableSlots }: { availableSlots:
                                                                 type="button"
                                                                 onClick={() => updateField('selectedSlotId', slot.id)}
                                                                 className={`flex items-center justify-center gap-2 rounded-xl border-2 px-4 py-3 text-sm font-semibold transition-all ${formData.selectedSlotId === slot.id
-                                                                        ? 'border-[#5E5574] bg-[#5E5574] text-white'
-                                                                        : 'border-[#E6E0F2] bg-white text-[#5E5574] hover:border-[#D9CFF2]'
+                                                                    ? 'border-[#5E5574] bg-[#5E5574] text-white'
+                                                                    : 'border-[#E6E0F2] bg-white text-[#5E5574] hover:border-[#D9CFF2]'
                                                                     }`}
                                                             >
                                                                 <Clock size={14} />

@@ -183,7 +183,15 @@ export default function HomePage() {
       {/* ==========================================
           1. HERO — ATMOSPHERIC
           ========================================== */}
-      <section className="relative min-h-screen flex items-center justify-center z-10">
+      <section className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden">
+        {/* Background gradient matching site aesthetic */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5FB] via-[#FAFBFF] to-white" />
+
+        {/* Decorative orbs */}
+        <div className="absolute top-20 right-1/4 h-96 w-96 rounded-full bg-[#E6E1F2]/50 blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 left-1/4 h-80 w-80 rounded-full bg-[#DDD4F2]/40 blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-40 left-1/3 h-64 w-64 rounded-full bg-[#D9CFF2]/30 blur-3xl animate-pulse delay-500" />
+
         <div className="relative z-10 w-full max-w-5xl mx-auto px-6 text-center">
           <motion.div
             initial="hidden"
@@ -194,10 +202,11 @@ export default function HomePage() {
           >
             <motion.div variants={fadeInUp} className="mb-8">
               <span className="inline-block py-1.5 px-4 rounded-full border border-[#D9CFF2] bg-white/40 backdrop-blur-md text-xs tracking-[0.2em] font-medium uppercase text-[#8B7FA8] shadow-sm">
-                Learning Mentorship
+                NSW Tutoring
               </span>
             </motion.div>
 
+            {/* Heading */}
             <motion.h1 variants={fadeInUp} className="font-julius text-5xl md:text-7xl lg:text-8xl font-light leading-[1.1] text-[#3F3A52] tracking-tight">
               Clarity precedes <br />
               <span className="italic relative z-10">
@@ -208,12 +217,14 @@ export default function HomePage() {
               </span>
             </motion.h1>
 
+
             <motion.p variants={fadeInUp} className="mt-8 max-w-2xl text-lg md:text-xl text-[#6B647F] font-light leading-relaxed">
               We replace academic anxiety with calm, predictable progress.
               Structured mentorship for Years 5–10 that builds systems, not just results.
             </motion.p>
 
-            <motion.div variants={fadeInUp} className="mt-12 flex flex-col sm:flex-row gap-5 items-center">
+            {/* CTA Buttons */}
+            <motion.div variants={fadeInUp} className="mt-12 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/enrol"
                 className="group relative px-8 py-4 bg-[#5E5574] text-white rounded-full font-medium transition-all hover:bg-[#4F4865] hover:shadow-lg hover:shadow-[#5E5574]/20 hover:-translate-y-0.5"
@@ -221,12 +232,52 @@ export default function HomePage() {
                 Start Your Journey
                 <ArrowRight className="inline-block ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
+
               <Link
-                href="/consultation"
-                className="px-8 py-4 bg-white/50 border border-[#E6E0F2] text-[#5E5574] rounded-full font-medium backdrop-blur-sm transition-all hover:bg-white hover:border-[#D9CFF2] hover:-translate-y-0.5"
+                href="/key-method"
+                className="group relative px-8 py-4 bg-transparent text-[#5E5574] rounded-full font-medium border border-[#D9CFF2] transition-all hover:bg-white/60 hover:shadow-md hover:-translate-y-0.5"
               >
                 The Philosophy
               </Link>
+            </motion.div>
+
+            {/* Badges - positioned below buttons */}
+            <motion.div variants={fadeInUp} className="mt-24 flex flex-wrap items-center justify-center gap-4">
+              {/* Trusted by Australian Families */}
+              <div className="inline-flex items-center gap-2.5 py-2 px-4 rounded-full border border-[#E6E0F2] bg-white/60 backdrop-blur-md shadow-sm">
+                <div className="flex -space-x-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#5E5574] text-[9px] font-semibold text-white ring-2 ring-white">
+                    PP
+                  </div>
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#6B5F85] text-[9px] font-semibold text-white ring-2 ring-white">
+                    IL
+                  </div>
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#7C6B94] text-[9px] font-semibold text-white ring-2 ring-white">
+                    AJ
+                  </div>
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8B7FA8] text-[9px] font-semibold text-white ring-2 ring-white">
+                    T&E
+                  </div>
+                </div>
+                <div className="flex flex-col items-start">
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="text-[10px] font-medium text-[#6B647F] leading-tight">Trusted by Australian Families</span>
+                </div>
+              </div>
+
+              {/* NSW Syllabus Aligned */}
+              <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full border border-[#E6E0F2] bg-white/60 backdrop-blur-md text-xs font-medium text-[#6B647F] shadow-sm">
+                <svg className="w-3.5 h-3.5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                NSW Syllabus Aligned
+              </span>
             </motion.div>
           </motion.div>
         </div>

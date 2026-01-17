@@ -30,6 +30,29 @@
 
   --kk-border: #E6E0F2;
   --kk-border-strong: rgba(217, 207, 242, 0.85);
+
+  /* Dark Theme Colors for Student Dashboard */
+  --dark-bg-primary: #0A0E27;
+  --dark-bg-secondary: #1A1D2E;
+  --dark-bg-tertiary: #151925;
+  --dark-bg-card: #1E2139;
+  --dark-border: #2A2F45;
+  --dark-border-light: #353B55;
+
+  /* Dark Theme Accent Colors */
+  --accent-teal: #14B8A6;
+  --accent-cyan: #00D9FF;
+  --accent-orange: #FF6B35;
+  --accent-green: #10B981;
+  --accent-red: #EF4444;
+  --accent-yellow: #F59E0B;
+  --accent-purple: #8B5CF6;
+
+  /* Dark Theme Text Colors */
+  --dark-text-primary: #FFFFFF;
+  --dark-text-secondary: #94A3B8;
+  --dark-text-muted: #64748B;
+  --dark-text-faint: #475569;
 }
 
 html,
@@ -45,6 +68,91 @@ body {
 
 ::selection {
   background: rgba(217, 207, 242, 0.7);
+}
+
+/* ==================================================
+   DARK THEME UTILITIES
+================================================== */
+
+.dark-theme {
+  background: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+.dark-bg-primary {
+  background: var(--dark-bg-primary);
+}
+
+.dark-bg-secondary {
+  background: var(--dark-bg-secondary);
+}
+
+.dark-bg-tertiary {
+  background: var(--dark-bg-tertiary);
+}
+
+.dark-card {
+  background: var(--dark-bg-card);
+  border: 1px solid var(--dark-border);
+  border-radius: 16px;
+  transition: all 300ms ease;
+}
+
+.dark-card:hover {
+  border-color: var(--dark-border-light);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.dark-card-strong {
+  background: var(--dark-bg-card);
+  border: 1px solid var(--dark-border-light);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Glow Effects */
+.glow-teal {
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.glow-orange {
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+@keyframes pulse-glow-teal {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 25px rgba(20, 184, 166, 0.4);
+  }
+}
+
+.animate-pulse-glow-teal {
+  animation: pulse-glow-teal 2s ease-in-out infinite;
+}
+
+/* Dark Theme Text Utilities */
+.text-dark-primary {
+  color: var(--dark-text-primary);
+}
+
+.text-dark-secondary {
+  color: var(--dark-text-secondary);
+}
+
+.text-dark-muted {
+  color: var(--dark-text-muted);
 }
 
 /* ==================================================
