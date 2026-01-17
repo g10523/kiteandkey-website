@@ -73,49 +73,35 @@ export default function KeyMethodPage() {
    1. HERO SECTION
    ========================================== */
 function HeroSection() {
-  const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 400], [0, 60]);
+  const section = useScrollAnimation();
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <section className="relative overflow-hidden pt-32 pb-20">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5FB] via-[#FAFBFF] to-white" />
-      <div className="absolute top-20 right-1/4 h-96 w-96 rounded-full bg-[#E6E1F2]/40 blur-3xl" />
-      <div className="absolute bottom-20 left-1/4 h-80 w-80 rounded-full bg-[#DDD4F2]/30 blur-3xl" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[#E6E0F5]/40 rounded-full blur-3xl" />
+      <div className="absolute top-20 right-1/4 w-64 h-64 bg-[#D9CFF2]/30 rounded-full blur-3xl" />
 
-      <motion.div
-        className="relative z-10 mx-auto max-w-5xl px-6 text-center"
-        style={{ opacity: heroOpacity, y: heroY }}
+      <div
+        ref={section.ref}
+        className={`relative mx-auto max-w-7xl px-6 text-center transition-all duration-700 ${section.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <span className="inline-block py-1.5 px-4 rounded-full border border-[#D9CFF2] bg-white/60 backdrop-blur-md text-xs tracking-[0.2em] font-medium uppercase text-[#8B7FA8] mb-8">
-            The KEY Method
-          </span>
-        </motion.div>
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#DDD4F2] bg-white/90 px-5 py-2.5 text-sm font-medium text-[#5E5574] backdrop-blur-sm mb-6 shadow-sm">
+          <Brain size={18} />
+          The KEY Method
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-julius text-4xl md:text-6xl lg:text-7xl font-light leading-[1.1] text-[#3F3A52] tracking-tight mb-12"
-        >
+        {/* Title */}
+        <h1 className="font-julius text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#3F3A52]">
           Learning that adapts
           <br />
-          <span className="italic text-[#5E5574]">to the learner.</span>
-        </motion.h1>
+          to the learner
+        </h1>
 
         {/* KEY Acronym with Stained Glass Squares */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-12"
-        >
+        <div className="mt-12 mb-8">
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
             {/* K - Knowledge */}
             <div className="flex items-center gap-4">
@@ -165,43 +151,14 @@ function HeroSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg md:text-xl text-[#6B647F] font-light leading-relaxed max-w-2xl mx-auto mb-12"
-        >
+        {/* Description */}
+        <p className="mt-6 text-lg md:text-xl text-[#6B647F] max-w-3xl mx-auto leading-relaxed">
           A structured, adaptive learning system that aligns how a student learns
           with what they are taught and how they are guided.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="flex flex-wrap justify-center gap-4"
-        >
-          <Link
-            href="/consultation"
-            className="group inline-flex items-center gap-2 rounded-full bg-[#5E5574] px-8 py-4 text-base font-medium text-white transition-all hover:bg-[#4F4865] hover:shadow-lg hover:shadow-[#5E5574]/20 hover:-translate-y-0.5"
-          >
-            Begin with MindPrint
-            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <div className="w-[1px] h-16 bg-gradient-to-b from-[#5E5574]/0 via-[#5E5574]/30 to-[#5E5574]/0" />
-      </motion.div>
+        </p>
+      </div>
     </section>
   );
 }
