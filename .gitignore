@@ -63,3 +63,4 @@ next-env.d.ts
 # LMS build artifacts
 /dist
 /public/garden-lms
+/public/garden-lms-preview
