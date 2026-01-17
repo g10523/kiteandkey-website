@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import TextbookPreview from "../../../../components/TextbookPreview";
+import TextbookPreviewScience from "../../../../components/TextbookPreviewScience";
 import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock, Microscope, Beaker, Atom } from "lucide-react";
 
 /* =========================
@@ -597,7 +597,8 @@ export default function Year7SciencePage() {
             </section>
 
             {/* ================= TEXTBOOK PREVIEW ================= */}
-            <TextbookPreview />
+            <TextbookPreviewScience />
+
 
             {/* ================= THE KEY METHOD IN ACTION ================= */}
             <section className="py-24 border-t border-[#E6E1F2] bg-white">

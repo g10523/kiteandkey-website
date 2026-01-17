@@ -100,58 +100,7 @@ function HeroSection() {
           to the learner
         </h1>
 
-        {/* KEY Acronym with Stained Glass Squares */}
-        <div className="mt-12 mb-8">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
-            {/* K - Knowledge */}
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#7C6B94] to-[#5E5574] rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
-                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#E6E1F2] via-[#D9CFF2] to-[#C4B5DA] backdrop-blur-sm border-2 border-white/40 shadow-2xl flex items-center justify-center">
-                  <span className="text-4xl md:text-5xl font-bold text-[#5E5574]">K</span>
-                </div>
-              </div>
-              <div className="text-left">
-                <div className="text-lg md:text-xl font-semibold text-[#3F3A52]">Knowledge</div>
-                <div className="text-sm text-[#8C84A8]">Foundation first</div>
-              </div>
-            </div>
 
-            {/* Connector */}
-            <div className="hidden md:block w-8 h-[2px] bg-gradient-to-r from-[#D9CFF2] to-[#E6E1F2]" />
-
-            {/* E - Engage */}
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8B7FA8] to-[#6B5F85] rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
-                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#E6E1F2] via-[#D9CFF2] to-[#C4B5DA] backdrop-blur-sm border-2 border-white/40 shadow-2xl flex items-center justify-center">
-                  <span className="text-4xl md:text-5xl font-bold text-[#5E5574]">E</span>
-                </div>
-              </div>
-              <div className="text-left">
-                <div className="text-lg md:text-xl font-semibold text-[#3F3A52]">Engage</div>
-                <div className="text-sm text-[#8C84A8]">Active learning</div>
-              </div>
-            </div>
-
-            {/* Connector */}
-            <div className="hidden md:block w-8 h-[2px] bg-gradient-to-r from-[#D9CFF2] to-[#E6E1F2]" />
-
-            {/* Y - Yield */}
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#9B8FB5] to-[#7C6B94] rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity" />
-                <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[#E6E1F2] via-[#D9CFF2] to-[#C4B5DA] backdrop-blur-sm border-2 border-white/40 shadow-2xl flex items-center justify-center">
-                  <span className="text-4xl md:text-5xl font-bold text-[#5E5574]">Y</span>
-                </div>
-              </div>
-              <div className="text-left">
-                <div className="text-lg md:text-xl font-semibold text-[#3F3A52]">Yield</div>
-                <div className="text-sm text-[#8C84A8]">Results emerge</div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Description */}
         <p className="mt-6 text-lg md:text-xl text-[#6B647F] max-w-3xl mx-auto leading-relaxed">
@@ -860,12 +809,14 @@ function MindPrintLMSSection() {
         <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-700 ${section.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           {/* Visual */}
           <div className="order-2 md:order-1 flex justify-center w-full">
-            <div className="w-full h-[340px] rounded-2xl border-[4px] border-white bg-[#F7F5FB] shadow-2xl overflow-hidden ring-1 ring-[#E6E0F2]">
-              <iframe
-                src="/garden-lms-preview/index.html"
-                className="border-0"
-                style={{ width: '153.8%', height: '153.8%', transform: 'scale(0.65)', transformOrigin: '0 0' }}
-                title="Garden LMS Preview"
+            <div className="w-full rounded-2xl border-[4px] border-white bg-[#F7F5FB] shadow-2xl overflow-hidden ring-1 ring-[#E6E0F2]">
+              <Image
+                src="/garden-lms-screenshot.png"
+                alt="Garden LMS Dashboard Preview"
+                width={1024}
+                height={665}
+                className="w-full h-auto -mt-3"
+                priority
               />
             </div>
           </div>

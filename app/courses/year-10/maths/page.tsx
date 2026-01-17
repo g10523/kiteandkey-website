@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import TextbookPreview from "../../../../components/TextbookPreview";
+import TextbookPreviewMaths from "../../../../components/TextbookPreviewMaths";
 import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock, Calculator, PieChart, Ruler } from "lucide-react";
 
 /* =========================
@@ -610,8 +610,9 @@ export default function Year10MathsPage() {
         </div>
       </section>
 
-      {/* ================= TEXTBOOK PREVIEW ================= */}
-      <TextbookPreview />
+            {/* ================= TEXTBOOK PREVIEW ================= */}
+            <TextbookPreviewMaths />
+
 
       {/* ================= THE KEY METHOD IN ACTION ================= */}
       <section className="py-24 border-t border-[#E6E1F2] bg-white">

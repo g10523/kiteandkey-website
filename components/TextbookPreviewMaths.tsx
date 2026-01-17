@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BookOpen, Download, Eye, CheckCircle, Layout, FileText } from "lucide-react";
 
-export default function TextbookPreview() {
+export default function TextbookPreviewMaths() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDirection, setFlipDirection] = useState<"next" | "prev">("next");
@@ -51,11 +51,11 @@ export default function TextbookPreview() {
             Course Materials
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-[#3F3A52] tracking-tight">
-            Custom-designed textbook
+            Structured learning materials
           </h2>
           <p className="mt-4 text-lg text-[#6B647F] max-w-2xl mx-auto leading-relaxed">
-            Every page is crafted with clarity and understanding in mind — no generic
-            textbooks, just materials designed specifically for the KEY Method.
+            Every page is carefully selected and organized with clarity and understanding in mind —
+            materials designed to support the KEY Method approach.
           </p>
         </div>
 
@@ -181,15 +181,15 @@ export default function TextbookPreview() {
             </div>
           </div>
 
-          {/* Right: Content - Enhanced */}
+          {/* Right: Content - Maths-specific */}
           <div>
             <h3 className="text-3xl md:text-4xl font-bold text-[#3F3A52] tracking-tight mb-6">
-              Designed for clarity and mastery
+              Designed for clarity
             </h3>
 
             <p className="text-lg text-[#6B647F] leading-relaxed mb-8">
-              Our custom textbook isn't just a collection of problems — it's a carefully
-              sequenced learning journey that builds understanding step by step.
+              Our Mathematics materials build conceptual understanding through visual explanations,
+              worked examples, and graduated practice.
             </p>
 
             {/* Features grid - Enhanced */}

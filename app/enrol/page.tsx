@@ -3,15 +3,17 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ArrowRight, ArrowLeft, Plus, X, Edit2, Trash2 } from 'lucide-react'
-import { submitEnrollment } from './actions'
+import { submitSignUpV2 } from './actions-v2'
 import Image from 'next/image'
 import Link from 'next/link'
+import PaymentStatusCheck from './PaymentStatusCheck'
 
 // Types
 interface Student {
   id: string
   firstName: string
   lastName: string
+  email: string
   yearLevel: string
   school: string
   subjects: string[]
@@ -106,21 +108,69 @@ export default function EnrollmentFlow() {
 
     setIsSubmitting(true)
 
-    // Prepare submission data
-    const submissionData = {
-      students: formData.students,
-      parent: formData.parent,
-      plan: formData.plan
+    try {
+      const [firstName, ...lastNameParts] = formData.parent.fullName.split(' ')
+      const lastName = lastNameParts.join(' ') || ''
+
+      // Prepare payload for V2 action
+      const payload = {
+        // Tier A
+        parentFirstName: firstName || formData.parent.fullName, // Fallback if split fails
+        parentLastName: lastName || '.', // Fallback to avoid empty
+        parentEmail: formData.parent.email,
+        parentPhone: formData.parent.mobile,
+        howDidYouHear: 'Website', // Default or add field
+        academicGoals: [], // Not collected in V1
+        learningGoals: [], // Collected per student, aggregated?
+        personalGoals: [],
+
+        // Tier B
+        password: formData.parent.password,
+        confirmPassword: formData.parent.confirmPassword,
+        termsAccepted: formData.termsAccepted,
+
+        // Students
+        students: formData.students.map(s => ({
+          firstName: s.firstName,
+          lastName: s.lastName,
+          gradeIn2026: s.yearLevel,
+          school: s.school,
+          email: s.email,
+
+          // Package Config (Applied to each student)
+          packageConfig: {
+            package: formData.plan.tier?.toUpperCase(),
+            subjects: Object.keys(formData.plan.subjectAllocation).filter(k => formData.plan.subjectAllocation[k as keyof typeof formData.plan.subjectAllocation] > 0),
+            weeklyHours: formData.plan.weeklyHours,
+            hourAllocation: formData.plan.subjectAllocation,
+            hourlyRate: 70, // Default base rate
+            weeklyTotal: (formData.plan.weeklyHours || 0) * 70,
+            preferredDays: [],
+            preferredTimes: []
+          }
+        }))
+      }
+
+      console.log('Submitting payload:', payload)
+
+      const result = await submitSignUpV2(payload)
+
+      if (result.success) {
+        if (result.redirectUrl) {
+          window.location.href = result.redirectUrl
+        } else {
+          window.location.href = '/enrol/thank-you'
+        }
+      } else {
+        alert('Submission Error: ' + result.error)
+        setIsSubmitting(false)
+      }
+
+    } catch (error) {
+      console.error('Submission failed:', error)
+      alert('An unexpected error occurred. Please try again.')
+      setIsSubmitting(false)
     }
-
-    // Here you would call your API
-    console.log('Submitting:', submissionData)
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
-    // Redirect to thank you page
-    window.location.href = '/enrol/thank-you'
   }
 
   if (showWelcome) {
@@ -129,6 +179,7 @@ export default function EnrollmentFlow() {
 
   return (
     <div className="min-h-screen bg-[#F7F5FB] text-[#3F3A52]">
+      <PaymentStatusCheck />
       {/* Header with Logo and Progress Steps */}
       <div className="sticky top-0 z-50 bg-white border-b border-[#E6E0F2]">
         <div className="px-4 md:px-6 py-3 md:py-4">
@@ -159,10 +210,10 @@ export default function EnrollmentFlow() {
                 <div key={step.label} className="flex items-center">
                   <div className="flex flex-col items-center">
                     <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium transition-all ${index < currentStep
+                      ? 'bg-[#5E5574] text-white'
+                      : index === currentStep
                         ? 'bg-[#5E5574] text-white'
-                        : index === currentStep
-                          ? 'bg-[#5E5574] text-white'
-                          : 'bg-[#F7F5FB] text-[#8C84A8] border border-[#E6E0F2]'
+                        : 'bg-[#F7F5FB] text-[#8C84A8] border border-[#E6E0F2]'
                       }`}>
                       {index < currentStep ? <Check size={12} className="md:hidden" /> : null}
                       {index < currentStep ? <Check size={14} className="hidden md:block" /> : step.num}
@@ -342,15 +393,8 @@ function StudentInfoStep({
   setEditingIndex: (index: number | null) => void
 }) {
   const [currentStudent, setCurrentStudent] = useState<Student>({
-    id: '',
-    firstName: '',
-    lastName: '',
-    yearLevel: '',
-    school: '',
-    subjects: [],
-    learningGoals: '',
-    learningChallenges: '',
-    previousTutoring: false
+    id: '', firstName: '', lastName: '', email: '', yearLevel: '', school: '', subjects: [],
+    learningGoals: '', learningChallenges: '', previousTutoring: false
   })
 
   const handleAddStudent = () => {
@@ -375,6 +419,7 @@ function StudentInfoStep({
       id: '',
       firstName: '',
       lastName: '',
+      email: '',
       yearLevel: '',
       school: '',
       subjects: [],
@@ -473,6 +518,23 @@ function StudentInfoStep({
               placeholder="Enter last name"
             />
           </div>
+        </div>
+
+        {/* Student Email */}
+        <div>
+          <label className="block text-sm font-medium text-[#3F3A52] mb-1.5">
+            Student Email <span className="text-[#8C84A8]">*</span>
+          </label>
+          <input
+            type="email"
+            value={currentStudent.email}
+            onChange={(e) => setCurrentStudent(prev => ({ ...prev, email: e.target.value }))}
+            className="w-full px-3 py-2 bg-[#FAFBFF] border border-[#E6E0F2] rounded-lg text-sm text-[#3F3A52] placeholder-[#B8B3C6] focus:border-[#D9CFF2] focus:outline-none transition-colors"
+            placeholder="Required for LMS access"
+          />
+          <p className="mt-1 text-xs text-[#8C84A8]">
+            Used for system login. If the student does not have an email, please use a parent email.
+          </p>
         </div>
 
         {/* Year Level and School */}
@@ -587,7 +649,7 @@ function StudentInfoStep({
           type="button"
           onClick={() => {
             setCurrentStudent({
-              id: '', firstName: '', lastName: '', yearLevel: '', school: '', subjects: [],
+              id: '', firstName: '', lastName: '', email: '', yearLevel: '', school: '', subjects: [],
               learningGoals: '', learningChallenges: '', previousTutoring: false
             })
             setEditingIndex(null)

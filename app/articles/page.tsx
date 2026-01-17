@@ -28,74 +28,7 @@ const TOPICS = [
 
 type Topic = (typeof TOPICS)[number];
 
-const articles: Article[] = [
-  {
-    slug: "why-most-study-time-is-wasted",
-    title: "Why Most Study Time Is Wasted — And How Cognitive Alignment Fixes It",
-    excerpt:
-      "Research shows that up to 80% of traditional study time produces minimal retention. Understanding cognitive alignment can transform how students learn.",
-    topic: "Learning Science",
-    readTime: "8 min read",
-    headerImage: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&q=80",
-    publishedAt: "2024-12-15",
-    author: "Kite & Key Academy",
-  },
-  {
-    slug: "understanding-cognitive-load",
-    title: "Understanding Cognitive Load: Why Less Is Often More",
-    excerpt:
-      "The brain can only process so much at once. Learn how managing cognitive load leads to deeper understanding and better academic outcomes.",
-    topic: "Cognition",
-    readTime: "6 min read",
-    headerImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80",
-    publishedAt: "2024-12-10",
-    author: "Kite & Key Academy",
-  },
-  {
-    slug: "spaced-repetition-science",
-    title: "The Science of Spaced Repetition: Building Lasting Knowledge",
-    excerpt:
-      "Discover why spacing out study sessions dramatically improves long-term retention compared to cramming.",
-    topic: "Study Systems",
-    readTime: "7 min read",
-    headerImage: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80",
-    publishedAt: "2024-12-05",
-    author: "Kite & Key Academy",
-  },
-  {
-    slug: "helping-your-child-study",
-    title: "A Parent's Guide to Supporting Study Without Taking Over",
-    excerpt:
-      "How to create the right environment and mindset for your child's academic success without becoming the homework police.",
-    topic: "Parent Guidance",
-    readTime: "5 min read",
-    headerImage: "https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?w=1200&q=80",
-    publishedAt: "2024-11-28",
-    author: "Kite & Key Academy",
-  },
-  {
-    slug: "exam-preparation-strategies",
-    title: "Strategic Exam Preparation: A Framework for Success",
-    excerpt:
-      "Move beyond last-minute cramming with evidence-based strategies that build confidence and deliver results.",
-    topic: "Academic Strategy",
-    readTime: "9 min read",
-    headerImage: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=1200&q=80",
-    publishedAt: "2024-11-20",
-    author: "Kite & Key Academy",
-  },
-  {
-    slug: "working-memory-learning",
-    title: "Working Memory and Learning: What Every Student Should Know",
-    excerpt:
-      "Understanding the limitations and strengths of working memory can unlock more effective learning strategies.",
-    topic: "Cognition",
-    readTime: "6 min read",
-    headerImage: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&q=80",
-    publishedAt: "2024-11-15",
-    author: "Kite & Key Academy",
-  },
-];
+const articles: Article[] = [];
 
 const ARTICLES_PER_PAGE = 6;
 
@@ -178,10 +111,9 @@ export default function ArticlesPage() {
                 onClick={() => handleTopicChange(topic)}
                 className={`
                   px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200
-                  ${
-                    selectedTopic === topic
-                      ? "bg-[#5E5574] text-white shadow-md shadow-[#5E5574]/20"
-                      : "bg-white/70 text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2] hover:bg-white"
+                  ${selectedTopic === topic
+                    ? "bg-[#5E5574] text-white shadow-md shadow-[#5E5574]/20"
+                    : "bg-white/70 text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2] hover:bg-white"
                   }
                 `}
               >
@@ -244,10 +176,9 @@ export default function ArticlesPage() {
                 disabled={currentPage === 1}
                 className={`
                   w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200
-                  ${
-                    currentPage === 1
-                      ? "bg-[#F7F5FA] text-[#B8B0C9] cursor-not-allowed"
-                      : "bg-white text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2]"
+                  ${currentPage === 1
+                    ? "bg-[#F7F5FA] text-[#B8B0C9] cursor-not-allowed"
+                    : "bg-white text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2]"
                   }
                 `}
               >
@@ -263,10 +194,9 @@ export default function ArticlesPage() {
                   onClick={() => setCurrentPage(page)}
                   className={`
                     w-10 h-10 rounded-full text-sm font-medium transition-all duration-200
-                    ${
-                      currentPage === page
-                        ? "bg-[#5E5574] text-white shadow-md shadow-[#5E5574]/20"
-                        : "bg-white text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2]"
+                    ${currentPage === page
+                      ? "bg-[#5E5574] text-white shadow-md shadow-[#5E5574]/20"
+                      : "bg-white text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2]"
                     }
                   `}
                 >
@@ -280,10 +210,9 @@ export default function ArticlesPage() {
                 disabled={currentPage === totalPages}
                 className={`
                   w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200
-                  ${
-                    currentPage === totalPages
-                      ? "bg-[#F7F5FA] text-[#B8B0C9] cursor-not-allowed"
-                      : "bg-white text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2]"
+                  ${currentPage === totalPages
+                    ? "bg-[#F7F5FA] text-[#B8B0C9] cursor-not-allowed"
+                    : "bg-white text-[#6B647F] border border-[#E8E4F0] hover:border-[#D9CFF2]"
                   }
                 `}
               >
@@ -317,7 +246,7 @@ export default function ArticlesPage() {
                 placeholder="Your email address"
                 className="flex-1 px-4 py-3 rounded-xl border border-[#E8E4F0] bg-white text-[#4A4358] placeholder-[#A9A1B8] focus:outline-none focus:border-[#D9CFF2] focus:ring-2 focus:ring-[#D9CFF2]/20 transition-all"
               />
-              <button 
+              <button
                 type="submit"
                 className="px-6 py-3 rounded-xl bg-[#5E5574] text-white font-medium hover:bg-[#4F4865] transition-all hover:shadow-lg hover:shadow-[#5E5574]/20"
               >
@@ -353,7 +282,7 @@ function ArticleCard({ article }: ArticleCardProps) {
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#2D2640]/30 to-transparent" />
-          
+
           {/* Topic Tag */}
           <div className="absolute top-4 left-4">
             <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm text-[#5E5574] border border-white/50 shadow-sm">
@@ -367,7 +296,7 @@ function ArticleCard({ article }: ArticleCardProps) {
           <h3 className="font-julius text-xl font-semibold text-[#2D2640] mb-3 leading-tight group-hover:text-[#5E5574] transition-colors">
             {article.title}
           </h3>
-          
+
           <p className="text-sm text-[#6B647F] leading-relaxed mb-4 flex-1" style={{
             display: '-webkit-box',
             WebkitLineClamp: 3,

@@ -218,7 +218,7 @@ export default function HomePage() {
             </motion.h1>
 
 
-            <motion.p variants={fadeInUp} className="mt-8 max-w-2xl text-lg md:text-xl text-[#6B647F] font-light leading-relaxed">
+            <motion.p variants={fadeInUp} className="mt-8 max-w-2xl mx-auto text-lg md:text-xl text-[#6B647F] font-light leading-relaxed">
               We replace academic anxiety with calm, predictable progress.
               Structured mentorship for Years 5–10 that builds systems, not just results.
             </motion.p>
@@ -241,55 +241,55 @@ export default function HomePage() {
               </Link>
             </motion.div>
 
-            {/* Badges - positioned below buttons */}
-            <motion.div variants={fadeInUp} className="mt-24 flex flex-wrap items-center justify-center gap-4">
-              {/* Trusted by Australian Families */}
-              <div className="inline-flex items-center gap-2.5 py-2 px-4 rounded-full border border-[#E6E0F2] bg-white/60 backdrop-blur-md shadow-sm">
-                <div className="flex -space-x-2">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#5E5574] text-[9px] font-semibold text-white ring-2 ring-white">
-                    PP
-                  </div>
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#6B5F85] text-[9px] font-semibold text-white ring-2 ring-white">
-                    IL
-                  </div>
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#7C6B94] text-[9px] font-semibold text-white ring-2 ring-white">
-                    AJ
-                  </div>
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8B7FA8] text-[9px] font-semibold text-white ring-2 ring-white">
-                    T&E
-                  </div>
-                </div>
-                <div className="flex flex-col items-start">
-                  <div className="flex items-center gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-[10px] font-medium text-[#6B647F] leading-tight">Trusted by Australian Families</span>
-                </div>
-              </div>
 
-              {/* NSW Syllabus Aligned */}
-              <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full border border-[#E6E0F2] bg-white/60 backdrop-blur-md text-xs font-medium text-[#6B647F] shadow-sm">
-                <svg className="w-3.5 h-3.5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                NSW Syllabus Aligned
-              </span>
-            </motion.div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator & Badges */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          className="absolute bottom-10 left-0 right-0 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 pointer-events-none"
         >
-          <div className="w-[1px] h-16 bg-gradient-to-b from-[#5E5574]/0 via-[#5E5574]/30 to-[#5E5574]/0" />
+          {/* Trusted by Australian Families */}
+          <div className="inline-flex items-center gap-3 pointer-events-auto">
+            <div className="flex -space-x-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#5E5574] text-[9px] font-semibold text-white ring-2 ring-white">
+                PP
+              </div>
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#6B5F85] text-[9px] font-semibold text-white ring-2 ring-white">
+                IL
+              </div>
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#7C6B94] text-[9px] font-semibold text-white ring-2 ring-white">
+                AJ
+              </div>
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8B7FA8] text-[9px] font-semibold text-white ring-2 ring-white">
+                T&E
+              </div>
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="flex items-center gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <span className="text-[10px] font-medium text-[#6B647F] leading-tight">Trusted by Australian Families</span>
+            </div>
+          </div>
+
+          {/* Vertical Line */}
+          <div className="hidden md:block w-[1px] h-16 bg-gradient-to-b from-[#5E5574]/0 via-[#5E5574]/30 to-[#5E5574]/0" />
+
+          {/* NSW Syllabus Aligned */}
+          <span className="inline-flex items-center gap-2 text-xs font-medium text-[#6B647F] pointer-events-auto">
+            <svg className="w-3.5 h-3.5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            NSW Syllabus Aligned
+          </span>
         </motion.div>
       </section>
       {/* ==========================================

@@ -179,12 +179,12 @@ export default function Navbar() {
                       title="MindPrint"
                       description="Cognitive learning profiles refined through diagnostics."
                     />
-                    <DropdownBlock
+                    {/* <DropdownBlock
                       href="/kite-and-key-in-the-community"
                       icon={<CommunityIcon />}
                       title="Kite & Key in the Community"
                       description="Our initiatives and outreach in the local community."
-                    />
+                    /> */}
                     <DropdownBlock
                       href="/articles"
                       icon={<ArticleIcon />}
@@ -428,7 +428,7 @@ export default function Navbar() {
               >
                 <MobileDropdownLink href="/key-method" label="The KEY Method" />
                 <MobileDropdownLink href="/mindprint" label="MindPrint" />
-                <MobileDropdownLink href="/kite-and-key-in-the-community" label="Kite & Key in the Community" />
+                {/* <MobileDropdownLink href="/kite-and-key-in-the-community" label="Kite & Key in the Community" /> */}
                 <MobileDropdownLink href="/articles" label="Articles" />
               </MobileAccordion>
 

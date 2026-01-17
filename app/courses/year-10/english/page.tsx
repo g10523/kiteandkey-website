@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import TextbookPreviewMaths from "../../../../components/TextbookPreviewMaths";
-import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock, Calculator, PieChart, Ruler } from "lucide-react";
+import TextbookPreviewEnglish from "../../../../components/TextbookPreviewEnglish";
+import { Brain, Target, TrendingUp, Users, BookOpen, Zap, CheckCircle, Clock, Feather, MessageCircle, Book, Award } from "lucide-react";
 
 /* =========================
    Data
@@ -18,310 +18,314 @@ interface Lesson {
 
 const TERMS: Record<TermKey, { title: string; subtitle: string; lessons: Lesson[] }> = {
     "Term 1": {
-        title: "Advanced Number & Operations",
-        subtitle: "Fluency, efficiency, large numbers, multi-step reasoning",
+        title: "Novel Study & Advanced Analytical Writing",
+        subtitle: "Authorial intent, theme, structure, essay mastery",
         lessons: [
             {
-                topic: "Whole Numbers to Billions",
+                topic: "Context, Themes, and Authorial Purpose",
                 outcomes: [
-                    "Read, write, and order numbers to billions",
-                    "Use expanded and scientific-style notation",
-                    "Apply place value understanding to large numbers"
+                    "Analyse historical and social context deeply",
+                    "Identify complex themes and ideas",
+                    "Examine authorial intent and purpose"
                 ]
             },
             {
-                topic: "Advanced Rounding & Estimation",
+                topic: "Character Analysis and Relationships",
                 outcomes: [
-                    "Round to any place value",
-                    "Estimate answers for reasonableness",
-                    "Apply estimation strategies in problem solving"
+                    "Analyse sophisticated character development",
+                    "Examine complex relationships and dynamics",
+                    "Use precise, embedded textual evidence"
                 ]
             },
             {
-                topic: "Addition & Subtraction (Advanced)",
+                topic: "Narrative Structure and Perspective",
                 outcomes: [
-                    "Add and subtract large numbers efficiently",
-                    "Solve multi-step word problems",
-                    "Apply strategies to real-world contexts"
+                    "Analyse complex narrative structures",
+                    "Examine how structure creates meaning",
+                    "Evaluate authorial choices and effects"
                 ]
             },
             {
-                topic: "Multiplication (2–3 Digit)",
+                topic: "Analytical Paragraph Mastery (Advanced TEEL/PEEL)",
                 outcomes: [
-                    "Use efficient written strategies for multiplication",
-                    "Apply mental shortcuts and patterns",
-                    "Solve complex multiplication problems"
+                    "Master sophisticated analytical paragraphs",
+                    "Develop depth and insight in analysis",
+                    "Create cohesive, logical arguments"
                 ]
             },
             {
-                topic: "Division (Including Remainders)",
+                topic: "Embedding and Analysing Quotations",
                 outcomes: [
-                    "Use long division method",
-                    "Interpret remainders in context",
-                    "Apply division to solve problems"
+                    "Embed quotations fluently and precisely",
+                    "Select highly relevant textual evidence",
+                    "Analyse significance with sophistication"
                 ]
             },
             {
-                topic: "Order of Operations",
+                topic: "Developing Sophisticated Arguments",
                 outcomes: [
-                    "Apply order of operations with brackets",
-                    "Solve problems with multiple operations",
-                    "Understand and use BODMAS/BIDMAS"
+                    "Develop complex thesis statements",
+                    "Create sustained, logical arguments",
+                    "Synthesise ideas across the text"
                 ]
             },
             {
-                topic: "Problem Solving with Operations",
+                topic: "Essay Planning and Drafting",
                 outcomes: [
-                    "Use bar models for complex problems",
-                    "Apply logical reasoning strategies",
-                    "Justify solution methods"
+                    "Plan extended analytical essays",
+                    "Structure sophisticated arguments",
+                    "Develop coherent, insightful progression"
                 ]
             },
             {
-                topic: "Mixed Number Investigations",
+                topic: "Editing for Precision and Cohesion",
                 outcomes: [
-                    "Apply operations in real-world applications",
-                    "Justify and explain strategies",
-                    "Solve multi-step investigations"
+                    "Revise for precision and clarity",
+                    "Refine analytical language and tone",
+                    "Polish formal academic register"
                 ]
             },
             {
-                topic: "Exam Preparation",
-                outcomes: ["Timed practice", "High-difficulty word problems", "Strategy refinement"]
+                topic: "Analytical Essay Assessment",
+                outcomes: ["Write extended analytical essay", "Apply sophisticated analysis", "Demonstrate critical insight"]
             },
             {
-                topic: "Term 1 Exam",
-                outcomes: ["Assessment of number & operations", "Reasoning-heavy questions"]
+                topic: "Reflection and Feedback",
+                outcomes: ["Reflect on analytical writing mastery", "Respond to detailed feedback", "Set Year 11 goals"]
             }
         ]
     },
     "Term 2": {
-        title: "Fractions, Decimals & Percentages",
-        subtitle: "Precision, conversions, exam-style fraction reasoning",
+        title: "Persuasion, Argument & Critical Literacy",
+        subtitle: "Argument, ideology, representation, voice",
         lessons: [
             {
-                topic: "Equivalent & Simplified Fractions",
+                topic: "Argument, Ideology, and Audience",
                 outcomes: [
-                    "Use highest common factor to simplify",
-                    "Create equivalent fractions",
-                    "Connect visual and abstract representations"
+                    "Understand complex ideological positioning",
+                    "Analyse sophisticated audience manipulation",
+                    "Evaluate assumptions and values"
                 ]
             },
             {
-                topic: "Comparing & Ordering Fractions",
+                topic: "Analysing Bias and Representation",
                 outcomes: [
-                    "Compare fractions with different denominators",
-                    "Use number line reasoning",
-                    "Order fractions from smallest to largest"
+                    "Identify subtle bias and representation",
+                    "Examine ideology and power structures",
+                    "Evaluate credibility and authority"
                 ]
             },
             {
-                topic: "Adding & Subtracting Fractions",
+                topic: "Rhetorical and Persuasive Techniques",
                 outcomes: [
-                    "Add and subtract fractions with unlike denominators",
-                    "Work with mixed numbers",
-                    "Solve fraction word problems"
+                    "Analyse sophisticated rhetorical devices",
+                    "Examine logical reasoning and fallacies",
+                    "Identify advanced persuasive strategies"
                 ]
             },
             {
-                topic: "Multiplying Fractions",
+                topic: "Structuring Sustained Arguments",
                 outcomes: [
-                    "Multiply fractions by whole numbers",
-                    "Apply multiplication in real-world contexts",
-                    "Understand fraction of a quantity"
+                    "Develop clear, sustained contention",
+                    "Sequence complex arguments logically",
+                    "Create evidence-based reasoning"
                 ]
             },
             {
-                topic: "Decimals to Thousandths",
+                topic: "Counterarguments and Rebuttal",
                 outcomes: [
-                    "Understand place value to thousandths",
-                    "Round decimals to specified places",
-                    "Compare and order decimals"
+                    "Address counterarguments effectively",
+                    "Develop sophisticated rebuttals",
+                    "Strengthen argument through opposition"
                 ]
             },
             {
-                topic: "Fraction–Decimal Conversions",
+                topic: "Language for Authority and Stance",
                 outcomes: [
-                    "Convert between fractions and decimals",
-                    "Work with tenths, hundredths, thousandths",
-                    "Apply conversions in problem solving"
+                    "Use modality and evaluative language",
+                    "Apply nominalisation for formality",
+                    "Employ advanced cohesive devices"
                 ]
             },
             {
-                topic: "Percentages",
+                topic: "Speech Writing Techniques",
                 outcomes: [
-                    "Calculate percentage of a quantity",
-                    "Connect percentages to fractions and decimals",
-                    "Solve percentage problems"
+                    "Write sophisticated persuasive speeches",
+                    "Structure oral arguments effectively",
+                    "Use rhetorical devices for impact"
                 ]
             },
             {
-                topic: "Multi-Step Fraction Problems",
+                topic: "Speech Delivery and Engagement",
                 outcomes: [
-                    "Solve exam-style reasoning problems",
-                    "Provide logical explanations",
-                    "Apply multiple fraction concepts"
+                    "Deliver speeches with authority",
+                    "Use advanced vocal and non-verbal techniques",
+                    "Engage and persuade sophisticated audiences"
                 ]
             },
             {
-                topic: "Exam Preparation",
-                outcomes: ["Fraction & percentage problem sets", "Common traps & misconceptions"]
+                topic: "Argumentative Writing Assessment",
+                outcomes: ["Write argumentative essay", "Apply sustained logical reasoning", "Demonstrate persuasive mastery"]
             },
             {
-                topic: "Term 2 Exam",
-                outcomes: ["Assessment of fractions, decimals & percentages"]
+                topic: "Persuasive Speech",
+                outcomes: ["Deliver formal persuasive speech", "Respond to critical opposition", "Demonstrate oral authority"]
             }
         ]
     },
     "Term 3": {
-        title: "Measurement, Geometry & Algebra",
-        subtitle: "Spatial reasoning, formulas, algebraic thinking",
+        title: "Poetry, Short Texts & Comparative Analysis",
+        subtitle: "Interpretation, comparison, language for effect",
         lessons: [
             {
-                topic: "Metric Conversions",
+                topic: "Literary Techniques and Metalanguage",
                 outcomes: [
-                    "Convert between units of length, mass, capacity",
-                    "Solve multi-step conversion problems",
-                    "Apply conversions in real contexts"
+                    "Study complex poetry and literary texts",
+                    "Apply sophisticated metalanguage",
+                    "Understand advanced literary devices"
                 ]
             },
             {
-                topic: "Perimeter & Area",
+                topic: "Analysing Imagery and Symbolism",
                 outcomes: [
-                    "Calculate perimeter and area of rectangles and triangles",
-                    "Find area of composite shapes",
-                    "Apply formulas to solve problems"
+                    "Interpret complex imagery and symbolism",
+                    "Analyse metaphor and extended metaphor",
+                    "Examine connotation and nuance"
                 ]
             },
             {
-                topic: "Volume",
+                topic: "Tone, Mood, and Voice",
                 outcomes: [
-                    "Calculate volume of rectangular prisms",
-                    "Apply volume formula",
-                    "Solve volume word problems"
+                    "Identify and analyse complex tone",
+                    "Examine mood and atmosphere creation",
+                    "Understand authorial voice"
                 ]
             },
             {
-                topic: "Angles",
+                topic: "Comparative Frameworks",
                 outcomes: [
-                    "Understand angle relationships",
-                    "Estimate and calculate angles",
-                    "Apply angle properties to solve problems"
+                    "Compare texts systematically",
+                    "Analyse similarities and differences",
+                    "Synthesise comparative insights"
                 ]
             },
             {
-                topic: "2D & 3D Geometry",
+                topic: "Creative Transformation Techniques",
                 outcomes: [
-                    "Identify properties of 2D and 3D shapes",
-                    "Construct and interpret nets",
-                    "Understand cross-sections"
+                    "Re-write and re-imagine texts",
+                    "Transform perspective, form, or context",
+                    "Reflect on creative and analytical choices"
                 ]
             },
             {
-                topic: "Coordinate Plane",
+                topic: "Drafting Creative Responses",
                 outcomes: [
-                    "Plot points in all four quadrants",
-                    "Interpret coordinates",
-                    "Solve coordinate geometry problems"
+                    "Compose sophisticated creative transformations",
+                    "Apply literary techniques deliberately",
+                    "Develop distinctive creative voice"
                 ]
             },
             {
-                topic: "Introduction to Algebra",
+                topic: "Editing and Refinement",
                 outcomes: [
-                    "Simplify simple algebraic expressions",
-                    "Find unknown values in equations",
-                    "Use pronumerals to represent unknowns"
+                    "Revise creative work for sophistication",
+                    "Refine language and structural choices",
+                    "Polish final creative pieces"
                 ]
             },
             {
-                topic: "Geometry & Algebra Problem Solving",
+                topic: "Unseen Comparative Analysis",
                 outcomes: [
-                    "Solve multi-concept problems",
-                    "Apply geometric and algebraic thinking",
-                    "Justify solutions mathematically"
+                    "Analyse unfamiliar texts comparatively",
+                    "Identify techniques under exam conditions",
+                    "Respond with sophisticated insight"
                 ]
             },
             {
-                topic: "Exam Preparation",
-                outcomes: ["Diagram interpretation", "Algebraic reasoning questions"]
+                topic: "Comparative Assessment",
+                outcomes: ["Write comparative analytical response", "Apply sophisticated comparison", "Demonstrate literary insight"]
             },
             {
-                topic: "Term 3 Exam",
-                outcomes: ["Assessment of measurement, geometry & algebra"]
+                topic: "Reflection and Discussion",
+                outcomes: ["Perform and discuss creative work", "Explain analytical and creative choices", "Provide sophisticated feedback"]
             }
         ]
     },
     "Term 4": {
-        title: "Data, Probability & High School Readiness",
-        subtitle: "Interpretation, reasoning, full consolidation",
+        title: "Film Study, Multimodal Texts & Exam Preparation",
+        subtitle: "Visual literacy, synthesis, senior readiness",
         lessons: [
             {
-                topic: "Data Collection & Representation",
+                topic: "Introduction to Film as Text",
                 outcomes: [
-                    "Collect and organize data in tables",
-                    "Create column graphs and line graphs",
-                    "Choose appropriate data displays"
+                    "Understand film as sophisticated text",
+                    "Identify complex cinematic techniques",
+                    "Analyse context, audience, and purpose"
                 ]
             },
             {
-                topic: "Interpreting Data",
+                topic: "Cinematic Techniques and Meaning",
                 outcomes: [
-                    "Identify trends in data",
-                    "Recognize outliers",
-                    "Draw conclusions from data displays"
+                    "Analyse camera, lighting, sound, and editing",
+                    "Examine mise-en-scène and symbolism",
+                    "Understand how techniques create meaning"
                 ]
             },
             {
-                topic: "Mean, Median, Mode & Range",
+                topic: "Representation and Ideology in Film",
                 outcomes: [
-                    "Calculate mean, median, mode, and range",
-                    "Interpret measures of center and spread",
-                    "Apply to real-world data sets"
+                    "Analyse representation and stereotypes",
+                    "Examine ideology and values in film",
+                    "Evaluate media messages critically"
                 ]
             },
             {
-                topic: "Probability",
+                topic: "Planning Analytical Responses",
                 outcomes: [
-                    "Describe likelihood of events",
-                    "Express probability as fractions",
-                    "Order events by probability"
+                    "Plan sophisticated film analyses",
+                    "Structure multimodal responses",
+                    "Integrate visual and written elements"
                 ]
             },
             {
-                topic: "Chance Experiments",
+                topic: "Writing Film Analysis",
                 outcomes: [
-                    "Distinguish theoretical vs experimental probability",
-                    "Conduct probability experiments",
-                    "Compare predicted and actual outcomes"
+                    "Write sophisticated film analyses",
+                    "Synthesise ideas across multiple texts",
+                    "Support judgments with precise evidence"
                 ]
             },
             {
-                topic: "Problem Solving with Data",
+                topic: "Editing and Refinement",
                 outcomes: [
-                    "Solve multi-step data problems",
-                    "Apply statistical reasoning",
-                    "Interpret complex data scenarios"
+                    "Revise extended responses for sophistication",
+                    "Check cohesion and accuracy",
+                    "Polish multimodal presentations"
                 ]
             },
             {
-                topic: "High School Transition Maths",
+                topic: "Presentation Skills",
                 outcomes: [
-                    "Solve mixed problems across all strands",
-                    "Tackle Year 7 exposure questions",
-                    "Build confidence for high school mathematics"
+                    "Deliver sophisticated multimodal presentations",
+                    "Integrate visual and oral elements effectively",
+                    "Engage audience professionally"
                 ]
             },
             {
-                topic: "Full Year Revision",
-                outcomes: ["Review number, fractions, geometry, data"]
+                topic: "Full-Year Revision",
+                outcomes: [
+                    "Review all Stage 5 skills comprehensively",
+                    "Consolidate analytical, persuasive, and creative writing",
+                    "Practice exam-style responses"
+                ]
             },
             {
-                topic: "Yearly Exam Preparation",
-                outcomes: ["Full exam simulation", "Time management & accuracy"]
+                topic: "Yearly Examination",
+                outcomes: ["Demonstrate comprehensive Stage 5 mastery", "Apply skills across text types", "Show sophisticated insight"]
             },
             {
-                topic: "Yearly Exam",
-                outcomes: ["Comprehensive Stage 3 assessment", "High-difficulty reasoning"]
+                topic: "Reflection and Transition to Year 11",
+                outcomes: ["Reflect on Year 10 achievements", "Identify pathway readiness", "Prepare for senior English"]
             }
         ]
     }
@@ -330,46 +334,46 @@ const TERMS: Record<TermKey, { title: string; subtitle: string; lessons: Lesson[
 const KEY_METHOD_BENEFITS = [
     {
         icon: BookOpen,
-        title: "Deep Conceptual Understanding",
-        description: "Mathematics is taught for mastery, not memorization. Students understand the reasoning behind every method and can apply concepts flexibly.",
+        title: "Advanced Critical Analysis",
+        description: "Develop sophisticated analytical skills through close reading of challenging texts with precise evidence and advanced metalanguage.",
     },
     {
-        icon: Users,
-        title: "Advanced Problem-Solving",
-        description: "Every lesson includes high-difficulty reasoning tasks that develop the critical thinking skills needed for selective schools and high school success.",
+        icon: Feather,
+        title: "Extended Essay Mastery",
+        description: "Master extended analytical and argumentative essay writing with sophisticated thesis development and sustained reasoning.",
     },
     {
-        icon: Zap,
-        title: "Exam-Ready Skills",
-        description: "Strategic preparation for NAPLAN, selective school exams, and high school entry, with explicit focus on time management and accuracy.",
+        icon: MessageCircle,
+        title: "Authoritative Communication",
+        description: "Build confidence in seminar-style discussions, formal debates, and sophisticated presentations with critical reasoning.",
     },
     {
-        icon: TrendingUp,
-        title: "High School Preparation",
-        description: "Seamless transition to Year 7 mathematics through exposure to algebraic thinking and advanced problem-solving techniques.",
+        icon: Award,
+        title: "Year 11 Pathway Preparation",
+        description: "Comprehensive preparation for senior English pathways including Standard, Advanced, and Extension with strong foundations.",
     },
 ];
 
 const APPROACH_FEATURES = [
     {
-        icon: Calculator,
-        title: "Efficient strategies",
-        description: "Master mental and written methods that prioritize speed and accuracy for exam success.",
+        icon: Book,
+        title: "Sophisticated analysis",
+        description: "Develop advanced textual analysis with focus on authorial intent, ideology, and comparative study.",
     },
     {
         icon: Brain,
-        title: "Logical reasoning",
-        description: "Develop mathematical thinking through multi-step problems and written explanations.",
+        title: "Critical mastery",
+        description: "Build sophisticated critical thinking through analysis of complex texts, ideology, and representation.",
     },
     {
         icon: Target,
-        title: "Syllabus mastery",
-        description: "Complete coverage of NSW Mathematics K–10 Stage 3 outcomes with exam-focused sequencing.",
+        title: "Stage 5 completion",
+        description: "Complete coverage of NSW English K–10 Stage 5 outcomes for Year 10 students.",
     },
     {
         icon: CheckCircle,
-        title: "Regular testing",
-        description: "Frequent assessments and exam simulations build confidence and identify areas for improvement.",
+        title: "Senior readiness",
+        description: "Structured preparation for Year 11 English pathways with formal essay writing and exam mastery.",
     },
 ];
 
@@ -377,7 +381,7 @@ const APPROACH_FEATURES = [
    Page Component
 ========================= */
 
-export default function Year6MathsPage() {
+export default function Year10EnglishPage() {
     const [activeTerm, setActiveTerm] = useState<TermKey>("Term 1");
     const active = TERMS[activeTerm];
     const [isSticky, setIsSticky] = useState(false);
@@ -418,25 +422,25 @@ export default function Year6MathsPage() {
                                 </Link>
                             </li>
                             <li className="text-[#CFC6EA]">/</li>
-                            <li className="text-[#5E5574]">Year 6 Mathematics</li>
+                            <li className="text-[#5E5574]">Year 10 English</li>
                         </ol>
                     </nav>
 
                     {/* Badge */}
                     <div className="inline-flex items-center gap-2 rounded-full border border-[#DDD4F2] bg-white/80 px-4 py-2 text-sm font-medium text-[#6B647F] backdrop-blur-sm mb-6">
                         <span className="h-1.5 w-1.5 rounded-full bg-[#8B7FA8]" />
-                        NSW Syllabus Aligned
+                        NSW Stage 5 Aligned
                     </div>
 
                     <h1 className="font-julius text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#3F3A52]">
-                        Year 6 Mathematics
+                        Year 10 English
                     </h1>
 
                     <p className="mt-6 max-w-2xl text-lg text-[#6B647F] leading-relaxed">
-                        Advanced mathematics for high school success — building{" "}
-                        <span className="text-[#5E5574] font-medium">algebraic thinking</span>,{" "}
-                        <span className="text-[#5E5574] font-medium">advanced problem-solving</span>, and{" "}
-                        <span className="text-[#5E5574] font-medium">exam-ready skills</span>.
+                        Completing Stage 5 — mastering{" "}
+                        <span className="text-[#5E5574] font-medium">extended analysis</span>,{" "}
+                        <span className="text-[#5E5574] font-medium">sophisticated argument</span>, and{" "}
+                        <span className="text-[#5E5574] font-medium">senior English readiness</span>.
                     </p>
 
                     {/* Course overview stats */}
@@ -481,9 +485,9 @@ export default function Year6MathsPage() {
                 </div>
             </section>
 
-            {/* Blue sticky line for Mathematics */}
+            {/* Purple sticky line for English */}
             <div
-                className={`h-1 bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ${isSticky ? 'fixed top-[72px] left-0 right-0 z-40' : 'relative'
+                className={`h-1 bg-gradient-to-r from-purple-500 to-violet-500 transition-all duration-300 ${isSticky ? 'fixed top-[72px] left-0 right-0 z-40' : 'relative'
                     }`}
             />
 
@@ -498,7 +502,7 @@ export default function Year6MathsPage() {
                             Forty lessons across four terms
                         </h2>
                         <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto">
-                            Each term focuses on a different strand of mathematics, building advanced skills and high school readiness.
+                            Each term focuses on different text types and analytical skills, completing Stage 5 and preparing for Year 11 pathways.
                         </p>
                     </div>
 
@@ -611,8 +615,7 @@ export default function Year6MathsPage() {
             </section>
 
             {/* ================= TEXTBOOK PREVIEW ================= */}
-            <TextbookPreviewMaths />
-
+            <TextbookPreviewEnglish />
 
             {/* ================= THE KEY METHOD IN ACTION ================= */}
             <section className="py-24 border-t border-[#E6E1F2] bg-white">
@@ -622,7 +625,7 @@ export default function Year6MathsPage() {
                             Our Approach
                         </p>
                         <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
-                            The KEY Method in Mathematics
+                            The KEY Method in English
                         </h2>
                         <p className="mt-4 text-[#6B647F] max-w-2xl mx-auto leading-relaxed">
                             Every lesson is designed around three principles: structured <span className="text-[#5E5574] font-medium">Knowledge</span>,
@@ -688,7 +691,7 @@ export default function Year6MathsPage() {
                             How We Teach
                         </p>
                         <h2 className="font-julius text-3xl md:text-4xl text-[#3F3A52]">
-                            Designed for high school success
+                            Designed for Year 11 readiness
                         </h2>
                     </div>
 
@@ -722,9 +725,9 @@ export default function Year6MathsPage() {
                         </p>
                         <p className="text-[#4A4458] leading-relaxed">
                             This course follows the{" "}
-                            <strong className="text-[#3F3A52]">NSW Mathematics K–10 Syllabus</strong>{" "}
-                            for Stage 3, covering all advanced outcomes for Year 6 students preparing for high school. Content is
-                            sequenced to build exam-ready skills and ensure smooth transition to Year 7.
+                            <strong className="text-[#3F3A52]">NSW English K–10 Syllabus</strong>{" "}
+                            for Stage 5, covering all outcomes for Year 10 students. Content is
+                            sequenced to complete Stage 5 and prepare for Year 11 English pathways including Standard, Advanced, and Extension.
                         </p>
                     </div>
                 </div>

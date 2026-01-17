@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma'
 import { SignUpSchema } from '@/lib/enrolment-schemas'
 import bcrypt from 'bcryptjs'
 import crypto from 'crypto'
+import { stripe } from '@/lib/stripe'
 
 export async function getEnrolmentByToken(token: string) {
     try {
@@ -62,9 +63,11 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
         // Hash password
         const hashedPassword = await bcrypt.hash(validated.password, 10)
 
+        let savedEnrolment;
+
         if (enrolmentId) {
             // UPDATE existing enrolment (continuation flow)
-            const enrolment = await prisma.enrolment.update({
+            savedEnrolment = await prisma.enrolment.update({
                 where: { id: enrolmentId },
                 data: {
                     // Update Tier B fields
@@ -73,61 +76,13 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
                     status: 'SIGNUP_COMPLETED',
                     stage: 'SIGNUP',
                     tokenUsed: true,
-
-                    // Update students with Tier B data
                     students: {
-                        updateMany: validated.students.map((student: any, index: number) => ({
-                            where: { id: student.id }, // Assumes student.id is passed from pre-fill
-                            data: {
-                                email: student.email,
-                                package: student.packageConfig.package,
-                                subjects: student.packageConfig.subjects,
-                                weeklyHours: student.packageConfig.weeklyHours,
-                                hourAllocation: student.packageConfig.hourAllocation,
-                                hourlyRate: student.packageConfig.hourlyRate,
-                                weeklyTotal: student.packageConfig.weeklyTotal,
-                                preferredDays: student.packageConfig.preferredDays,
-                                preferredTimes: student.packageConfig.preferredTimes,
-                            }
-                        }))
-                    }
-                },
-                include: { students: true }
-            })
-
-            console.log('✅ Enrolment updated:', enrolment.id)
-            return { success: true, enrolmentId: enrolment.id }
-
-        } else {
-            // CREATE new enrolment (direct sign-up flow)
-            const enrolment = await prisma.enrolment.create({
-                data: {
-                    // Tier A
-                    parentFirstName: validated.parentFirstName,
-                    parentLastName: validated.parentLastName,
-                    parentEmail: validated.parentEmail,
-                    parentPhone: validated.parentPhone,
-                    howDidYouHear: validated.howDidYouHear,
-                    academicGoals: validated.academicGoals,
-                    learningGoals: validated.learningGoals,
-                    personalGoals: validated.personalGoals,
-
-                    // Tier B
-                    password: hashedPassword,
-                    termsAccepted: validated.termsAccepted,
-                    status: 'SIGNUP_COMPLETED',
-                    stage: 'SIGNUP',
-
-                    // Students
-                    students: {
+                        deleteMany: {},
                         create: validated.students.map((student: any) => ({
-                            // Tier A
                             firstName: student.firstName,
                             lastName: student.lastName,
                             gradeIn2026: student.gradeIn2026,
                             school: student.school,
-
-                            // Tier B
                             email: student.email,
                             package: student.packageConfig.package,
                             subjects: student.packageConfig.subjects,
@@ -142,9 +97,94 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
                 },
                 include: { students: true }
             })
+        } else {
+            // CREATE new enrolment
+            savedEnrolment = await prisma.enrolment.create({
+                data: {
+                    parentFirstName: validated.parentFirstName,
+                    parentLastName: validated.parentLastName,
+                    parentEmail: validated.parentEmail,
+                    parentPhone: validated.parentPhone,
+                    howDidYouHear: validated.howDidYouHear,
+                    academicGoals: validated.academicGoals,
+                    learningGoals: validated.learningGoals,
+                    personalGoals: validated.personalGoals,
 
-            console.log('✅ New enrolment created:', enrolment.id)
-            return { success: true, enrolmentId: enrolment.id }
+                    password: hashedPassword,
+                    termsAccepted: validated.termsAccepted,
+                    status: 'SIGNUP_COMPLETED',
+                    stage: 'SIGNUP',
+
+                    students: {
+                        create: validated.students.map((student: any) => ({
+                            firstName: student.firstName,
+                            lastName: student.lastName,
+                            gradeIn2026: student.gradeIn2026,
+                            school: student.school,
+                            email: student.email,
+                            package: student.packageConfig.package,
+                            subjects: student.packageConfig.subjects,
+                            weeklyHours: student.packageConfig.weeklyHours,
+                            hourAllocation: student.packageConfig.hourAllocation,
+                            hourlyRate: student.packageConfig.hourlyRate,
+                            weeklyTotal: student.packageConfig.weeklyTotal,
+                            preferredDays: student.packageConfig.preferredDays,
+                            preferredTimes: student.packageConfig.preferredTimes,
+                        }))
+                    }
+                },
+                include: { students: true }
+            })
+        }
+
+        console.log('✅ Enrolment saved:', savedEnrolment.id)
+
+        // --- STRIPE CHECKOUT ---
+
+        try {
+            const lineItems = validated.students.map((student: any) => {
+                const pkg = student.packageConfig.package; // 'ELEVATE', 'GLIDE', 'SOAR'
+                let amount = 0
+                let name = 'Tuition'
+
+                if (pkg === 'ELEVATE') { amount = 75000; name = 'Elevate Term Package' } // $750.00
+                else if (pkg === 'GLIDE') { amount = 140000; name = 'Glide Term Package' } // $1400.00
+                else if (pkg === 'SOAR') { amount = 195000; name = 'Soar Term Package' } // $1950.00
+
+                return {
+                    price_data: {
+                        currency: 'aud',
+                        product_data: {
+                            name: `${name} - ${student.firstName} ${student.lastName}`,
+                            description: `Term tuition for ${student.firstName} ${student.lastName}`,
+                        },
+                        unit_amount: amount,
+                    },
+                    quantity: 1,
+                }
+            })
+
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: lineItems,
+                mode: 'payment',
+                success_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/enrol/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/enrol?error=cancelled`,
+                client_reference_id: savedEnrolment.id,
+                customer_email: validated.parentEmail,
+                metadata: {
+                    enrolmentId: savedEnrolment.id
+                }
+            })
+
+            return { success: true, enrolmentId: savedEnrolment.id, redirectUrl: session.url }
+
+        } catch (stripeError: any) {
+            console.error('Stripe Error:', stripeError)
+            // Fallback: Return success but no redirect (or handle error)
+            // If Stripe fails, we probably shouldn't show "Success" fully, but the enrolment IS saved.
+            // Let's return error so UI stays on form or shows alert.
+            return { success: false, error: 'Payment initialization failed. Please try again or contact support.' }
         }
 
     } catch (error: any) {
