@@ -637,37 +637,36 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                {/* Right column */}
-                <div className="rounded-2xl border border-[#D9CFF2] bg-white/70 p-6 backdrop-blur-sm">
-                  <h3 className="text-sm font-semibold text-[#3F3A52] mb-4">What to expect in your consultation:</h3>
-                  <div className="space-y-4">
-                    {[
-                      {
-                        icon: Icons.compass,
-                        title: "15-minute chat",
-                        body: "A relaxed conversation about your child's needs and learning goals",
-                      },
-                      {
-                        icon: Icons.checkCircle,
-                        title: "Personalised recommendations",
-                        body: "We'll suggest the right approach based on your situation",
-                      },
-                      {
-                        icon: Icons.heart,
-                        title: "Clear next steps",
-                        body: "No pressure — just clarity on how we can help",
-                      },
-                    ].map((item) => (
-                      <div key={item.title} className="flex items-start gap-4 group">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F4F1FB] text-[#5E5574] transition-transform group-hover:scale-110">
-                          <div className="w-5 h-5">{item.icon}</div>
+                {/* Right column - Image */}
+                <div className="relative rounded-2xl overflow-hidden shadow-xl border border-[#D9CFF2]">
+                  <div className="aspect-[4/3] relative">
+                    <Image
+                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80"
+                      alt="Parent and educator having a warm, supportive conversation about student's learning journey"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                    {/* Subtle overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#3F3A52]/20 to-transparent" />
+                  </div>
+
+                  {/* Overlay card with key points */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/95 to-transparent">
+                    <div className="space-y-3">
+                      {[
+                        { icon: Icons.compass, text: "15-minute relaxed chat" },
+                        { icon: Icons.checkCircle, text: "Personalised recommendations" },
+                        { icon: Icons.heart, text: "No pressure, just clarity" },
+                      ].map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F4F1FB] text-[#5E5574]">
+                            <div className="w-4 h-4">{item.icon}</div>
+                          </div>
+                          <span className="text-sm font-medium text-[#3F3A52]">{item.text}</span>
                         </div>
-                        <div>
-                          <div className="text-sm font-semibold text-[#3F3A52]">{item.title}</div>
-                          <div className="text-sm text-[#6B647F]">{item.body}</div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
