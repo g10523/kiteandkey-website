@@ -276,18 +276,18 @@ export default function MindPrintSection() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="lg:col-span-5"
           >
-            <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/90 backdrop-blur-sm p-10 h-full shadow-lg shadow-[#5E5574]/5">
-              <div className="text-center mb-8">
-                <h3 className="font-julius text-2xl md:text-3xl font-light text-[#3F3A52]">
+            <div className="rounded-3xl border border-[#D9CFF2]/80 bg-white/90 backdrop-blur-sm p-6 md:p-10 h-full shadow-lg shadow-[#5E5574]/5">
+              <div className="text-center mb-6 md:mb-8">
+                <h3 className="font-julius text-xl md:text-2xl lg:text-3xl font-light text-[#3F3A52]">
                   8 Cognitive Dimensions
                 </h3>
-                <p className="text-sm text-[#8B7FA8] mt-2 font-light">
+                <p className="text-xs md:text-sm text-[#8B7FA8] mt-2 font-light">
                   Nuanced profiling for personalized learning
                 </p>
               </div>
 
               {/* Circular visualization */}
-              <div className="relative w-full aspect-square max-w-[340px] mx-auto">
+              <div className="relative w-full aspect-square max-w-[280px] sm:max-w-[320px] md:max-w-[340px] mx-auto">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="relative">
                     <motion.div
@@ -299,18 +299,18 @@ export default function MindPrintSection() {
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#D9CFF2] bg-white shadow-lg">
+                    <div className="relative flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-full border-2 border-[#D9CFF2] bg-white shadow-lg">
                       <div className="text-center">
                         <motion.div
                           key={activeIndex}
                           initial={{ scale: 0.8, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
-                          className="font-julius text-4xl font-medium"
+                          className="font-julius text-3xl md:text-4xl font-medium"
                           style={{ color: activeDimension.color }}
                         >
                           {activeDimension.score}
                         </motion.div>
-                        <div className="text-[10px] text-[#8C84A8] uppercase tracking-wider font-semibold">
+                        <div className="text-[9px] md:text-[10px] text-[#8C84A8] uppercase tracking-wider font-semibold">
                           Score
                         </div>
                       </div>
@@ -322,7 +322,8 @@ export default function MindPrintSection() {
                 {COGNITIVE_DIMENSIONS.map((dim, index) => {
                   const Icon = dim.icon;
                   const angle = (index / COGNITIVE_DIMENSIONS.length) * 2 * Math.PI - Math.PI / 2;
-                  const radius = 130;
+                  // Responsive radius based on container size
+                  const radius = typeof window !== 'undefined' && window.innerWidth < 640 ? 105 : 130;
                   const x = Math.cos(angle) * radius;
                   const y = Math.sin(angle) * radius;
                   const isActive = index === activeIndex;
@@ -346,7 +347,7 @@ export default function MindPrintSection() {
                         onClick={() => setActiveIndex(index)}
                         onMouseEnter={() => setHoveredDimension(index)}
                         onMouseLeave={() => setHoveredDimension(null)}
-                        className={`group relative flex h-14 w-14 items-center justify-center rounded-full border-2 bg-white shadow-sm transition-all duration-300 ${isActive
+                        className={`group relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full border-2 bg-white shadow-sm transition-all duration-300 ${isActive
                           ? "border-[#5E5574] ring-2 ring-[#5E5574]/20"
                           : "border-[#E6E0F2] hover:border-[#D9CFF2]"
                           }`}
@@ -355,14 +356,14 @@ export default function MindPrintSection() {
                           transform: "translate(-50%, -50%)",
                         }}
                       >
-                        <Icon size={20} strokeWidth={1.5} />
+                        <Icon size={18} strokeWidth={1.5} className="md:w-5 md:h-5" />
                       </button>
                     </motion.div>
                   );
                 })}
 
                 {/* SVG connections and ring */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 340 340" preserveAspectRatio="xMidYMid meet">
                   {COGNITIVE_DIMENSIONS.map((_, index) => {
                     const angle = (index / COGNITIVE_DIMENSIONS.length) * 2 * Math.PI - Math.PI / 2;
                     const radius = 130;
@@ -412,12 +413,12 @@ export default function MindPrintSection() {
                 key={activeIndex}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-10 text-center"
+                className="mt-6 md:mt-10 text-center"
               >
-                <div className="font-julius text-xl text-[#3F3A52] font-medium mb-1">
+                <div className="font-julius text-lg md:text-xl text-[#3F3A52] font-medium mb-1">
                   {activeDimension.name}
                 </div>
-                <p className="text-sm text-[#6B647F] font-light">
+                <p className="text-xs md:text-sm text-[#6B647F] font-light">
                   {activeDimension.description}
                 </p>
               </motion.div>
