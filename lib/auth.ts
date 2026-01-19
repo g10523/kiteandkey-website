@@ -23,13 +23,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     const { email, password } = loginSchema.parse(credentials)
 
-                    // 1. MASTER ADMIN (Works without Database)
-                    if (email === 'admin@kiteandkey.com.au' && password === 'admin123') {
-                        console.log('🔓 Master Admin Login');
+                    // 1. MASTER ADMIN ACCOUNTS (Work without Database)
+                    const masterAdmins = [
+                        { email: 'kkewalram777@gmail.com', password: 'Foundersclub1', name: 'Keisha Walram' },
+                        { email: 'giovannitc88@gmail.com', password: 'Foundersclub1', name: 'Giovanni Thomas' }
+                    ];
+
+                    const masterAdmin = masterAdmins.find(admin => admin.email === email && admin.password === password);
+
+                    if (masterAdmin) {
+                        console.log(`🔓 Master Admin Login: ${masterAdmin.name}`);
                         return {
-                            id: 'master-admin',
-                            email: 'admin@kiteandkey.com.au',
-                            name: 'Master Admin',
+                            id: `master-admin-${masterAdmin.email}`,
+                            email: masterAdmin.email,
+                            name: masterAdmin.name,
                             role: 'ADMIN',
                         }
                     }
