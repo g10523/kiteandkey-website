@@ -1,27 +1,48 @@
 import { signIn } from '@/lib/auth'
 import Image from 'next/image'
 import { KeyRound } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
-export default function AdminLoginPage() {
+export default async function AdminLoginPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ error?: string }>
+}) {
+    // Await searchParams for Next.js 15+ compatibility
+    const params = await searchParams
     async function handleLogin(formData: FormData) {
         'use server'
 
         const email = formData.get('email') as string
         const password = formData.get('password') as string
 
+        console.log('🔐 Login attempt for:', email)
+
         try {
+            // NextAuth v5: signIn with redirectTo will either:
+            // 1. Redirect on success (throws NEXT_REDIRECT - this is SUCCESS!)
+            // 2. Throw CredentialsSignin error on failure
             await signIn('credentials', {
                 email,
                 password,
                 redirectTo: '/admin',
             })
-        } catch (error) {
-            // NextAuth throws NEXT_REDIRECT on successful login
-            // Only actual errors should be caught here
-            if (error instanceof Error && error.message !== 'NEXT_REDIRECT') {
+        } catch (error: any) {
+            // CRITICAL: NEXT_REDIRECT is thrown on SUCCESS - we must re-throw it!
+            if (error.message === 'NEXT_REDIRECT') {
                 throw error
             }
-            throw error
+
+            console.error('❌ SignIn error:', error)
+
+            // NextAuth throws specific error types for actual failures
+            // Check if it's a credentials error (invalid email/password)
+            if (error.type === 'CredentialsSignin' || error.message?.includes('CredentialsSignin')) {
+                redirect('/admin/login?error=Invalid credentials')
+            }
+
+            // For other errors, show a generic authentication error
+            redirect('/admin/login?error=Authentication error')
         }
     }
 
@@ -65,6 +86,19 @@ export default function AdminLoginPage() {
                                 Access the admin dashboard
                             </p>
                         </div>
+
+                        {/* Error Message */}
+                        {params?.error && (
+                            <div className="mb-6 rounded-xl bg-red-50 border-2 border-red-200 p-4">
+                                <p className="text-sm font-semibold text-red-700 text-center">
+                                    {params.error === 'Invalid credentials'
+                                        ? '❌ Incorrect email or password. Please try again.'
+                                        : params.error === 'Authentication error'
+                                            ? '⚠️ Authentication system error. Please contact support.'
+                                            : params.error}
+                                </p>
+                            </div>
+                        )}
 
                         <div className="space-y-6">
                             <div>

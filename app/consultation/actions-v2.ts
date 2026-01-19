@@ -12,7 +12,18 @@ export async function submitConsultationV2(formData: any) {
         // Validate with Zod
         const validated = ConsultationSchema.parse(formData)
 
-        // Create Enrolment record
+        // Get slot details if selected
+        let scheduledAt = new Date()
+        if (validated.selectedSlotId) {
+            const slot = await prisma.availabilitySlot.findUnique({
+                where: { id: validated.selectedSlotId }
+            })
+            if (slot) {
+                scheduledAt = slot.startTime
+            }
+        }
+
+        // Create Enrolment record (new system)
         const enrolment = await prisma.enrolment.create({
             data: {
                 // Parent/Guardian
@@ -52,8 +63,38 @@ export async function submitConsultationV2(formData: any) {
             }
         })
 
-        // Mark slot as booked if selected
+        // ALSO create a Lead record for backward compatibility with admin UI
+        const lead = await prisma.lead.create({
+            data: {
+                parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
+                email: validated.parentEmail,
+                phone: validated.parentPhone,
+                studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
+                yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
+                subjects: JSON.stringify([]), // Empty for now, can be populated later
+                school: validated.students[0]?.school || '',
+                notes: [
+                    `Academic Goals: ${validated.academicGoals.join(', ')}`,
+                    `Learning Goals: ${validated.learningGoals.join(', ')}`,
+                    `Personal Goals: ${validated.personalGoals.join(', ')}`,
+                    validated.howDidYouHear ? `Source: ${validated.howDidYouHear}` : ''
+                ].filter(Boolean).join('\n'),
+                status: validated.selectedSlotId ? 'CONSULTATION_BOOKED' : 'NEW',
+                source: validated.howDidYouHear || 'website',
+            }
+        })
+
+        // Create Consultation record if slot selected
         if (validated.selectedSlotId) {
+            await prisma.consultation.create({
+                data: {
+                    leadId: lead.id,
+                    scheduledAt: scheduledAt,
+                    status: 'SCHEDULED',
+                }
+            })
+
+            // Mark slot as booked
             await prisma.availabilitySlot.update({
                 where: { id: validated.selectedSlotId },
                 data: {
@@ -77,11 +118,12 @@ export async function submitConsultationV2(formData: any) {
             ].join('\n')
         })
 
-        console.log('✅ Consultation created:', enrolment.id)
+        console.log('✅ Consultation created:', enrolment.id, 'Lead:', lead.id)
 
         return {
             success: true,
             enrolmentId: enrolment.id,
+            leadId: lead.id,
             studentNames: validated.students.map(s => s.firstName)
         }
 

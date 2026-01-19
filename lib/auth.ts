@@ -21,7 +21,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
             authorize: async (credentials) => {
                 try {
+                    console.log('🔐 Authorize called with credentials:', { email: credentials?.email })
+
                     const { email, password } = loginSchema.parse(credentials)
+                    console.log('✅ Credentials validated')
 
                     // 1. MASTER ADMIN ACCOUNTS (Work without Database)
                     const masterAdmins = [
@@ -41,22 +44,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         }
                     }
 
+                    console.log('⚠️ Not a master admin, checking database...')
+
                     // 2. DATABASE USERS
                     try {
                         const user = await prisma.user.findUnique({
                             where: { email },
                         })
 
+                        console.log('🔍 Database query result:', user ? `User found: ${user.email}` : 'User not found')
+
                         if (!user) {
+                            console.log('❌ No user found with email:', email)
                             return null; // Invalid email
                         }
 
                         const isValidPassword = await bcrypt.compare(password, user.password)
+                        console.log('🔑 Password validation:', isValidPassword ? 'Valid' : 'Invalid')
 
                         if (!isValidPassword) {
+                            console.log('❌ Invalid password for user:', email)
                             return null; // Invalid pass
                         }
 
+                        console.log('✅ Database user authenticated:', user.email)
                         return {
                             id: user.id,
                             email: user.email,
@@ -70,7 +81,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
 
                 } catch (error) {
-                    console.error('Login Error:', error);
+                    console.error('❌ Login Error:', error);
                     return null
                 }
             },

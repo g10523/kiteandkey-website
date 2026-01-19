@@ -1,7 +1,25 @@
-import NextAuth from "next-auth"
-import { authConfig } from "@/lib/auth.config"
+import { auth } from "@/lib/auth"
 
-export default NextAuth(authConfig).auth
+export default auth((req) => {
+    const isLoggedIn = !!req.auth
+    const isOnAdminPanel = req.nextUrl.pathname.startsWith('/admin')
+    const isOnLoginPage = req.nextUrl.pathname === '/admin/login'
+
+    console.log('🔐 Middleware check:', {
+        path: req.nextUrl.pathname,
+        isLoggedIn,
+        userEmail: req.auth?.user?.email,
+        userRole: req.auth?.user?.role
+    })
+
+    if (isOnAdminPanel && !isOnLoginPage) {
+        if (!isLoggedIn) {
+            console.log('❌ Not logged in, redirecting to login')
+            return Response.redirect(new URL('/admin/login', req.nextUrl))
+        }
+        console.log('✅ User authenticated, allowing access')
+    }
+})
 
 export const config = {
     matcher: [
