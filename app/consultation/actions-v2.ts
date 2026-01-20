@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma'
 import { ConsultationSchema } from '@/lib/enrolment-schemas'
 import { sendConsultationEmail } from '@/lib/email'
-import bcrypt from 'bcryptjs'
+
 
 export async function submitConsultationV2(formData: any) {
     try {
@@ -23,102 +23,100 @@ export async function submitConsultationV2(formData: any) {
             }
         }
 
-        // Create Enrolment record (new system)
-        const enrolment = await prisma.enrolment.create({
-            data: {
-                // Parent/Guardian
-                parentFirstName: validated.parentFirstName,
-                parentLastName: validated.parentLastName,
-                parentEmail: validated.parentEmail,
-                parentPhone: validated.parentPhone,
+        // PARALLEL: Create Enrolment and Lead simultaneously
+        // These are independent of each other
+        const [enrolment, lead] = await Promise.all([
+            // 1. Create Enrolment
+            prisma.enrolment.create({
+                data: {
+                    parentFirstName: validated.parentFirstName,
+                    parentLastName: validated.parentLastName,
+                    parentEmail: validated.parentEmail,
+                    parentPhone: validated.parentPhone,
+                    howDidYouHear: validated.howDidYouHear,
+                    academicGoals: validated.academicGoals,
+                    learningGoals: validated.learningGoals,
+                    personalGoals: validated.personalGoals,
+                    status: validated.selectedSlotId ? 'CONSULTATION_SCHEDULED' : 'CONSULTATION_REQUESTED',
+                    stage: 'CONSULTATION',
+                    consultationSlotId: validated.selectedSlotId,
+                    students: {
+                        create: validated.students.map(student => ({
+                            firstName: student.firstName,
+                            lastName: student.lastName,
+                            gradeIn2026: student.gradeIn2026,
+                            school: student.school,
+                        }))
+                    }
+                },
+                include: { students: true, consultationSlot: true }
+            }),
 
-                // Discovery
-                howDidYouHear: validated.howDidYouHear,
-
-                // Goals
-                academicGoals: validated.academicGoals,
-                learningGoals: validated.learningGoals,
-                personalGoals: validated.personalGoals,
-
-                // Status
-                status: validated.selectedSlotId ? 'CONSULTATION_SCHEDULED' : 'CONSULTATION_REQUESTED',
-                stage: 'CONSULTATION',
-
-                // Link to slot if selected
-                consultationSlotId: validated.selectedSlotId,
-
-                // Students
-                students: {
-                    create: validated.students.map(student => ({
-                        firstName: student.firstName,
-                        lastName: student.lastName,
-                        gradeIn2026: student.gradeIn2026,
-                        school: student.school,
-                    }))
+            // 2. Create Lead
+            prisma.lead.create({
+                data: {
+                    parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
+                    email: validated.parentEmail,
+                    phone: validated.parentPhone,
+                    studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
+                    yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
+                    subjects: JSON.stringify([]),
+                    school: validated.students[0]?.school || '',
+                    notes: [
+                        `Academic Goals: ${validated.academicGoals.join(', ')}`,
+                        `Learning Goals: ${validated.learningGoals.join(', ')}`,
+                        `Personal Goals: ${validated.personalGoals.join(', ')}`,
+                        validated.howDidYouHear ? `Source: ${validated.howDidYouHear}` : ''
+                    ].filter(Boolean).join('\n'),
+                    status: validated.selectedSlotId ? 'CONSULTATION_BOOKED' : 'NEW',
+                    source: validated.howDidYouHear || 'website',
                 }
-            },
-            include: {
-                students: true,
-                consultationSlot: true,
-            }
-        })
+            })
+        ])
 
-        // ALSO create a Lead record for backward compatibility with admin UI
-        const lead = await prisma.lead.create({
-            data: {
-                parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
-                email: validated.parentEmail,
-                phone: validated.parentPhone,
-                studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
-                yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
-                subjects: JSON.stringify([]), // Empty for now, can be populated later
-                school: validated.students[0]?.school || '',
-                notes: [
-                    `Academic Goals: ${validated.academicGoals.join(', ')}`,
-                    `Learning Goals: ${validated.learningGoals.join(', ')}`,
-                    `Personal Goals: ${validated.personalGoals.join(', ')}`,
-                    validated.howDidYouHear ? `Source: ${validated.howDidYouHear}` : ''
-                ].filter(Boolean).join('\n'),
-                status: validated.selectedSlotId ? 'CONSULTATION_BOOKED' : 'NEW',
-                source: validated.howDidYouHear || 'website',
-            }
-        })
+        // PARALLEL: Execute secondary actions (Consultation, Slot Update, Email)
+        const secondaryActions = []
 
-        // Create Consultation record if slot selected
+        // If slot selected, schedule consultation & update slot
         if (validated.selectedSlotId) {
-            await prisma.consultation.create({
-                data: {
-                    leadId: lead.id,
-                    scheduledAt: scheduledAt,
-                    status: 'SCHEDULED',
-                }
-            })
+            secondaryActions.push(
+                prisma.consultation.create({
+                    data: {
+                        leadId: lead.id,
+                        scheduledAt: scheduledAt,
+                        status: 'SCHEDULED',
+                    }
+                })
+            )
 
-            // Mark slot as booked
-            await prisma.availabilitySlot.update({
-                where: { id: validated.selectedSlotId },
-                data: {
-                    isBooked: true,
-                    currentBookings: { increment: 1 }
-                }
-            })
+            secondaryActions.push(
+                prisma.availabilitySlot.update({
+                    where: { id: validated.selectedSlotId },
+                    data: { isBooked: true, currentBookings: { increment: 1 } }
+                })
+            )
         }
 
-        // Send notification email
-        await sendConsultationEmail({
-            parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
-            parentEmail: validated.parentEmail,
-            parentPhone: validated.parentPhone,
-            studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
-            yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
-            concerns: [
-                `Academic Goals: ${validated.academicGoals.join(', ')}`,
-                `Learning Goals: ${validated.learningGoals.join(', ')}`,
-                `Personal Goals: ${validated.personalGoals.join(', ')}`
-            ].join('\n')
-        })
+        // Send Email (Don't let email failure block the user response, but await it to ensure execution in serverless)
+        secondaryActions.push(
+            sendConsultationEmail({
+                parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
+                parentEmail: validated.parentEmail,
+                parentPhone: validated.parentPhone,
+                studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
+                yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
+                concerns: [
+                    `Academic Goals: ${validated.academicGoals.join(', ')}`,
+                    `Learning Goals: ${validated.learningGoals.join(', ')}`,
+                    `Personal Goals: ${validated.personalGoals.join(', ')}`
+                ].join('\n')
+            }).catch(err => console.error('Background Email Failed:', err))
+        )
 
-        console.log('✅ Consultation created:', enrolment.id, 'Lead:', lead.id)
+        // Wait for all secondary actions to complete
+        await Promise.all(secondaryActions)
+
+        console.log('✅ Consultation workflow complete:', enrolment.id)
 
         return {
             success: true,
