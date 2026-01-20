@@ -6,8 +6,8 @@ import { z } from "zod"
 import { authConfig } from "./auth.config"
 
 const loginSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
+    email: z.string().email().trim().toLowerCase(), // normalize email
+    password: z.string().min(6).trim(), // whitespace around password should be ignored
 })
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -32,7 +32,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         { email: 'giovannitc88@gmail.com', password: 'Foundersclub1', name: 'Giovanni Thomas' }
                     ];
 
-                    const masterAdmin = masterAdmins.find(admin => admin.email === email && admin.password === password);
+                    const masterAdmin = masterAdmins.find(admin => {
+                        const emailMatch = admin.email === email;
+                        const passwordMatch = admin.password === password;
+
+                        if (emailMatch && !passwordMatch) {
+                            console.log(`❌ Password mismatch for ${email}. Provided length: ${password.length}, Expected length: ${admin.password.length}`);
+                        }
+
+                        return emailMatch && passwordMatch;
+                    });
 
                     if (masterAdmin) {
                         console.log(`🔓 Master Admin Login: ${masterAdmin.name}`);
