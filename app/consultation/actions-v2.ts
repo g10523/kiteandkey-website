@@ -100,18 +100,10 @@ export async function submitConsultationV2(formData: any) {
         }
 
         // Send Email (Fire and forget - don't block UI)
-        sendConsultationEmail({
-            parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
-            parentEmail: validated.parentEmail,
-            parentPhone: validated.parentPhone,
-            studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
-            yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
-            concerns: [
-                `Academic Goals: ${validated.academicGoals.join(', ')}`,
-                `Learning Goals: ${validated.learningGoals.join(', ')}`,
-                `Personal Goals: ${validated.personalGoals.join(', ')}`
-            ].join('\n')
-        }).catch(err => console.error('Background Email Failed:', err))
+        // Send Email (DISABLED DEBUG: Isolating hang issue)
+        // sendConsultationEmail({ ... }); 
+
+        console.log('Skipping email for stability check')
 
         // Wait for all secondary actions to complete
         await Promise.all(secondaryActions)
