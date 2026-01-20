@@ -49,20 +49,7 @@ export const authConfig = {
         strategy: "jwt",
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
-    // Explicitly configure cookies to ensure they work on Vercel
-    cookies: {
-        sessionToken: {
-            name: `next-auth.session-token`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            },
-        },
-    },
-    // This tells NextAuth to trust the host header from Vercel
-    // and automatically use the correct URL (no need for NEXTAUTH_URL env var)
+    // Trust host header for Vercel deployment
     trustHost: true,
     providers: [], // Empty providers for middleware compatibility
 } satisfies NextAuthConfig
