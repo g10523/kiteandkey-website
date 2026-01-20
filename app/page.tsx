@@ -640,15 +640,9 @@ export default function HomePage() {
                 {/* Right column - Image */}
                 <div className="relative rounded-2xl overflow-hidden shadow-xl border border-[#D9CFF2]">
                   <div className="aspect-[4/3] relative">
-                    <Image
-                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80"
-                      alt="Parent and educator having a warm, supportive conversation about student's learning journey"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                    {/* Subtle overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#3F3A52]/20 to-transparent" />
+                    {/* Abstract Gradient Background instead of Photo */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#E6E0F2] via-[#F4F1FB] to-[#D9CFF2]/50" />
+                    <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
                   </div>
 
                   {/* Overlay card with key points */}
