@@ -21,9 +21,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
             authorize: async (credentials) => {
                 try {
-                    console.log('🔐 Authorize called with credentials:', { email: credentials?.email })
+                    console.log('🔐 Authorize called with credentials details:', {
+                        email: credentials?.email,
+                        typeOfEmail: typeof credentials?.email,
+                        typeOfPassword: typeof credentials?.password,
+                        keys: Object.keys(credentials || {})
+                    })
 
-                    const { email, password } = loginSchema.parse(credentials)
+                    let email, password;
+                    try {
+                        const parsed = loginSchema.parse(credentials)
+                        email = parsed.email
+                        password = parsed.password
+                        console.log('✅ Credentials successfully parsed and validated')
+                    } catch (zodError) {
+                        console.error('❌ Zod validation error:', zodError)
+                        return null
+                    }
                     console.log('✅ Credentials validated')
 
                     // 1. MASTER ADMIN ACCOUNTS (Work without Database)
