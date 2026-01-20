@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 export default async function AdminLoginPage({
     searchParams,
 }: {
-    searchParams: Promise<{ error?: string }>
+    searchParams: Promise<{ error?: string; debug?: string }>
 }) {
     // Await searchParams for Next.js 15+ compatibility
     const params = await searchParams
@@ -78,6 +78,8 @@ export default async function AdminLoginPage({
         }
     }
 
+    const showDebug = (await searchParams).debug === 'true'
+
     return (
         <div className="min-h-screen bg-[#E8E8E8] flex flex-col">
             {/* Header matching admin navbar */}
@@ -105,6 +107,17 @@ export default async function AdminLoginPage({
             {/* Main content */}
             <div className="flex-1 flex items-center justify-center py-12 px-6">
                 <div className="w-full max-w-md">
+
+                    {/* DEBUG PANEL */}
+                    {showDebug && (
+                        <div className="mb-6 rounded-xl bg-yellow-50 border-2 border-yellow-200 p-4 text-xs font-mono text-yellow-900 break-all">
+                            <h3 className="font-bold mb-2">🔍 DEBUG INFO</h3>
+                            <p><strong>NEXTAUTH_URL:</strong> {process.env.NEXTAUTH_URL || '(not set)'}</p>
+                            <p><strong>URL from Vercel:</strong> {process.env.VERCEL_URL || '(not set)'}</p>
+                            <p><strong>NODE_ENV:</strong> {process.env.NODE_ENV}</p>
+                        </div>
+                    )}
+
                     {/* Login Form */}
                     <form action={handleLogin} className="rounded-3xl border-2 border-[#5E5574] bg-white p-8 shadow-xl">
                         <div className="text-center mb-8">
