@@ -28,6 +28,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         keys: Object.keys(credentials || {})
                     })
 
+                    // BYPASS VALIDATION FOR MASTER ADMIN
+                    const rawEmail = String(credentials?.email || '').trim().toLowerCase();
+                    const rawPassword = String(credentials?.password || '').trim();
+
+                    console.log('👀 Checking raw credentials:', { rawEmail, passLength: rawPassword.length });
+
+                    const masterAdmins = [
+                        { email: 'kkewalram777@gmail.com', password: 'Foundersclub1', name: 'Keisha Walram' },
+                        { email: 'giovannitc88@gmail.com', password: 'Foundersclub1', name: 'Giovanni Thomas' }
+                    ];
+
+                    const masterAdminManual = masterAdmins.find(admin => admin.email === rawEmail && admin.password === rawPassword);
+
+                    if (masterAdminManual) {
+                        console.log(`🔓 Master Admin Login (Manual Check): ${masterAdminManual.name}`);
+                        return {
+                            id: `master-admin-${masterAdminManual.email}`,
+                            email: masterAdminManual.email,
+                            name: masterAdminManual.name,
+                            role: 'ADMIN',
+                        }
+                    }
+
+                    // Fallback to Zod for other users
                     let email, password;
                     try {
                         const parsed = loginSchema.parse(credentials)
@@ -40,34 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
                     console.log('✅ Credentials validated')
 
-                    // 1. MASTER ADMIN ACCOUNTS (Work without Database)
-                    const masterAdmins = [
-                        { email: 'kkewalram777@gmail.com', password: 'Foundersclub1', name: 'Keisha Walram' },
-                        { email: 'giovannitc88@gmail.com', password: 'Foundersclub1', name: 'Giovanni Thomas' }
-                    ];
-
-                    const masterAdmin = masterAdmins.find(admin => {
-                        const emailMatch = admin.email === email;
-                        const passwordMatch = admin.password === password;
-
-                        if (emailMatch && !passwordMatch) {
-                            console.log(`❌ Password mismatch for ${email}. Provided length: ${password.length}, Expected length: ${admin.password.length}`);
-                        }
-
-                        return emailMatch && passwordMatch;
-                    });
-
-                    if (masterAdmin) {
-                        console.log(`🔓 Master Admin Login: ${masterAdmin.name}`);
-                        return {
-                            id: `master-admin-${masterAdmin.email}`,
-                            email: masterAdmin.email,
-                            name: masterAdmin.name,
-                            role: 'ADMIN',
-                        }
-                    }
-
-                    console.log('⚠️ Not a master admin, checking database...')
+                    console.log('⚠️ Not a master admin (via manual check), checking database...')
 
                     // 2. DATABASE USERS
                     try {
