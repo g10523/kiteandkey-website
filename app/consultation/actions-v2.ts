@@ -5,6 +5,8 @@ import { ConsultationSchema } from '@/lib/enrolment-schemas'
 import { sendConsultationEmail } from '@/lib/email'
 
 
+import { revalidatePath } from 'next/cache'
+
 export async function submitConsultationV2(formData: any) {
     try {
         console.log('📝 Submitting consultation (V2):', formData)
@@ -117,6 +119,11 @@ export async function submitConsultationV2(formData: any) {
         await Promise.all(secondaryActions)
 
         console.log('✅ Consultation workflow complete:', enrolment.id)
+
+        // Force Admin UI to refresh properly
+        revalidatePath('/admin')
+        revalidatePath('/admin/leads')
+        revalidatePath('/admin/calendar')
 
         return {
             success: true,
