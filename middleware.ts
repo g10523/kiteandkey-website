@@ -1,4 +1,9 @@
-import { auth } from "@/lib/auth"
+import NextAuth from "next-auth"
+import { authConfig } from "@/lib/auth.config"
+
+// Export auth middleware - this runs on Edge Runtime so it cannot use Prisma
+// The authConfig only contains callbacks and pages config, no providers
+export const { auth } = NextAuth(authConfig)
 
 export default auth((req) => {
     const isLoggedIn = !!req.auth
