@@ -102,8 +102,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 } catch (error) {
                     console.error('❌ Login Error:', error);
+                    console.error('❌ Returning null from authorize due to uncaught error');
                     return null
                 }
+
+                // This should never be reached, but if it is, log it
+                console.error('⚠️ UNEXPECTED: Reached end of authorize function without returning');
+                return null;
             },
         }),
     ],

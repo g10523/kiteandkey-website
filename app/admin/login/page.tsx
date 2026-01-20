@@ -17,31 +17,63 @@ export default async function AdminLoginPage({
         const password = formData.get('password') as string
 
         console.log('🔐 Login attempt for:', email)
+        console.log('📧 Email type:', typeof email, 'length:', email?.length)
+        console.log('🔑 Password type:', typeof password, 'length:', password?.length)
+
+        // Validate inputs before attempting sign-in
+        if (!email || !password) {
+            console.error('❌ Missing email or password')
+            redirect('/admin/login?error=Please enter both email and password')
+        }
 
         try {
             // NextAuth v5: signIn with redirectTo will either:
             // 1. Redirect on success (throws NEXT_REDIRECT - this is SUCCESS!)
             // 2. Throw CredentialsSignin error on failure
+            console.log('🚀 Calling signIn...')
             await signIn('credentials', {
                 email,
                 password,
                 redirectTo: '/admin',
             })
+            console.log('✅ signIn completed without error (this should not happen)')
         } catch (error: any) {
+            console.log('🔍 Caught error from signIn:', {
+                errorType: error?.type,
+                errorName: error?.name,
+                errorMessage: error?.message,
+                isNextRedirect: error?.message === 'NEXT_REDIRECT' || error?.digest?.includes('NEXT_REDIRECT')
+            })
+
             // CRITICAL: NEXT_REDIRECT is thrown on SUCCESS - we must re-throw it!
-            if (error.message === 'NEXT_REDIRECT') {
+            // Check both message and digest for NEXT_REDIRECT
+            if (error.message === 'NEXT_REDIRECT' || error?.digest?.includes('NEXT_REDIRECT')) {
+                console.log('✅ Login successful - rethrowing NEXT_REDIRECT')
                 throw error
             }
 
-            console.error('❌ SignIn error:', error)
+            console.error('❌ SignIn error details:', {
+                type: error.type,
+                name: error.name,
+                message: error.message,
+                cause: error.cause,
+                digest: error.digest
+            })
 
             // NextAuth throws specific error types for actual failures
             // Check if it's a credentials error (invalid email/password)
-            if (error.type === 'CredentialsSignin' || error.message?.includes('CredentialsSignin')) {
+            if (
+                error.type === 'CredentialsSignin' ||
+                error.name === 'CredentialsSignin' ||
+                error.message?.includes('CredentialsSignin') ||
+                error.cause?.err?.toString().includes('CredentialsSignin')
+            ) {
+                console.error('❌ Invalid credentials detected')
                 redirect('/admin/login?error=Invalid credentials')
             }
 
             // For other errors, show a generic authentication error
+            console.error('❌ Generic authentication error')
             redirect('/admin/login?error=Authentication error')
         }
     }
