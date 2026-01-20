@@ -25,88 +25,78 @@ export async function submitConsultationV2(formData: any) {
             }
         }
 
-        // PARALLEL: Create Enrolment and Lead simultaneously
-        // These are independent of each other
-        const [enrolment, lead] = await Promise.all([
-            // 1. Create Enrolment
-            prisma.enrolment.create({
-                data: {
-                    parentFirstName: validated.parentFirstName,
-                    parentLastName: validated.parentLastName,
-                    parentEmail: validated.parentEmail,
-                    parentPhone: validated.parentPhone,
-                    howDidYouHear: validated.howDidYouHear,
-                    academicGoals: validated.academicGoals,
-                    learningGoals: validated.learningGoals,
-                    personalGoals: validated.personalGoals,
-                    status: validated.selectedSlotId ? 'CONSULTATION_SCHEDULED' : 'CONSULTATION_REQUESTED',
-                    stage: 'CONSULTATION',
-                    consultationSlotId: validated.selectedSlotId,
-                    students: {
-                        create: validated.students.map(student => ({
-                            firstName: student.firstName,
-                            lastName: student.lastName,
-                            gradeIn2026: student.gradeIn2026,
-                            school: student.school,
-                        }))
-                    }
-                },
-                include: { students: true, consultationSlot: true }
-            }),
-
-            // 2. Create Lead
-            prisma.lead.create({
-                data: {
-                    parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
-                    email: validated.parentEmail,
-                    phone: validated.parentPhone,
-                    studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
-                    yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
-                    subjects: JSON.stringify([]),
-                    school: validated.students[0]?.school || '',
-                    notes: [
-                        `Academic Goals: ${validated.academicGoals.join(', ')}`,
-                        `Learning Goals: ${validated.learningGoals.join(', ')}`,
-                        `Personal Goals: ${validated.personalGoals.join(', ')}`,
-                        validated.howDidYouHear ? `Source: ${validated.howDidYouHear}` : ''
-                    ].filter(Boolean).join('\n'),
-                    status: validated.selectedSlotId ? 'CONSULTATION_BOOKED' : 'NEW',
-                    source: validated.howDidYouHear || 'website',
+        // SEQUENTIAL: Create Enrolment first
+        console.log('1. Creating enrolment...')
+        const enrolment = await prisma.enrolment.create({
+            data: {
+                parentFirstName: validated.parentFirstName,
+                parentLastName: validated.parentLastName,
+                parentEmail: validated.parentEmail,
+                parentPhone: validated.parentPhone,
+                howDidYouHear: validated.howDidYouHear,
+                academicGoals: validated.academicGoals,
+                learningGoals: validated.learningGoals,
+                personalGoals: validated.personalGoals,
+                status: validated.selectedSlotId ? 'CONSULTATION_SCHEDULED' : 'CONSULTATION_REQUESTED',
+                stage: 'CONSULTATION',
+                consultationSlotId: validated.selectedSlotId,
+                students: {
+                    create: validated.students.map(student => ({
+                        firstName: student.firstName,
+                        lastName: student.lastName,
+                        gradeIn2026: student.gradeIn2026,
+                        school: student.school,
+                    }))
                 }
-            })
-        ])
+            },
+            include: { students: true, consultationSlot: true }
+        })
+        console.log('✅ Enrolment created:', enrolment.id)
 
-        // PARALLEL: Execute secondary actions (Consultation, Slot Update, Email)
-        const secondaryActions = []
+        // SEQUENTIAL: Create Lead
+        console.log('2. Creating lead...')
+        const lead = await prisma.lead.create({
+            data: {
+                parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
+                email: validated.parentEmail,
+                phone: validated.parentPhone,
+                studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
+                yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
+                subjects: JSON.stringify([]),
+                school: validated.students[0]?.school || '',
+                notes: [
+                    `Academic Goals: ${validated.academicGoals.join(', ')}`,
+                    `Learning Goals: ${validated.learningGoals.join(', ')}`,
+                    `Personal Goals: ${validated.personalGoals.join(', ')}`,
+                    validated.howDidYouHear ? `Source: ${validated.howDidYouHear}` : ''
+                ].filter(Boolean).join('\n'),
+                status: validated.selectedSlotId ? 'CONSULTATION_BOOKED' : 'NEW',
+                source: validated.howDidYouHear || 'website',
+            }
+        })
+        console.log('✅ Lead created:', lead.id)
+
 
         // If slot selected, schedule consultation & update slot
         if (validated.selectedSlotId) {
-            secondaryActions.push(
-                prisma.consultation.create({
-                    data: {
-                        leadId: lead.id,
-                        scheduledAt: scheduledAt,
-                        status: 'SCHEDULED',
-                    }
-                })
-            )
+            console.log('3. Linking consultation slot...')
+            await prisma.consultation.create({
+                data: {
+                    leadId: lead.id,
+                    scheduledAt: scheduledAt,
+                    status: 'SCHEDULED',
+                }
+            })
 
-            secondaryActions.push(
-                prisma.availabilitySlot.update({
-                    where: { id: validated.selectedSlotId },
-                    data: { isBooked: true, currentBookings: { increment: 1 } }
-                })
-            )
+            await prisma.availabilitySlot.update({
+                where: { id: validated.selectedSlotId },
+                data: { isBooked: true, currentBookings: { increment: 1 } }
+            })
         }
 
-        // Send Email (Fire and forget - don't block UI)
         // Send Email (DISABLED DEBUG: Isolating hang issue)
         // sendConsultationEmail({ ... }); 
-
         console.log('Skipping email for stability check')
-
-        // Wait for all secondary actions to complete
-        await Promise.all(secondaryActions)
 
         console.log('✅ Consultation workflow complete:', enrolment.id)
 
