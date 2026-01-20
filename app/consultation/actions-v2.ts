@@ -99,21 +99,21 @@ export async function submitConsultationV2(formData: any) {
             )
         }
 
-        // Send Email (Don't let email failure block the user response, but await it to ensure execution in serverless)
-        secondaryActions.push(
-            sendConsultationEmail({
-                parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
-                parentEmail: validated.parentEmail,
-                parentPhone: validated.parentPhone,
-                studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
-                yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
-                concerns: [
-                    `Academic Goals: ${validated.academicGoals.join(', ')}`,
-                    `Learning Goals: ${validated.learningGoals.join(', ')}`,
-                    `Personal Goals: ${validated.personalGoals.join(', ')}`
-                ].join('\n')
-            }).catch(err => console.error('Background Email Failed:', err))
-        )
+        // Send Email (Fire and forget - don't block UI)
+        // Note: In strict serverless environments, this might be killed, but it's the only way to ensure fast UI response
+        // without waitUntil(). Resend is usually fast enough to complete before freeze.
+        sendConsultationEmail({
+            parentName: `${validated.parentFirstName} ${validated.parentLastName}`,
+            parentEmail: validated.parentEmail,
+            parentPhone: validated.parentPhone,
+            studentName: validated.students.map(s => `${s.firstName} ${s.lastName}`).join(', '),
+            yearLevel: validated.students.map(s => s.gradeIn2026).join(', '),
+            concerns: [
+                `Academic Goals: ${validated.academicGoals.join(', ')}`,
+                `Learning Goals: ${validated.learningGoals.join(', ')}`,
+                `Personal Goals: ${validated.personalGoals.join(', ')}`
+            ].join('\n')
+        }).catch(err => console.error('Background Email Failed:', err))
 
         // Wait for all secondary actions to complete
         await Promise.all(secondaryActions)
