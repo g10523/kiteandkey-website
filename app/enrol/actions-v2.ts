@@ -73,8 +73,8 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
                     // Update Tier B fields
                     password: hashedPassword,
                     termsAccepted: validated.termsAccepted,
-                    status: 'SIGNUP_COMPLETED',
-                    stage: 'SIGNUP',
+                    status: 'ENROLLED',
+                    stage: 'ACTIVE',
                     tokenUsed: true,
                     students: {
                         deleteMany: {},
@@ -112,8 +112,8 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
 
                     password: hashedPassword,
                     termsAccepted: validated.termsAccepted,
-                    status: 'SIGNUP_COMPLETED',
-                    stage: 'SIGNUP',
+                    status: 'ENROLLED',
+                    stage: 'ACTIVE',
 
                     students: {
                         create: validated.students.map((student: any) => ({
