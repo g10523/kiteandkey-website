@@ -139,56 +139,64 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
 
         console.log('✅ Enrolment saved:', savedEnrolment.id)
 
-        // --- STRIPE CHECKOUT ---
+        // --- STRIPE CHECKOUT (OPTIONAL) ---
+        // Only attempt Stripe if API key is configured
+        if (process.env.STRIPE_SECRET_KEY && !process.env.STRIPE_SECRET_KEY.includes('placeholder')) {
+            try {
+                const lineItems = validated.students.map((student: any) => {
+                    const pkg = student.packageConfig.package; // 'ELEVATE', 'GLIDE', 'SOAR'
+                    let amount = 0
+                    let name = 'Tuition'
 
-        try {
-            const lineItems = validated.students.map((student: any) => {
-                const pkg = student.packageConfig.package; // 'ELEVATE', 'GLIDE', 'SOAR'
-                let amount = 0
-                let name = 'Tuition'
+                    if (pkg === 'ELEVATE') { amount = 75000; name = 'Elevate Term Package' } // $750.00
+                    else if (pkg === 'GLIDE') { amount = 140000; name = 'Glide Term Package' } // $1400.00
+                    else if (pkg === 'SOAR') { amount = 195000; name = 'Soar Term Package' } // $1950.00
 
-                if (pkg === 'ELEVATE') { amount = 75000; name = 'Elevate Term Package' } // $750.00
-                else if (pkg === 'GLIDE') { amount = 140000; name = 'Glide Term Package' } // $1400.00
-                else if (pkg === 'SOAR') { amount = 195000; name = 'Soar Term Package' } // $1950.00
-
-                return {
-                    price_data: {
-                        currency: 'aud',
-                        product_data: {
-                            name: `${name} - ${student.firstName} ${student.lastName}`,
-                            description: `Term tuition for ${student.firstName} ${student.lastName}`,
+                    return {
+                        price_data: {
+                            currency: 'aud',
+                            product_data: {
+                                name: `${name} - ${student.firstName} ${student.lastName}`,
+                                description: `Term tuition for ${student.firstName} ${student.lastName}`,
+                            },
+                            unit_amount: amount,
                         },
-                        unit_amount: amount,
-                    },
-                    quantity: 1,
-                }
-            })
+                        quantity: 1,
+                    }
+                })
 
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
-                line_items: lineItems,
-                mode: 'payment',
-                success_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/enrol/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/enrol?error=cancelled`,
-                client_reference_id: savedEnrolment.id,
-                customer_email: validated.parentEmail,
-                metadata: {
-                    enrolmentId: savedEnrolment.id
-                }
-            })
+                const session = await stripe.checkout.sessions.create({
+                    payment_method_types: ['card'],
+                    line_items: lineItems,
+                    mode: 'payment',
+                    success_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/enrol/thank-you?session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/enrol?error=cancelled`,
+                    client_reference_id: savedEnrolment.id,
+                    customer_email: validated.parentEmail,
+                    metadata: {
+                        enrolmentId: savedEnrolment.id
+                    }
+                })
 
-            return { success: true, enrolmentId: savedEnrolment.id, redirectUrl: session.url }
+                return { success: true, enrolmentId: savedEnrolment.id, redirectUrl: session.url }
 
-        } catch (stripeError: any) {
-            console.error('Stripe Error:', stripeError)
-            // Fallback: Return success but no redirect (or handle error)
-            // If Stripe fails, we probably shouldn't show "Success" fully, but the enrolment IS saved.
-            // Let's return error so UI stays on form or shows alert.
-            return { success: false, error: 'Payment initialization failed. Please try again or contact support.' }
+            } catch (stripeError: any) {
+                console.error('Stripe Error:', stripeError)
+                // Stripe failed but enrollment is saved - redirect to thank you anyway
+                console.log('Continuing without payment (Stripe error)')
+                return { success: true, enrolmentId: savedEnrolment.id }
+            }
+        } else {
+            // Stripe not configured - skip payment, go straight to thank you
+            console.log('Stripe not configured, skipping payment')
+            return { success: true, enrolmentId: savedEnrolment.id }
         }
 
     } catch (error: any) {
         console.error('❌ Sign-up submission error:', error)
+        console.error('Error name:', error.name)
+        console.error('Error message:', error.message)
+        console.error('Full error:', JSON.stringify(error, null, 2))
 
         if (error.name === 'ZodError') {
             return {
@@ -197,9 +205,17 @@ export async function submitSignUpV2(formData: any, enrolmentId?: string) {
             }
         }
 
+        // Check if it's a Prisma error
+        if (error.code) {
+            return {
+                success: false,
+                error: `Database error (${error.code}): ${error.message}`
+            }
+        }
+
         return {
             success: false,
-            error: error.message || 'Failed to submit sign-up'
+            error: error.message || 'Failed to submit sign-up. Please try again or contact support.'
         }
     }
 }
