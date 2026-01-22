@@ -38,7 +38,7 @@ interface PlanSelection {
   tier: 'Glide' | 'Elevate' | 'Soar' | null
   weeklyHours: 1 | 2 | 3 | null
   subjectAllocation: {
-    Mathematics: number
+    Maths: number
     English: number
     Science: number
   }
@@ -52,7 +52,7 @@ interface FormData {
 }
 
 const YEAR_LEVELS = ['Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9', 'Year 10']
-const SUBJECTS = ['Mathematics', 'English', 'Science']
+const SUBJECTS = ['Maths', 'English', 'Science']
 const AUSTRALIAN_STATES = ['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT']
 
 export default function EnrollmentFlow() {
@@ -78,7 +78,7 @@ export default function EnrollmentFlow() {
       tier: null,
       weeklyHours: null,
       subjectAllocation: {
-        Mathematics: 0,
+        Maths: 0,
         English: 0,
         Science: 0
       }
@@ -155,6 +155,8 @@ export default function EnrollmentFlow() {
 
       const result = await submitSignUpV2(payload)
 
+      console.log('Server response:', result)
+
       if (result.success) {
         if (result.redirectUrl) {
           window.location.href = result.redirectUrl
@@ -162,13 +164,15 @@ export default function EnrollmentFlow() {
           window.location.href = '/enrol/thank-you'
         }
       } else {
-        alert('Submission Error: ' + result.error)
+        console.error('Server returned error:', result.error)
+        alert('Submission Error: ' + (result.error || 'Unknown error'))
         setIsSubmitting(false)
       }
 
     } catch (error) {
       console.error('Submission failed:', error)
-      alert('An unexpected error occurred. Please try again.')
+      console.error('Error details:', error instanceof Error ? error.message : String(error))
+      alert('An unexpected error occurred: ' + (error instanceof Error ? error.message : 'Please try again.'))
       setIsSubmitting(false)
     }
   }
@@ -906,7 +910,7 @@ function PlanSelectionStep({
       ...plan,
       weeklyHours: hours,
       subjectAllocation: {
-        Mathematics: 0,
+        Maths: 0,
         English: 0,
         Science: 0
       }
@@ -946,7 +950,7 @@ function PlanSelectionStep({
                   tier: planOption.tier,
                   weeklyHours: planOption.hours as 1 | 2 | 3,
                   // Reset allocation when switching plans to avoid overflow
-                  subjectAllocation: { Mathematics: 0, English: 0, Science: 0 }
+                  subjectAllocation: { Maths: 0, English: 0, Science: 0 }
                 })
               }}
               className={`relative p-6 rounded-2xl border-2 transition-all text-left group flex flex-col justify-between overflow-visible ${plan.tier === planOption.tier
