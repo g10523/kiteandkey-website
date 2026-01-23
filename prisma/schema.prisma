@@ -430,3 +430,61 @@ model EnrolmentStudent {
   
   @@index([enrolmentId])
 }
+
+// ==========================================
+// RESOURCES LIBRARY
+// ==========================================
+
+enum ResourceType {
+  PDF
+  GUIDE
+  WORKSHEET
+  TEMPLATE
+  OTHER
+}
+
+enum ResourceCategory {
+  ENGLISH
+  MATHS
+  SCIENCE
+  SELECTIVE
+  STUDY_SKILLS
+  PARENT_RESOURCES
+  GENERAL
+}
+
+model Resource {
+  id              String   @id @default(cuid())
+  
+  // Basic Info
+  title           String
+  description     String?
+  type            ResourceType
+  category        ResourceCategory
+  
+  // File Details
+  fileName        String
+  fileUrl         String   // URL to the uploaded file
+  fileSize        Int      // Size in bytes
+  mimeType        String
+  
+  // Organization
+  yearLevel       String?  // "Year 5", "Year 6", etc. (optional)
+  tags            String[] // Searchable tags
+  
+  // Visibility
+  isPublic        Boolean  @default(true)
+  isPinned        Boolean  @default(false)
+  
+  // Metadata
+  uploadedBy      String?  // User ID who uploaded
+  downloadCount   Int      @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([category])
+  @@index([type])
+  @@index([isPublic])
+  @@index([createdAt])
+}

@@ -142,7 +142,7 @@ export default function Footer() {
         <div className="relative border-t border-[#CFC6EA]/30 py-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs text-[#9A95AF]">
             <div className="space-y-1">
-              <p>© 2025 Kite & Key Academy. All rights reserved.</p>
+              <p>© 2026 Kite & Key Academy. All rights reserved.</p>
               <p>ABN 65 689 890 515</p>
             </div>
             <a

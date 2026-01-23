@@ -191,6 +191,12 @@ export default function Navbar() {
                       title="Articles"
                       description="Insights, tips, and educational resources."
                     />
+                    <DropdownBlock
+                      href="/resources"
+                      icon={<ResourceIcon />}
+                      title="Resources"
+                      description="Download study guides, worksheets, and materials."
+                    />
                   </div>
                 </div>
               </div>
@@ -430,6 +436,7 @@ export default function Navbar() {
                 <MobileDropdownLink href="/mindprint" label="MindPrint" />
                 {/* <MobileDropdownLink href="/kite-and-key-in-the-community" label="Kite & Key in the Community" /> */}
                 <MobileDropdownLink href="/articles" label="Articles" />
+                <MobileDropdownLink href="/resources" label="Resources" />
               </MobileAccordion>
 
               {/* Courses Accordion */}
@@ -532,6 +539,15 @@ function ArticleIcon() {
     </svg>
   );
 }
+
+function ResourceIcon() {
+  return (
+    <svg className="h-5 w-5 text-[#5E5574]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  );
+}
+
 
 function EnglishIcon() {
   return (
