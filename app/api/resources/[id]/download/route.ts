@@ -4,11 +4,12 @@ import prisma from "@/lib/prisma";
 // POST /api/resources/[id]/download - Track download count
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const resource = await prisma.resource.update({
-            where: { id: params.id },
+            where: { id },
             data: {
                 downloadCount: {
                     increment: 1,
