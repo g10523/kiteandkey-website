@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import AdminSidebar from '@/components/AdminSidebar'
+import DailyProverb from '@/components/DailyProverb'
 
 export default async function AdminLayout({
     children,
@@ -29,9 +30,11 @@ export default async function AdminLayout({
                 {/* Main Content Area */}
                 <main className="flex-1 pl-80 pr-8 py-8 min-h-screen transition-all duration-300">
                     <div className="mx-auto max-w-7xl animate-fade-in">
-                        {/* Top Bar for User Context (Optional, can be integrated into sidebar or pages) */}
-                        <div className="mb-8 flex items-center justify-end">
-                            <div className="flex items-center gap-3 rounded-full bg-white/50 px-4 py-2 backdrop-blur-sm border border-[#E6E0F2]">
+                        {/* Top Bar for Proverb & User Context */}
+                        <div className="mb-8 flex items-center gap-4">
+                            <DailyProverb />
+
+                            <div className="ml-auto flex items-center gap-3 rounded-full bg-white/50 px-4 py-2 backdrop-blur-sm border border-[#E6E0F2]">
                                 <div className="h-8 w-8 rounded-full bg-[#5E5574] text-white flex items-center justify-center text-sm font-bold">
                                     {session.user?.name?.[0] || 'A'}
                                 </div>
