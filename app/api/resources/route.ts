@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 // GET /api/resources - Fetch all public resources
 export async function GET(request: NextRequest) {
     try {
-        const resources = await prisma.resource.findMany({
+        let resources = await prisma.resource.findMany({
             where: {
                 isPublic: true,
             },
@@ -13,6 +13,34 @@ export async function GET(request: NextRequest) {
                 { createdAt: "desc" },
             ],
         });
+
+        // Auto-seed default resource if none exist
+        if (resources.length === 0) {
+            console.log('📄 No resources found, creating default resource...');
+            try {
+                const defaultResource = await prisma.resource.create({
+                    data: {
+                        title: 'Mathematical Reasoning Practice Paper',
+                        description: 'Sample mathematical reasoning paper for selective schools entrance examination. Covers problem-solving, logical thinking, and mathematical concepts.',
+                        type: 'PDF',
+                        category: 'SELECTIVE',
+                        fileName: '1.pdf',
+                        fileUrl: '/resources/1.pdf',
+                        fileSize: 399360,
+                        mimeType: 'application/pdf',
+                        yearLevel: 'Year 6',
+                        tags: ['selective', 'mathematics', 'reasoning', 'practice paper', 'exam preparation'],
+                        isPublic: true,
+                        isPinned: true,
+                    },
+                });
+                console.log('✅ Default resource created:', defaultResource.title);
+                resources = [defaultResource];
+            } catch (seedError) {
+                console.error('Failed to create default resource:', seedError);
+                // Continue anyway, just return empty array
+            }
+        }
 
         return NextResponse.json(resources);
     } catch (error) {
