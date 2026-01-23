@@ -76,7 +76,12 @@ export default function ResourcesPage() {
 
     const fetchResources = async () => {
         try {
-            const response = await fetch("/api/resources");
+            const response = await fetch("/api/resources", {
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache',
+                },
+            });
             if (response.ok) {
                 const data = await response.json();
                 setResources(data);
