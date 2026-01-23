@@ -35,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     console.log('👀 Checking raw credentials:', { rawEmail, passLength: rawPassword.length });
 
                     const masterAdmins = [
-                        { email: 'kkewalram777@gmail.com', password: 'Foundersclub1', name: 'Keisha Walram' },
+                        { email: 'kkewalram777@gmail.com', password: 'Foundersclub1', name: 'Keisha Kewalram' },
                         { email: 'giovannitc88@gmail.com', password: 'Foundersclub1', name: 'Giovanni Thomas' }
                     ];
 
