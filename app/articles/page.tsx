@@ -28,7 +28,19 @@ const TOPICS = [
 
 type Topic = (typeof TOPICS)[number];
 
-const articles: Article[] = [];
+const articles: Article[] = [
+  {
+    slug: "starting-early-for-medicine",
+    title: "Starting Early for Medicine — What Actually Matters in Years 5–10",
+    excerpt:
+      "Deciding whether you want to pursue medicine whilst in school can be a big dilemma. Here's VIP insider advice on how to explore, learn, and prepare for a career in medicine during your early high school years.",
+    topic: "Academic Strategy",
+    readTime: "8 min read",
+    headerImage: "/articles/starting-early-for-medicine/hero.jpg",
+    publishedAt: "2026-01-15",
+    author: "Mia Ooi",
+  },
+];
 
 const ARTICLES_PER_PAGE = 6;
 
