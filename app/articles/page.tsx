@@ -30,6 +30,17 @@ type Topic = (typeof TOPICS)[number];
 
 const articles: Article[] = [
   {
+    slug: "ranking-first-nsw-mathematics",
+    title: "How I Ranked 1st in NSW for 3 Unit Mathematics — What Actually Made the Difference",
+    excerpt:
+      "In 2021, I achieved 1st place in NSW for Mathematics Extension 1. Most people think I had some natural talent or discovered some hidden trick. In reality, this came as a product of consistent effort, deep understanding, and learning how to study mathematics properly.",
+    topic: "Academic Excellence",
+    readTime: "7 min read",
+    headerImage: "/articles/ranking-first-nsw-mathematics/hero.jpg",
+    publishedAt: "2026-01-20",
+    author: "Philo Daoud",
+  },
+  {
     slug: "starting-early-for-medicine",
     title: "Starting Early for Medicine — What Actually Matters in Years 5–10",
     excerpt:

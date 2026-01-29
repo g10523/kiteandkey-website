@@ -809,12 +809,12 @@ function MindPrintLMSSection() {
         <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-700 ${section.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           {/* Visual */}
           <div className="order-2 md:order-1 flex justify-center w-full">
-            <div className="w-full rounded-2xl border-[4px] border-white bg-[#F7F5FB] shadow-2xl overflow-hidden ring-1 ring-[#E6E0F2]">
+            <div className="w-full max-w-2xl rounded-2xl border-[4px] border-white bg-[#F7F5FB] shadow-2xl overflow-hidden ring-1 ring-[#E6E0F2]">
               <Image
                 src="/garden-lms-screenshot.png"
                 alt="Garden LMS Dashboard Preview"
-                width={1024}
-                height={665}
+                width={1280}
+                height={832}
                 className="w-full h-auto -mt-3"
                 priority
               />
