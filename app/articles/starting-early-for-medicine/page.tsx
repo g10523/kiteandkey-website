@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowLeft, Clock, Calendar, Mail } from 'lucide-react'
-import { ExplorationFunnelDiagram, LearningFlywheelDiagram, BalancedLifeWheelDiagram, MedicineTimeline } from '@/components/articles/starting-early-for-medicine/Diagrams'
+import { ExplorationFunnelDiagram, BalancedLifeWheelDiagram, MedicineTimeline } from '@/components/articles/starting-early-for-medicine/Diagrams'
 
 export default function ArticlePage() {
     const { scrollYProgress } = useScroll()
@@ -181,8 +181,6 @@ export default function ArticlePage() {
                     <p className="text-[#6B647F] leading-relaxed mb-6">
                         The academics! The part everyone stresses out about most. The biggest takeaway here is that it’s not about <em>how much</em> you learn or how much detail you learn. It’s about knowing <strong>how</strong> to learn and <strong>what</strong> the most important things are to learn.
                     </p>
-
-                    <LearningFlywheelDiagram />
 
                     <p className="text-[#6B647F] leading-relaxed mb-6">
                         In Years 5-10, you aren't memorising the Krebs cycle for the HSC yet. This is your training ground. This is where you build the <em>systems</em> that will carry you through the high-pressure years later.
