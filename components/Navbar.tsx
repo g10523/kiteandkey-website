@@ -374,7 +374,7 @@ export default function Navbar() {
               Enrol Now
             </Link>
             <Link
-              href="/login"
+              href="https://kite-academy-lms.vercel.app/"
               className="rounded-xl border border-[#D9CFF2] bg-white/70 px-5 py-2.5 text-sm font-medium text-[#5E5574] transition-all hover:bg-white hover:border-[#5E5574]/30"
             >
               Log in
@@ -485,7 +485,7 @@ export default function Navbar() {
                 Enrol Now
               </Link>
               <Link
-                href="/login"
+                href="https://kite-academy-lms.vercel.app/"
                 className="flex items-center justify-center rounded-xl border border-[#D9CFF2] bg-white/70 px-5 py-3 text-sm font-medium text-[#5E5574]"
               >
                 Log in

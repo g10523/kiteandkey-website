@@ -146,7 +146,7 @@ export default function Footer() {
               <p>ABN 65 689 890 515</p>
             </div>
             <a
-              href="/admin/login"
+              href="https://kite-academy-lms.vercel.app/"
               className="opacity-40 hover:opacity-100 hover:text-[#5E5574] transition-all duration-200"
             >
               Admin Login

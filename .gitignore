@@ -1,28 +1,11 @@
-.verc"use client";
+# vercel
+.vercel
 
-import { createContext, useContext, useState } from "react";
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-type BackgroundContextType = {
-  enabled: boolean;
-  setEnabled: (v: boolean) => void;
-};
-
-const BackgroundContext = createContext<BackgroundContextType | null>(null);
-
-export function BackgroundProvider({ children }: { children: React.ReactNode }) {
-  const [enabled, setEnabled] = useState(true); // DEFAULT = ON
-
-  return (
-    <BackgroundContext.Provider value={{ enabled, setEnabled }}>
-      {children}
-    </BackgroundContext.Provider>
-  );
-}
-
-export function useBackground() {
-  const ctx = useContext(BackgroundContext);
-  if (!ctx) throw new Error("useBackground must be used inside BackgroundProvider");
-  return ctx;
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

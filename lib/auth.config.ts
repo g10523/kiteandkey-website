@@ -2,7 +2,7 @@ import type { NextAuthConfig } from "next-auth"
 
 export const authConfig = {
     pages: {
-        signIn: "/admin/login",
+        signIn: "https://kite-academy-lms.vercel.app/",
     },
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {

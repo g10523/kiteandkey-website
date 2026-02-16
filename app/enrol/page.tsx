@@ -55,6 +55,40 @@ const YEAR_LEVELS = ['Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9', 'Year 10'
 const SUBJECTS = ['Maths', 'English', 'Science']
 const AUSTRALIAN_STATES = ['NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT']
 
+const PLANS = [
+  {
+    tier: 'Elevate' as const,
+    name: 'Elevate',
+    tagline: 'Build foundations',
+    pricePerHour: 75,
+    hours: 1,
+    weeklyTotal: 75,
+    termTotal: 750,
+    description: '1 hour per week'
+  },
+  {
+    tier: 'Glide' as const,
+    name: 'Glide',
+    tagline: 'Accelerate progress',
+    pricePerHour: 70,
+    hours: 2,
+    weeklyTotal: 140,
+    termTotal: 1400,
+    popular: true,
+    description: '2 hours per week'
+  },
+  {
+    tier: 'Soar' as const,
+    name: 'Soar',
+    tagline: 'Maximise potential',
+    pricePerHour: 65,
+    hours: 3,
+    weeklyTotal: 195,
+    termTotal: 1950,
+    description: '3 hours per week'
+  }
+]
+
 export default function EnrollmentFlow() {
   const [showWelcome, setShowWelcome] = useState(true)
   const [currentStep, setCurrentStep] = useState(0)
@@ -112,6 +146,10 @@ export default function EnrollmentFlow() {
       const [firstName, ...lastNameParts] = formData.parent.fullName.split(' ')
       const lastName = lastNameParts.join(' ') || ''
 
+      const selectedPlan = PLANS.find(p => p.tier === formData.plan.tier)
+      const hourlyRate = selectedPlan?.pricePerHour || 70
+      const weeklyTotal = (formData.plan.weeklyHours || 0) * hourlyRate
+
       // Prepare payload for V2 action
       const payload = {
         // Tier A
@@ -143,11 +181,12 @@ export default function EnrollmentFlow() {
             subjects: Object.keys(formData.plan.subjectAllocation).filter(k => formData.plan.subjectAllocation[k as keyof typeof formData.plan.subjectAllocation] > 0),
             weeklyHours: formData.plan.weeklyHours,
             hourAllocation: formData.plan.subjectAllocation,
-            hourlyRate: 70, // Default base rate
-            weeklyTotal: (formData.plan.weeklyHours || 0) * 70,
+            hourlyRate: hourlyRate,
+            weeklyTotal: weeklyTotal,
             preferredDays: [],
             preferredTimes: []
           }
+
         }))
       }
 
@@ -871,39 +910,8 @@ function PlanSelectionStep({
   termsAccepted: boolean
   setTermsAccepted: (accepted: boolean) => void
 }) {
-  const plans = [
-    {
-      tier: 'Elevate' as const,
-      name: 'Elevate',
-      tagline: 'Build foundations',
-      pricePerHour: 75,
-      hours: 1,
-      weeklyTotal: 75,
-      termTotal: 750,
-      description: '1 hour per week'
-    },
-    {
-      tier: 'Glide' as const,
-      name: 'Glide',
-      tagline: 'Accelerate progress',
-      pricePerHour: 70,
-      hours: 2,
-      weeklyTotal: 140,
-      termTotal: 1400,
-      popular: true,
-      description: '2 hours per week'
-    },
-    {
-      tier: 'Soar' as const,
-      name: 'Soar',
-      tagline: 'Maximise potential',
-      pricePerHour: 65,
-      hours: 3,
-      weeklyTotal: 195,
-      termTotal: 1950,
-      description: '3 hours per week'
-    }
-  ]
+  // Plans are defined at file scope
+
 
   const handleHourSelection = (hours: 1 | 2 | 3) => {
     setPlan({
@@ -940,7 +948,7 @@ function PlanSelectionStep({
       <div>
         <h3 className="text-lg font-bold text-[#3F3A52] mb-4">Select Your Plan</h3>
         <div className="grid md:grid-cols-3 gap-4">
-          {plans.map((planOption) => (
+          {PLANS.map((planOption) => (
             <button
               key={planOption.tier}
               type="button"
