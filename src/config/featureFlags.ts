@@ -14,6 +14,8 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
     'subjects': { status: 'ready' },
     'subject-detail': { status: 'ready' },
     'lesson': { status: 'ready' },
+    'quiz': { status: 'ready' },
+    'assessments': { status: 'ready' },
 
     // Core differentiator - keep ready
     'mindprint': { status: 'ready' },
@@ -24,8 +26,8 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
         description: 'The assignment portal is undergoing maintenance to support direct Google Drive integration.'
     },
     'analytics': {
-        status: 'coming-soon',
-        description: 'Predictive growth modeling and visual progress tracking will be available in the next update.'
+        status: 'ready',
+        description: 'Predictive growth modeling and visual progress tracking.'
     },
     'messages': {
         status: 'coming-soon',
@@ -44,11 +46,16 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
         description: 'Adaptive drill sets and AI-powered practice sessions are being calibrated.'
     },
     'study-lab': {
-        status: 'coming-soon',
-        description: 'The Cognitive Sandbox is currently in private beta testing.'
+        status: 'beta',
+        description: 'The Cognitive Sandbox is now in open beta for selected students.'
     },
 
     'tokens': { status: 'ready', allowedRoles: ['admin'] },
+    'admin-panel': { status: 'ready', allowedRoles: ['admin'] },
+    'content-management': { status: 'ready', allowedRoles: ['admin', 'tutor'] },
+
+    'assessment-wm': { status: 'ready' },
+    'assessment-center': { status: 'ready' },
 
     // Auth routes
     'login': { status: 'ready' },

@@ -1,118 +1,275 @@
-# Kite & Key Academy - Student Learning Management System
+# Kite & Key Academy LMS - Full Stack Application
 
-## Overview
+A production-ready Learning Management System with cognitive assessment, intervention fidelity tracking, and MindPrint profiles.
 
-A **production-grade Student LMS** built for Kite & Key Academy, an Australian education business focused on Years 5–10 students aligned with the NSW curriculum.
+## 🏗️ Project Structure
 
-This is a fully functional learning management system with real logic, realistic data structures, and a premium dark-mode aesthetic featuring light purple/lavender accents.
-
----
-
-## 🎯 Core Features
-
-### Student Profile System
-- **Example Student**: Olivia Chen, Year 8
-- **MindPrint Profile**: Conceptual Explorer learning type
-- Personalized learning recommendations based on cognitive profile
-- Learning preference analytics (Visual, Auditory, Kinesthetic, Reading/Writing)
-
-### Subject Management
-- **English** (Year 8)
-- **Mathematics** (Year 8)
-- **Science** (Year 8)
-
-Each subject includes:
-- Multiple units with structured progression
-- Individual lessons with learning objectives
-- Locked/unlocked progression logic
-- Completion tracking and confidence indicators
-
-### Learning Experience
-- **Dashboard**: Daily command center with focus cards, stats, and quick actions
-- **Lessons**: Structured content with explanations, examples, and "Why This Matters" sections
-- **Assignments**: Active and completed assignments with due dates and tutor feedback
-- **Checkpoints**: Assessment system with retry functionality
-- **Progress Tracking**: Real-time analytics and improvement trends
-
-### Communication & Resources
-- **Messages**: Tutor communications and system announcements
-- **Tutoring Schedule**: Upcoming and past sessions with session notes
-- **Resources Library**: Study materials, formula sheets, and revision packs
-
----
-
-## 🎨 Design Philosophy
-
-### Visual Style
-- **Dark-mode dominant** with soft gradients
-- **Glassmorphism** effects with layered cards
-- **Light purple/lavender** color palette (#a78bfa, #c4b5fd, #8b5cf6)
-- Subtle glows and depth
-- High-contrast typography using Inter and Outfit fonts
-- Calm, cinematic, premium SaaS feel
-
-### User Experience
-- Clean, focused interface
-- No clutter or overwhelming dashboards
-- Everything answers: "What am I doing now, and why does it matter?"
-- Intellectually serious yet accessible
-- Non-anxiety-inducing progress tracking
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
+```
+lms/
+├── api/                  # Node.js/Express backend
+│   ├── src/
+│   │   ├── config/       # Database & environment config
+│   │   ├── controllers/  # Request handlers
+│   │   ├── middleware/   # Auth, validation, etc.
+│   │   ├── models/       # Database models (if using ORM)
+│   │   ├── routes/       # API route definitions
+│   │   ├── services/     # Business logic
+│   │   ├── utils/        # Helper functions
+│   │   ├── migrations/   # Database migrations
+│   │   └── seeds/        # Initial data
+│   ├── package.json
+│   ├── knexfile.js
+│   ├── Dockerfile
+│   └── README.md
+│
+├── src/                  # React frontend
+│   ├── components/       # UI components
+│   ├── pages/           # Page components
+│   ├── context/         # React Context providers
+│   ├── services/        # API client
+│   └── ...
+│
+├── docker-compose.yml   # Docker orchestration
+└── README.md           # This file
 ```
 
-### Development Server
-The app will be available at `http://localhost:5173/`
+## 🚀 Quick Start (Full Stack)
+
+### Prerequisites
+
+- Node.js >= 18
+- PostgreSQL >= 15 (or Docker)
+- npm or yarn
+
+### Option 1: Docker (Recommended for Development)
+
+```bash
+# Start PostgreSQL and API
+docker-compose up -d
+
+# Initialize database (in another terminal)
+cd api
+npm run migrate
+npm run seed
+
+# Start frontend dev server
+cd ..
+npm run dev
+```
+
+Access:
+- Frontend: http://localhost:5173
+- API: http://localhost:3000
+- PostgreSQL: localhost:5432
+
+### Option 2: Local Setup
+
+```bash
+# 1. Setup Backend
+cd api
+npm install
+cp .env.example .env
+
+# Edit .env with your database credentials
+# Then run:
+./setup.sh  # This creates DB, runs migrations, and seeds data
+
+# Start API server
+npm run dev
+
+# 2. Setup Frontend (in new terminal)
+cd ..
+npm install
+npm run dev
+```
+
+## 📊 Default Accounts
+
+After seeding:
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@kiteandkey.academy | Admin@123 |
+| Tutor | sarah.chen@kiteandkey.academy | Tutor@123 |
+| Student | alex.martinez@student.kk.edu | Student@123 |
+
+## 🎯 Key Features
+
+### Implemented ✅
+
+1. **Authentication & Authorization**
+   - JWT-based auth with refresh tokens
+   - Role-based access control (Student, Tutor, Parent, Admin)
+   - Registration token system for secure signups
+
+2. **User Management**
+   - Admin dashboard for user CRUD
+   - Token generation for new user registration
+   - Role-specific profiles (student/tutor/parent/admin)
+
+3. **Assessment Engine**
+   - Cognitive assessments across 8 dimensions
+   - Age-normed percentile calculations
+   - MindPrint profile generation
+
+4. **Intervention System**
+   - Scientifically-backed intervention protocols
+   - Auto-assignment based on assessment results
+   - Fidelity tracking for session delivery
+
+5. **Session Logging**
+   - Tutor-side protocol tracking
+   - Student-side reflection capture
+   - Fidelity score calculation
+
+6. **Security**
+   - Password hashing with bcrypt
+   - Rate limiting on all endpoints
+   - CORS protection
+   - SQL injection prevention
+   - JWT blacklisting on logout
+
+### In Progress 🚧
+
+- Assessment & Intervention API endpoints
+- Frontend-backend integration
+- Email notifications
+- Advanced analytics dashboard
+
+## 🔗 API Integration
+
+The backend API is now ready. To integrate with the frontend:
+
+### 1. Update API Client
+
+Edit `src/services/apiClient.ts`:
+
+```typescript
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  timeout: 10000,
+  withCredentials: true
+});
+
+// Add interceptors for JWT auth...
+```
+
+### 2. Update AuthContext
+
+The auth context should now call real API endpoints instead of localStorage.
+
+### 3. Update DataContext
+
+Replace localStorage operations with API calls to:
+- GET /api/interventions/assigned
+- POST /api/assessments
+- GET /api/mindprint/:studentId
+- etc.
+
+## 🗄️ Database Schema
+
+Key tables:
+- `users` - Main user accounts
+- `registration_tokens` - Admin-generated signup tokens
+- `assessments` - Cognitive test results
+- `mindprint_profiles` - Computed cognitive profiles
+- `intervention_protocols` - Master intervention library
+- `assigned_interventions` - Student-specific interventions
+- `session_logs` - Fidelity tracking data
+- `audit_logs` - System audit trail
+
+See `api/README.md` for complete schema documentation.
+
+## 🛠️ Development
+
+### Backend
+
+```bash
+cd api
+npm run dev          # Start with nodemon
+npm run migrate      # Run migrations
+npm run seed         # Seed data
+npm run db:reset     # Reset & reseed database
+```
+
+### Frontend
+
+```bash
+npm run dev          # Vite dev server
+npm run build        # Production build
+npm run preview      # Preview production build
+```
+
+## 📝 Environment Variables
+
+### Backend (.env in api/)
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/kite_and_key_dev
+JWT_SECRET=your-secret-key-min-32-chars
+FRONTEND_URL=http://localhost:5173
+# See api/.env.example for all options
+```
+
+### Frontend (.env in root/)
+
+```env
+VITE_API_URL=http://localhost:3000/api
+```
+
+## 🚢 Deployment
+
+### Backend
+
+Recommended: Railway, Render, or Fly.io
+
+1. Set environment variables
+2. Enable DATABASE_SSL=true
+3. Run migrations: `npm run migrate`
+4. Start: `npm start`
+
+### Frontend
+
+Recommended: Vercel, Netlify
+
+1. Set `VITE_API_URL` to production API
+2. Build: `npm run build`
+3. Deploy `dist/` folder
+
+### Database
+
+Recommended: Supabase, Railway, Neon
+
+- Must support PostgreSQL 15+
+- Enable SSL in production
+- Configure backups
+
+## 📚 Documentation
+
+- [Backend API Documentation](./api/README.md)
+- [Frontend Development Guide](./README_FRONTEND.md) (TBD)
+- [Database Schema](./api/docs/SCHEMA.md) (TBD)
+
+## 🤝 Contributing
+
+1. Create feature branch from `main`
+2. Make changes
+3. Test locally with `npm run dev`
+4. Submit PR with description
+
+## 📄 License
+
+Proprietary - Kite & Key Academy © 2024
 
 ---
 
-## 📖 Pages Overview
+**Need Help?**
 
-1. **Dashboard** - Student command center with focus card, stats, and quick actions
-2. **My Subjects** - Subject overview with progress tracking
-3. **Subject Detail** - Units and lessons for each subject
-4. **Lesson View** - Full lesson content with objectives and examples
-5. **Assignments** - Assignment tracking with due dates and feedback
-6. **MindPrint** - Personalized learning profile (Conceptual Explorer)
-7. **Progress & Analytics** - Performance metrics and improvement trends
-8. **Messages** - Communications from tutors and system
-9. **Resources** - Study materials library
-10. **Schedule** - Tutoring session management
+- Backend issues: See `api/README.md`
+- Frontend issues: Check browser console
+- Database issues: Run `npm run db:reset` in api/
+- Auth issues: Clear localStorage and cookies
 
----
-
-## 👥 Example Student
-
-**Name:** Olivia Chen  
-**Year Level:** Year 8  
-**MindPrint:** Conceptual Explorer  
-**Progress:** 24/48 lessons (50%), 84% accuracy, 7-day streak
-
----
-
-## 🏫 About Kite & Key Academy
-
-Australian education business for Years 5–10 students (NSW curriculum).
-
-**Core Values:**
-- Premium quality education
-- Calm, structured learning
-- Student-centered design
-- Proprietary MindPrint framework
+**Current Status:** Backend infrastructure complete. Frontend integration in progress.

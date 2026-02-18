@@ -93,7 +93,7 @@ const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
 
     return (
         <div className="auth-page">
-            <div className="auth-container">
+            <div className={`auth-container ${step === 1 ? 'wide' : ''}`}>
                 {step === 1 ? renderRoleSelection() : renderForm()}
             </div>
 

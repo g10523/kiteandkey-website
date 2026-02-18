@@ -1,18 +1,16 @@
 import { Brain } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import type { Student } from '../types';
+import { useData } from '../context/DataContext';
 
 export default function MindPrintBadge() {
     const { user, isLoading } = useAuth();
+    const { studentProfile } = useData();
 
     if (isLoading || !user || user.role !== 'student') {
         return null;
     }
 
-    const student = user as Student;
-    const profile = student.mindPrintProfile;
-
-    if (!profile) return null;
+    if (!studentProfile) return null;
 
     return (
         <div style={{
@@ -46,7 +44,7 @@ export default function MindPrintBadge() {
             }}
         >
             <Brain size={18} />
-            <span>{profile.type}</span>
+            <span>MindPrint Active</span>
         </div>
     );
 }

@@ -17,7 +17,15 @@ import StudyLab from './pages/StudyLab';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import TokenManagement from './pages/TokenManagement';
+import AdminPanel from './pages/AdminPanel';
+import Assessments from './pages/Assessments';
+import AssessmentCenter from './pages/AssessmentCenter';
+import { AdaptiveAssessment } from './components/assessments';
+import PendingVerification from './components/PendingVerification';
+import QuizView from './components/QuizView';
+import ContentManagement from './components/ContentManagement';
 import { useAuth } from './context/AuthContext';
+import { useData } from './context/DataContext';
 import { Loader2 } from 'lucide-react';
 import { FEATURE_FLAGS } from './config/featureFlags';
 import ComingSoon from './components/ComingSoon';
@@ -27,12 +35,14 @@ function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('dashboard');
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
+  const [selectedDimensionId, setSelectedDimensionId] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const handleNavigate = (page: PageType, subjectId?: string, lessonId?: string) => {
+  const handleNavigate = (page: PageType, subjectId?: string, lessonId?: string, dimensionId?: string) => {
     setCurrentPage(page);
     if (subjectId) setSelectedSubjectId(subjectId);
     if (lessonId) setSelectedLessonId(lessonId);
+    if (dimensionId) setSelectedDimensionId(dimensionId);
   };
 
   if (isLoading) {
@@ -48,6 +58,11 @@ function App() {
       return <Register onNavigate={handleNavigate} />;
     }
     return <Login onNavigate={handleNavigate} />;
+  }
+
+  // Verification Guard: Restricted access for public signups
+  if (user.isVerified === false && user.role !== 'admin') {
+    return <PendingVerification />;
   }
 
   const renderPage = () => {
@@ -104,6 +119,68 @@ function App() {
         return <StudyLab />;
       case 'tokens':
         return <TokenManagement />;
+      case 'admin-panel':
+        return <AdminPanel />;
+      case 'assessments':
+        return <Assessments />;
+      case 'assessment-center':
+        return <AssessmentCenter onNavigate={handleNavigate} />;
+      case 'assessment-wm':
+        return <AdaptiveAssessment
+          studentId={user.id}
+          dimension={(selectedDimensionId as any) || 'working_memory'}
+          onComplete={(results: any) => {
+            console.log('Assessment complete:', results);
+            handleNavigate('mindprint');
+          }}
+          onCancel={() => handleNavigate('assessment-center')}
+        />;
+      case 'quiz':
+        {
+          const { subjects } = useData();
+          let quizData = null;
+
+          if (selectedLessonId) {
+            for (const subject of subjects) {
+              for (const unit of subject.units) {
+                const lesson = unit.lessons.find(l => l.id === selectedLessonId);
+                if (lesson?.quiz) {
+                  quizData = lesson.quiz;
+                  break;
+                }
+              }
+              if (quizData) break;
+            }
+          }
+
+          return quizData ? (
+            <QuizView
+              quiz={quizData}
+              studentId={user.id}
+              onComplete={(attempt) => {
+                console.log('Quiz completed:', attempt);
+                handleNavigate('lesson', undefined, selectedLessonId);
+              }}
+              onClose={() => handleNavigate('lesson', undefined, selectedLessonId)}
+            />
+          ) : (
+            <Dashboard onNavigate={handleNavigate} />
+          );
+        }
+      case 'content-management':
+        {
+          const { subjects } = useData();
+          return (
+            <ContentManagement
+              subjects={subjects}
+              currentUser={{
+                id: user.id,
+                role: user.role as 'tutor' | 'admin',
+                name: `${user.firstName} ${user.lastName}`
+              }}
+            />
+          );
+        }
       default:
         return <Dashboard onNavigate={handleNavigate} />;
     }

@@ -109,6 +109,64 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                 </div>
             </div>
 
+            {/* MindPrint Assessment CTA */}
+            <div className="glassmorphism" style={{
+                borderRadius: '1.5rem',
+                padding: '1.5rem',
+                background: 'linear-gradient(135deg, rgba(94, 85, 116, 0.1) 0%, rgba(217, 207, 242, 0.2) 100%)',
+                marginBottom: '2rem',
+                border: '1px solid rgba(217, 207, 242, 0.3)'
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div>
+                        <h3 style={{
+                            fontSize: '1.125rem',
+                            fontWeight: 500,
+                            color: '#5E5574',
+                            marginBottom: '0.25rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}>
+                            <Brain size={24} color="#5E5574" />
+                            Complete Your Cognitive Profile
+                        </h3>
+                        <p style={{ fontSize: '0.875rem', color: 'rgba(94, 85, 116, 0.7)' }}>
+                            8-minute assessment to personalize your learning path
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => onNavigate('assessment-center')}
+                        style={{
+                            padding: '0.75rem 1.5rem',
+                            background: '#5E5574',
+                            color: 'white',
+                            borderRadius: '9999px',
+                            border: 'none',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            fontSize: '0.875rem',
+                            fontWeight: 500,
+                            transition: 'all 0.2s ease',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.background = '#4A445C';
+                            e.currentTarget.style.boxShadow = '0 10px 15px rgba(0, 0, 0, 0.15)';
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.background = '#5E5574';
+                            e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                        }}
+                    >
+                        <Brain size={20} />
+                        Start Assessment
+                    </button>
+                </div>
+            </div>
+
             {/* Stats Grid */}
             <div className="stats-grid">
                 <div className="stat-card">

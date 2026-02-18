@@ -12,6 +12,7 @@ export interface User {
   email: string;
   avatar?: string;
   isVerified?: boolean;
+  mindPrintProfile?: MindPrintProfile;
 }
 
 export interface Student extends User {
@@ -151,6 +152,48 @@ export interface Lesson {
   content: LessonContent;
   learningObjectives: string[];
   whyItMatters: string;
+  quiz?: Quiz;
+  isVisibleToStudent?: boolean; // Controlled by tutor/admin
+  releaseDate?: Date; // When lesson becomes visible
+}
+
+export interface Quiz {
+  id: string;
+  lessonId: string;
+  title: string;
+  description: string;
+  questions: Question[];
+  timeLimit?: number; // minutes, optional
+  passingScore: number; // percentage
+  attempts: QuizAttempt[];
+  maxAttempts?: number; // optional limit
+  isRequired: boolean;
+  isVisibleToStudent?: boolean; // Controlled by tutor/admin
+}
+
+export interface QuizAttempt {
+  id: string;
+  quizId: string;
+  studentId: string;
+  startedAt: Date;
+  completedAt?: Date;
+  score: number;
+  answers: Record<string, string | number>;
+  timeSpent: number; // seconds
+  isPassed: boolean;
+}
+
+export interface ContentVisibility {
+  id: string;
+  contentType: 'lesson' | 'quiz' | 'unit' | 'assignment';
+  contentId: string;
+  studentId?: string; // If null, applies to all students
+  isVisible: boolean;
+  releaseDate?: Date;
+  hideDate?: Date;
+  setBy: string; // tutor or admin user ID
+  setAt: Date;
+  notes?: string;
 }
 
 export interface LessonContent {
@@ -270,6 +313,7 @@ export type PageType =
   | 'subjects'
   | 'subject-detail'
   | 'lesson'
+  | 'quiz'
   | 'practice'
   | 'assignments'
   | 'mindprint'
@@ -280,4 +324,9 @@ export type PageType =
   | 'study-lab'
   | 'login'
   | 'register'
-  | 'tokens';
+  | 'tokens'
+  | 'assessments'
+  | 'assessment-wm'
+  | 'assessment-center'
+  | 'admin-panel'
+  | 'content-management';

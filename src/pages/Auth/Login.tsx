@@ -23,20 +23,34 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
 
     return (
         <div className="auth-page">
-            <div className="auth-container" style={{ maxWidth: '450px' }}>
-                <h1 className="auth-title">Welcome Back</h1>
-                <p className="auth-subtitle">Sign in to continue to Lite & Key Academy.</p>
+            <div className="zen-circle" style={{ width: '400px', height: '400px', top: '-100px', left: '-100px' }}></div>
+            <div className="zen-circle" style={{ width: '300px', height: '300px', bottom: '-50px', right: '-50px' }}></div>
+
+            <div className="auth-logo-wrapper">
+                <img src="/logo.png" alt="Kite & Key Academy" className="auth-logo" onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/logo.jpg';
+                }} />
+            </div>
+
+            <div className="auth-container">
+                <div className="auth-badge">Academy Portal</div>
+                <h1 className="auth-title">
+                    Clarity Precedes
+                    <i>Confidence.</i>
+                </h1>
+                <p className="auth-subtitle">Sign in to your personal learning cockpit.</p>
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Email Address</label>
-                        <div style={{ position: 'relative' }}>
-                            <Mail size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#888' }} />
+                        <div className="input-wrapper">
+                            <Mail size={18} className="input-icon" />
                             <input
                                 type="email"
                                 required
                                 placeholder="name@email.com"
-                                style={{ paddingLeft: '40px' }}
+                                className="with-icon"
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                             />
@@ -45,13 +59,13 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
 
                     <div className="form-group">
                         <label>Password</label>
-                        <div style={{ position: 'relative' }}>
-                            <Lock size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#888' }} />
+                        <div className="input-wrapper">
+                            <Lock size={18} className="input-icon" />
                             <input
                                 type="password"
                                 required
                                 placeholder="••••••••"
-                                style={{ paddingLeft: '40px' }}
+                                className="with-icon"
                                 value={formData.password}
                                 onChange={e => setFormData({ ...formData, password: e.target.value })}
                             />
@@ -72,13 +86,13 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                     </div>
 
                     <button type="submit" className="submit-button" disabled={isLoading}>
-                        {isLoading ? <Loader2 className="animate-spin" /> : <>Sign In <ArrowRight size={20} /></>}
+                        {isLoading ? <Loader2 className="animate-spin" /> : <>Log Into Academy <ArrowRight size={20} /></>}
                     </button>
                 </form>
             </div>
 
             <div className="auth-footer">
-                Don't have an account? <button onClick={() => onNavigate('register')} className="auth-link-button">Create one for free</button>
+                Don't have an account? <button onClick={() => onNavigate('register')} className="auth-link-button">Enrol Now</button>
             </div>
         </div>
     );

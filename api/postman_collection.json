@@ -1,0 +1,325 @@
+{
+    "info": {
+        "name": "Kite & Key Academy API",
+        "description": "Complete API collection for testing authentication, user management, and admin endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/auth/register",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"token\": \"{{registration_token}}\",\n  \"email\": \"newstudent@example.com\",\n  \"password\": \"SecurePass@123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"2014-03-15\",\n  \"gradeLevel\": 10\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login - Admin",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = JSON.parse(responseBody);",
+                                    "pm.environment.set(\"admin_token\", jsonData.accessToken);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/auth/login",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@kiteandkey.academy\",\n  \"password\": \"Admin@123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login - Tutor",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = JSON.parse(responseBody);",
+                                    "pm.environment.set(\"tutor_token\", jsonData.accessToken);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/auth/login",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"sarah.chen@kiteandkey.academy\",\n  \"password\": \"Tutor@123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Login - Student",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = JSON.parse(responseBody);",
+                                    "pm.environment.set(\"student_token\", jsonData.accessToken);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/auth/login",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"alex.martinez@student.kk.edu\",\n  \"password\": \"Student@123\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "url": "{{base_url}}/auth/refresh"
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/auth/logout"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Users",
+            "item": [
+                {
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/users?page=1&limit=50",
+                            "query": [
+                                {
+                                    "key": "role",
+                                    "value": "student",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "50"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/users",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"jane.smith@student.kk.edu\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"role\": \"student\",\n  \"gradeLevel\": 9,\n  \"dateOfBirth\": \"2015-05-10\",\n  \"enrolledSubjects\": [\"Mathematics\", \"Science\"]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/users/{{user_id}}",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"Jane Updated\",\n  \"isActive\": true\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/users/{{user_id}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Tokens",
+            "item": [
+                {
+                    "name": "Create Registration Token",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var jsonData = JSON.parse(responseBody);",
+                                    "pm.environment.set(\"registration_token\", jsonData.tokenCode);"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/tokens",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"role\": \"student\",\n  \"maxUses\": 5,\n  \"expiresInDays\": 30,\n  \"metadata\": {\n    \"enrolledSubjects\": [\"Mathematics\", \"English\"]\n  }\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Tokens",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/tokens"
+                    }
+                },
+                {
+                    "name": "Revoke Token",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/tokens/{{token_id}}"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Analytics",
+            "item": [
+                {
+                    "name": "Get Analytics Overview",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{admin_token}}"
+                            }
+                        ],
+                        "url": "{{base_url}}/admin/analytics/overview"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health Check",
+            "request": {
+                "method": "GET",
+                "url": "{{base_url}}/health"
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000/api",
+            "type": "string"
+        }
+    ]
+}

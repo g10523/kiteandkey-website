@@ -14,6 +14,7 @@ import type {
     Unit,
     RegistrationToken
 } from '../types';
+import { englishYear5 } from './courses/englishYear5';
 
 // ============================================
 // STUDENT PROFILE
@@ -167,6 +168,7 @@ export const mockTokens: RegistrationToken[] = [
 // ============================================
 
 export const subjects: Subject[] = [
+    englishYear5,  // Year 5 English - Informative & Persuasive Texts
     {
         id: 'english-8',
         name: 'English',
@@ -258,6 +260,92 @@ const englishUnits: Unit[] = [
                             ]
                         }
                     ]
+                },
+                isVisibleToStudent: true,
+                quiz: {
+                    id: 'quiz-eng-1-1',
+                    lessonId: 'eng-lesson-1-1',
+                    title: 'Character Development Quiz',
+                    description: 'Test your understanding of direct and indirect characterization techniques',
+                    timeLimit: 15,
+                    passingScore: 70,
+                    isRequired: true,
+                    isVisibleToStudent: true,
+                    maxAttempts: 3,
+                    attempts: [
+                        {
+                            id: 'quiz-attempt-1',
+                            quizId: 'quiz-eng-1-1',
+                            studentId: 'student-001',
+                            startedAt: new Date('2026-01-10T14:30:00'),
+                            completedAt: new Date('2026-01-10T14:42:00'),
+                            score: 85,
+                            answers: {
+                                'q1': 1,
+                                'q2': 'Actions, dialogue, thoughts, appearance, and interactions with others',
+                                'q3': 0,
+                                'q4': 1,
+                                'q5': 'The shaking hands show vulnerability, making her courage more realistic and relatable'
+                            },
+                            timeSpent: 720,
+                            isPassed: true
+                        }
+                    ],
+                    questions: [
+                        {
+                            id: 'q1',
+                            question: 'Which of the following is an example of DIRECT characterization?',
+                            type: 'multiple-choice',
+                            options: [
+                                'The character slammed the door and stormed out of the room.',
+                                'The narrator states: "Marcus was the most generous person in the village."',
+                                'She carefully counted her coins before deciding what to buy.',
+                                'His friends always came to him when they needed advice.'
+                            ],
+                            correctAnswer: 1,
+                            explanation: 'Direct characterization occurs when the author explicitly tells us about a character\'s traits. The narrator directly stating "Marcus was the most generous person" is a clear example.',
+                            difficulty: 'easy'
+                        },
+                        {
+                            id: 'q2',
+                            question: 'List at least THREE methods authors use for indirect characterization.',
+                            type: 'short-answer',
+                            correctAnswer: 'Actions, dialogue, thoughts, appearance, and interactions with others',
+                            explanation: 'Indirect characterization reveals character through: actions (what they do), dialogue (what they say), thoughts (what they think), appearance (how they look), and interactions (how others respond to them). This is sometimes remembered as STEAL: Speech, Thoughts, Effects on others, Actions, Looks.',
+                            difficulty: 'medium'
+                        },
+                        {
+                            id: 'q3',
+                            question: 'In the example "Sarah took a deep breath, squared her shoulders, and walked into the principal\'s office to defend her friend, even though her hands were shaking," what does the detail about shaking hands reveal?',
+                            type: 'multiple-choice',
+                            options: [
+                                'That Sarah is weak and shouldn\'t be defending her friend',
+                                'That Sarah is nervous but acting courageously despite her fear',
+                                'That Sarah is cold and needs a jacket',
+                                'That Sarah is angry at the principal'
+                            ],
+                            correctAnswer: 1,
+                            explanation: 'The shaking hands show Sarah\'s nervousness, but the fact that she proceeds anyway demonstrates true courage—acting despite fear, not without it. This makes her more realistic and relatable.',
+                            difficulty: 'medium'
+                        },
+                        {
+                            id: 'q4',
+                            question: 'True or False: Indirect characterization is generally more engaging than direct characterization because it allows readers to draw their own conclusions.',
+                            type: 'true-false',
+                            options: ['True', 'False'],
+                            correctAnswer: 0,
+                            explanation: 'True. Indirect characterization engages readers by showing rather than telling, allowing them to actively participate in understanding the character. This creates a more immersive reading experience.',
+                            difficulty: 'easy'
+                        },
+                        {
+                            id: 'q5',
+                            question: 'Why is the detail about Sarah\'s "shaking hands" important to her characterization? Explain in 1-2 sentences.',
+                            type: 'short-answer',
+                            correctAnswer: 'The shaking hands show vulnerability, making her courage more realistic and relatable',
+                            explanation: 'The shaking hands reveal Sarah\'s humanity and fear, which makes her brave action more meaningful. True courage is acting despite fear, not without it. This detail prevents her from seeming unrealistically perfect.',
+                            difficulty: 'hard'
+                        }
+                    ]
                 }
             },
             {
@@ -281,6 +369,66 @@ const englishUnits: Unit[] = [
                             type: 'explanation',
                             title: 'The Five-Act Structure',
                             content: 'Most narratives follow a pattern: Exposition (introduction), Rising Action (building tension), Climax (turning point), Falling Action (consequences), and Resolution (conclusion). This structure mirrors how we naturally experience and process stories.'
+                        }
+                    ]
+                },
+                isVisibleToStudent: true,
+                quiz: {
+                    id: 'quiz-eng-1-2',
+                    lessonId: 'eng-lesson-1-2',
+                    title: 'Plot Structure Quiz',
+                    description: 'Demonstrate your understanding of narrative structure and story arcs',
+                    timeLimit: 20,
+                    passingScore: 70,
+                    isRequired: true,
+                    isVisibleToStudent: true,
+                    maxAttempts: 3,
+                    attempts: [],
+                    questions: [
+                        {
+                            id: 'q1',
+                            question: 'What is the primary purpose of the EXPOSITION in a story?',
+                            type: 'multiple-choice',
+                            options: [
+                                'To resolve all conflicts and end the story',
+                                'To introduce characters, setting, and the initial situation',
+                                'To present the most intense moment of conflict',
+                                'To show the consequences of the climax'
+                            ],
+                            correctAnswer: 1,
+                            explanation: 'The exposition establishes the story\'s foundation by introducing who the characters are, where and when the story takes place, and what the initial situation is before conflict arises.',
+                            difficulty: 'easy'
+                        },
+                        {
+                            id: 'q2',
+                            question: 'At which point in the plot structure does the protagonist face their greatest challenge or make a crucial decision?',
+                            type: 'multiple-choice',
+                            options: [
+                                'Exposition',
+                                'Rising Action',
+                                'Climax',
+                                'Resolution'
+                            ],
+                            correctAnswer: 2,
+                            explanation: 'The climax is the turning point of the story where tension reaches its peak and the protagonist faces their greatest challenge. This is the moment of highest dramatic intensity.',
+                            difficulty: 'easy'
+                        },
+                        {
+                            id: 'q3',
+                            question: 'Arrange these plot elements in the correct order: A) Resolution, B) Rising Action, C) Climax, D) Exposition, E) Falling Action',
+                            type: 'short-answer',
+                            correctAnswer: 'D, B, C, E, A',
+                            explanation: 'The correct narrative structure flows: Exposition (introduction) → Rising Action (building tension) → Climax (turning point) → Falling Action (consequences) → Resolution (conclusion).',
+                            difficulty: 'medium'
+                        },
+                        {
+                            id: 'q4',
+                            question: 'True or False: The rising action should include multiple complications or obstacles that increase tension.',
+                            type: 'true-false',
+                            options: ['True', 'False'],
+                            correctAnswer: 0,
+                            explanation: 'True. The rising action builds tension through a series of complications, conflicts, and obstacles that escalate toward the climax. Each event should raise the stakes.',
+                            difficulty: 'medium'
                         }
                     ]
                 }

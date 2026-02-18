@@ -24,6 +24,7 @@ export default function Sidebar({ currentPage, onNavigate, user, isCollapsed, on
                     { id: 'subjects' as PageType, label: 'Courses', Icon: BookOpen, roles: ['student', 'tutor'] },
                     { id: 'assignments' as PageType, label: 'Assignments', Icon: FileText, roles: ['student'] },
                     { id: 'schedule' as PageType, label: 'Schedule', Icon: Calendar, roles: ['student', 'tutor'] },
+                    { id: 'assessments' as PageType, label: 'Assessments', Icon: Brain, roles: ['tutor', 'admin'] },
                 ].filter(item => item.roles.includes(user.role))
             },
             {
@@ -39,6 +40,7 @@ export default function Sidebar({ currentPage, onNavigate, user, isCollapsed, on
             {
                 title: 'ACCOUNT',
                 items: [
+                    { id: 'admin-panel' as PageType, label: 'Admin Panel', Icon: Settings, roles: ['admin'] },
                     { id: 'tokens' as PageType, label: 'Registration Tokens', Icon: Ticket, roles: ['admin'] },
                     { id: 'settings' as PageType, label: 'Settings', Icon: Settings, roles: ['student', 'parent', 'tutor', 'admin'] },
                 ].filter(item => item.roles.includes(user.role))
