@@ -38,7 +38,7 @@ app.use(helmet({
             scriptSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "blob:"],
-            connectSrc: ["'self'", process.env.FRONTEND_URL || 'http://localhost:5173'],
+            connectSrc: ["'self'", ...(process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : ['http://localhost:5173', 'https://kite-academy-lms.vercel.app'])],
             fontSrc: ["'self'"],
             objectSrc: ["'none'"],
             frameSrc: ["'none'"]
@@ -56,8 +56,18 @@ app.use(helmet({
 app.use(extraSecurityHeaders);
 
 // CORS — locked to frontend origin
+const allowedOrigins = process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',')
+    : ['http://localhost:5173', 'https://kite-academy-lms.vercel.app'];
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -120,7 +130,6 @@ if (process.env.NODE_ENV !== 'production') {
 // ═══════════════════════════════════════
 //  HEALTH CHECK (unauthenticated)
 // ═══════════════════════════════════════
-app.use((req, res, next) => { console.log('DEBUG: Approaching health endpoint'); next(); });
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',

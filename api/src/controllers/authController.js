@@ -455,9 +455,17 @@ async function createRoleProfile(userId, role, metadata = {}) {
     }
 }
 
+/**
+ * Get current authenticated user
+ */
+async function me(req, res) {
+    res.json({ user: req.user });
+}
+
 module.exports = {
     register,
     login,
     refresh,
-    logout
+    logout,
+    me
 };
