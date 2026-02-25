@@ -140,13 +140,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await refreshData();
     };
 
-    const updateAssignmentStatus = async (id: string, status: Assignment['status']) => {
+    const updateAssignmentStatus = async (_id: string, _status: Assignment['status']) => {
         // TODO: implement backend assignment update
         console.warn('[DataContext] updateAssignmentStatus: backend endpoint not yet implemented');
         await refreshData();
     };
 
-    const sendMessage = async (message: Omit<Message, 'id' | 'date'>) => {
+    const sendMessage = async (_message: Omit<Message, 'id' | 'date'>) => {
         // TODO: implement backend message sending
         console.warn('[DataContext] sendMessage: backend endpoint not yet implemented');
         await refreshData();
