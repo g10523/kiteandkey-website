@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { PageType } from '../../types';
 import { useAuth } from '../../context/AuthContext';
-import { ArrowRight, Loader2, Mail, Lock } from 'lucide-react';
+import { ArrowRight, Loader2, User, Lock } from 'lucide-react';
 import './Auth.css';
 
 interface LoginProps {
@@ -10,15 +10,19 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onNavigate }) => {
     const { login, isLoading } = useAuth();
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        role: 'student' as any
-    });
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await login(formData.email, formData.role);
+        setError('');
+
+        try {
+            await login(username, password);
+        } catch (err: any) {
+            setError(err.message || 'Login failed');
+        }
     };
 
     return (
@@ -41,18 +45,21 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                 </h1>
                 <p className="auth-subtitle">Sign in to your personal learning cockpit.</p>
 
+                {error && <div className="auth-error">{error}</div>}
+
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Email Address</label>
+                        <label>Username</label>
                         <div className="input-wrapper">
-                            <Mail size={18} className="input-icon" />
+                            <User size={18} className="input-icon" />
                             <input
-                                type="email"
+                                type="text"
                                 required
-                                placeholder="name@email.com"
+                                placeholder="Enter your username"
                                 className="with-icon"
-                                value={formData.email}
-                                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                value={username}
+                                onChange={e => setUsername(e.target.value)}
+                                autoComplete="username"
                             />
                         </div>
                     </div>
@@ -66,23 +73,11 @@ const Login: React.FC<LoginProps> = ({ onNavigate }) => {
                                 required
                                 placeholder="••••••••"
                                 className="with-icon"
-                                value={formData.password}
-                                onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                autoComplete="current-password"
                             />
                         </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Sign in as</label>
-                        <select
-                            value={formData.role}
-                            onChange={e => setFormData({ ...formData, role: e.target.value })}
-                        >
-                            <option value="student">Student</option>
-                            <option value="parent">Parent</option>
-                            <option value="tutor">Tutor</option>
-                            <option value="admin">Admin</option>
-                        </select>
                     </div>
 
                     <button type="submit" className="submit-button" disabled={isLoading}>

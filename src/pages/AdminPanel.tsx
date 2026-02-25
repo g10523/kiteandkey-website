@@ -7,7 +7,6 @@ import {
     getPairings,
     createPairing,
     deletePairing,
-    updatePairingCourses,
     type RegisteredUserSummary,
     type UserCourseAccess,
     type TutorStudentPairing

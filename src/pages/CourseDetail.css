@@ -1,0 +1,1016 @@
+/* ============================================
+   COURSE DETAIL PAGE — KITE & KEY ACADEMY
+   Terms, lessons accordion, inner tabs
+   ============================================ */
+
+.course-detail-page {
+    animation: cdFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 960px;
+}
+
+@keyframes cdFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ───── Not found ───── */
+.course-detail-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--color-text-tertiary);
+    font-size: 1.1rem;
+}
+
+/* ───── Breadcrumb ───── */
+.course-detail-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-tertiary);
+}
+
+.course-detail-breadcrumb button {
+    background: none;
+    border: none;
+    color: var(--color-primary, #6B5B95);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+}
+
+.course-detail-breadcrumb button:hover {
+    text-decoration: underline;
+}
+
+.course-detail-breadcrumb span {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* ───── Header ───── */
+.course-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.course-detail-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.course-detail-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-detail-title {
+    font-family: var(--font-display, 'Outfit', sans-serif);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.15rem;
+}
+
+.course-detail-subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-tertiary);
+}
+
+.course-detail-tutor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: rgba(251, 191, 36, 0.1);
+    color: #b45309;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+/* ───── Term Tabs ───── */
+.course-detail-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid rgba(107, 91, 149, 0.08);
+    padding-bottom: 0;
+}
+
+.course-detail-tab {
+    position: relative;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all 200ms ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.course-detail-tab:hover:not(:disabled) {
+    color: var(--color-text-primary);
+    background: rgba(107, 91, 149, 0.04);
+}
+
+.course-detail-tab.active {
+    font-weight: 700;
+    border-bottom-width: 3px;
+}
+
+.course-detail-tab.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tab-lock-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+}
+
+/* ───── Lesson Accordion ───── */
+.course-detail-lessons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.lesson-accordion {
+    background: var(--color-bg-card, #fff);
+    border: 1.5px solid rgba(107, 91, 149, 0.1);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 250ms ease;
+}
+
+.lesson-accordion.expanded {
+    border-color: rgba(107, 91, 149, 0.2);
+    box-shadow: 0 4px 16px rgba(107, 91, 149, 0.08);
+}
+
+.lesson-accordion.locked {
+    opacity: 0.55;
+}
+
+.lesson-accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: background 150ms ease;
+    text-align: left;
+}
+
+.lesson-accordion-header:hover:not(:disabled) {
+    background: rgba(107, 91, 149, 0.03);
+}
+
+.lesson-accordion-header:disabled {
+    cursor: not-allowed;
+}
+
+.lesson-accordion-left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.lesson-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.lesson-accordion-title {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 0.15rem;
+}
+
+.lesson-accordion-meta {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+.lesson-accordion-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.lesson-accordion-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Access toggle (tutor) */
+.access-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.06);
+    color: #dc2626;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 200ms ease;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.access-toggle.granted {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.06);
+    color: #059669;
+}
+
+.access-toggle:hover {
+    transform: scale(1.05);
+}
+
+/* Status badges */
+.lesson-locked-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #94a3b8;
+    background: rgba(148, 163, 184, 0.1);
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.lesson-done-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #059669;
+    background: rgba(5, 150, 105, 0.08);
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+/* Chevron */
+.accordion-chevron {
+    color: var(--color-text-muted);
+    transition: transform 250ms ease;
+    flex-shrink: 0;
+}
+
+.accordion-chevron.rotated {
+    transform: rotate(180deg);
+}
+
+/* ───── Accordion body ───── */
+.lesson-accordion-body {
+    border-top: 1px solid rgba(107, 91, 149, 0.08);
+    animation: slideDown 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        max-height: 1000px;
+    }
+}
+
+/* Section tabs */
+.lesson-section-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid rgba(107, 91, 149, 0.06);
+    padding: 0 1.25rem;
+}
+
+.section-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    transition: all 200ms ease;
+    margin-bottom: -2px;
+}
+
+.section-tab:hover {
+    color: var(--color-text-primary);
+    background: rgba(107, 91, 149, 0.03);
+}
+
+.section-tab.active {
+    font-weight: 700;
+}
+
+/* ───── Content sections ───── */
+.lesson-content-section {
+    padding: 1.5rem 1.25rem;
+}
+
+/* Notes */
+.lesson-notes {
+    line-height: 1.7;
+}
+
+.notes-heading {
+    font-family: var(--font-display, 'Outfit', sans-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+}
+
+.notes-placeholder {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.notes-objectives {
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.06) 0%, rgba(196, 181, 253, 0.03) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.12);
+    border-left: 3px solid var(--color-glass-purple, #a78bfa);
+    border-radius: 10px;
+}
+
+.notes-objectives h4 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-primary, #6B5B95);
+    margin-bottom: 0.6rem;
+}
+
+.notes-objectives ul {
+    padding-left: 1.25rem;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+/* Homework */
+.homework-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.homework-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    background: rgba(251, 191, 36, 0.06);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 10px;
+    color: #92400e;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.homework-notice svg {
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.homework-questions h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.6rem;
+}
+
+.homework-questions ol {
+    padding-left: 1.25rem;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.homework-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    border: 1.5px solid rgba(107, 91, 149, 0.15);
+    background: none;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms ease;
+    align-self: flex-start;
+}
+
+.homework-checkbox:hover {
+    border-color: var(--color-primary, #6B5B95);
+}
+
+.homework-checkbox.checked {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #059669;
+}
+
+/* Quiz */
+.quiz-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Tutor controls */
+.quiz-tutor-controls {
+    padding: 1.25rem;
+    background: rgba(251, 191, 36, 0.04);
+    border: 1px solid rgba(251, 191, 36, 0.15);
+    border-radius: 12px;
+}
+
+.quiz-tutor-controls h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.quiz-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.quiz-setting label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.35rem;
+}
+
+.quiz-setting input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid rgba(107, 91, 149, 0.15);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    background: white;
+    transition: border-color 200ms ease;
+}
+
+.quiz-setting input:focus {
+    outline: none;
+    border-color: var(--color-primary, #6B5B95);
+    box-shadow: 0 0 0 3px rgba(107, 91, 149, 0.08);
+}
+
+.quiz-setting-static {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid rgba(107, 91, 149, 0.1);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    background: rgba(107, 91, 149, 0.03);
+}
+
+.quiz-save-btn {
+    display: inline-flex;
+    padding: 0.55rem 1.5rem;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 200ms ease;
+    margin-bottom: 0.5rem;
+}
+
+.quiz-save-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.quiz-status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.active {
+    background: #10b981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+}
+
+.status-dot.inactive {
+    background: #ef4444;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+}
+
+/* Student quiz-view */
+.quiz-student-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.quiz-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.quiz-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(107, 91, 149, 0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(107, 91, 149, 0.08);
+}
+
+.quiz-info-item svg {
+    color: var(--color-primary, #6B5B95);
+    flex-shrink: 0;
+}
+
+.qi-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    margin-bottom: 0.1rem;
+}
+
+.qi-value {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.quiz-start-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 250ms ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    align-self: flex-start;
+}
+
+.quiz-start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.quiz-locked-msg,
+.quiz-closed-msg {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.quiz-locked-msg {
+    background: rgba(148, 163, 184, 0.08);
+    color: #64748b;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.quiz-closed-msg {
+    background: rgba(239, 68, 68, 0.06);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.quiz-completed-msg {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.08);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* ───── Responsive ───── */
+@media (max-width: 680px) {
+    .course-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .course-detail-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .quiz-settings-grid,
+    .quiz-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-accordion-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.35rem;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   RICH CONTENT — Rendered HTML in notes/homework
+   ═══════════════════════════════════════════ */
+
+.lesson-rich-content {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary, #444);
+}
+
+.lesson-rich-content h2 {
+    font-family: var(--font-display, 'Outfit', sans-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1a1a2e);
+    margin: 1.75rem 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 2px solid rgba(124, 58, 237, 0.1);
+}
+
+.lesson-rich-content h2:first-child {
+    margin-top: 0;
+}
+
+.lesson-rich-content h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+    margin: 1.25rem 0 0.5rem;
+}
+
+.lesson-rich-content h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #333);
+    margin: 0.75rem 0 0.4rem;
+}
+
+.lesson-rich-content p {
+    margin: 0 0 0.75rem;
+}
+
+.lesson-rich-content ul,
+.lesson-rich-content ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.lesson-rich-content li {
+    margin-bottom: 0.35rem;
+}
+
+.lesson-rich-content hr {
+    border: none;
+    border-top: 1.5px solid rgba(124, 58, 237, 0.08);
+    margin: 1.5rem 0;
+}
+
+.lesson-rich-content code {
+    background: rgba(124, 58, 237, 0.08);
+    padding: 0.15rem 0.45rem;
+    border-radius: 5px;
+    font-size: 0.82rem;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    color: #7c3aed;
+}
+
+.lesson-rich-content em {
+    color: #555;
+}
+
+.lesson-rich-content strong {
+    color: var(--color-text-primary, #1a1a2e);
+}
+
+/* Info boxes */
+.info-box {
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    margin: 0.75rem 0;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.info-box h4 {
+    margin-top: 0 !important;
+    margin-bottom: 0.35rem !important;
+}
+
+.info-box-blue {
+    background: rgba(37, 99, 235, 0.05);
+    border-color: rgba(37, 99, 235, 0.12);
+}
+
+.info-box-amber {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.12);
+}
+
+/* Key principle / insight */
+.key-principle,
+.selective-insight {
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    margin: 0.75rem 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.key-principle {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(5, 150, 105, 0.03));
+    border-left: 3px solid #10b981;
+}
+
+.selective-insight {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(139, 92, 246, 0.03));
+    border-left: 3px solid #7c3aed;
+}
+
+/* Structure cards */
+.structure-card {
+    background: var(--color-bg-card, #fff);
+    border: 1px solid rgba(107, 91, 149, 0.1);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin: 0.5rem 0;
+    transition: box-shadow 200ms ease;
+}
+
+.structure-card:hover {
+    box-shadow: 0 2px 10px rgba(107, 91, 149, 0.08);
+}
+
+.structure-card h4 {
+    margin-top: 0 !important;
+    color: #7c3aed !important;
+}
+
+/* Info table */
+.info-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(107, 91, 149, 0.1);
+}
+
+.info-table th {
+    background: rgba(124, 58, 237, 0.06);
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #7c3aed;
+    border-bottom: 1px solid rgba(107, 91, 149, 0.1);
+}
+
+.info-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid rgba(107, 91, 149, 0.06);
+    color: var(--color-text-secondary, #555);
+}
+
+.info-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ── Homework rich content ── */
+
+.homework-rich-content {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary, #444);
+}
+
+.homework-task {
+    background: var(--color-bg-card, #fff);
+    border: 1px solid rgba(107, 91, 149, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.homework-task h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1a1a2e);
+    margin: 0 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(124, 58, 237, 0.08);
+    color: #7c3aed;
+}
+
+.homework-task ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+.homework-task li {
+    margin-bottom: 0.5rem;
+}
+
+.marks {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #7c3aed;
+    opacity: 0.8;
+}
+
+.passage {
+    background: rgba(245, 245, 245, 0.8);
+    border-left: 3px solid #7c3aed;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+    color: #444;
+    line-height: 1.75;
+    font-size: 0.88rem;
+}
+
+.topic-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.topic-chips span {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: 8px;
+    background: rgba(124, 58, 237, 0.06);
+    border: 1px solid rgba(124, 58, 237, 0.12);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #7c3aed;
+}
+
+/* ── Math Fractions & Display ── */
+
+.frac {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1em;
+    letter-spacing: -0.5px;
+}
+
+.frac sup,
+.frac sub {
+    font-size: 0.88em;
+    font-weight: 700;
+    color: #7c3aed;
+}
+
+.frac sup {
+    vertical-align: super;
+}
+
+.frac sub {
+    vertical-align: sub;
+}
+
+.math-display {
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 0.85rem 1rem;
+    margin: 0.75rem 0;
+    background: rgba(124, 58, 237, 0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(124, 58, 237, 0.08);
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 2;
+}

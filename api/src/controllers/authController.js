@@ -7,32 +7,113 @@ const {
     verifyToken,
     getTokenExpiry
 } = require('../utils/auth');
+const {
+    validateSecurityKey,
+    consumeSecurityKey
+} = require('../utils/securityKeys');
+const {
+    logSecurityEvent,
+    recordLoginAttempt,
+    checkLockout
+} = require('../middleware/security');
 
 /**
- * Register new user with registration token
+ * Register new user with security key
+ * 
+ * The security key system replaces the old token system. Each key:
+ * - Is tied to a specific role
+ * - Can only be used once
+ * - Must not be expired or revoked
  */
 async function register(req, res) {
     try {
-        const { token, email, password, firstName, lastName, dateOfBirth, gradeLevel } = req.body;
+        const { securityKey, token, username, email, password, firstName, lastName, dateOfBirth, gradeLevel } = req.body;
 
-        // Validate registration token
-        const regToken = await db('registration_tokens')
-            .where({ token_code: token, is_active: true })
-            .where('expires_at', '>', new Date())
-            .first();
+        // Determine which key to use — support both 'securityKey' and legacy 'token' field
+        const keyToValidate = securityKey || token;
 
-        if (!regToken) {
-            return res.status(400).json({ error: 'Invalid or expired registration token' });
+        if (!keyToValidate) {
+            return res.status(400).json({ error: 'Security key is required for registration' });
         }
 
-        if (regToken.used_count >= regToken.max_uses) {
-            return res.status(400).json({ error: 'Registration token has been exhausted' });
+        // ─── First try the new security_keys system ───
+        let useSecurityKey = false;
+        let keyResult = null;
+
+        try {
+            // Check if security_keys table exists
+            const tableExists = await db.schema.hasTable('security_keys');
+            if (tableExists) {
+                keyResult = await validateSecurityKey(keyToValidate);
+                if (keyResult.valid) {
+                    useSecurityKey = true;
+                }
+            }
+        } catch (err) {
+            // Table doesn't exist yet, fall through to legacy tokens
+            console.log('Security keys table not available, falling back to registration tokens');
         }
 
-        // Check if email already exists
-        const existingUser = await db('users').where({ email }).first();
-        if (existingUser) {
-            return res.status(409).json({ error: 'Email already registered' });
+        let assignedRole;
+
+        if (useSecurityKey) {
+            // ── New security key path ──
+            assignedRole = keyResult.keyRecord.role;
+
+            // Log the key validation
+            await logSecurityEvent({
+                eventType: 'SECURITY_KEY_VALIDATED',
+                email,
+                req,
+                metadata: { keyId: keyResult.keyRecord.id, role: assignedRole },
+                severity: 'info'
+            });
+        } else {
+            // ── Legacy registration token path ──
+            const regToken = await db('registration_tokens')
+                .where({ token_code: keyToValidate, is_active: true })
+                .where('expires_at', '>', new Date())
+                .first();
+
+            if (!regToken) {
+                await logSecurityEvent({
+                    eventType: 'REGISTRATION_FAILED',
+                    email,
+                    req,
+                    metadata: { reason: 'Invalid or expired key/token' },
+                    severity: 'warning'
+                });
+                return res.status(400).json({ error: 'Invalid or expired security key' });
+            }
+
+            if (regToken.used_count >= regToken.max_uses) {
+                return res.status(400).json({ error: 'Security key has been exhausted' });
+            }
+
+            assignedRole = regToken.role;
+        }
+
+        // Check if username already exists
+        if (username) {
+            const existingUsername = await db('users').where({ username }).first();
+            if (existingUsername) {
+                return res.status(409).json({ error: 'Username already taken' });
+            }
+        }
+
+        // Check if email already exists (if provided)
+        if (email) {
+            const existingUser = await db('users').where({ email }).first();
+            if (existingUser) {
+                await logSecurityEvent({
+                    eventType: 'REGISTRATION_FAILED',
+                    email: username || email,
+                    req,
+                    metadata: { reason: 'Email already registered' },
+                    severity: 'warning'
+                });
+                return res.status(409).json({ error: 'Email already registered' });
+            }
         }
 
         // Hash password
@@ -41,32 +122,63 @@ async function register(req, res) {
         // Create user
         const [user] = await db('users')
             .insert({
-                email,
+                username: username || email,
+                email: email || `${(username || '').toLowerCase()}@kiteandkey.academy`,
                 password_hash: passwordHash,
-                role: regToken.role,
+                role: assignedRole,
                 first_name: firstName,
                 last_name: lastName,
                 date_of_birth: dateOfBirth,
                 grade_level: gradeLevel,
-                registration_token_id: regToken.id,
-                is_verified: true  // Auto-verify since they used admin-generated token
+                is_verified: true  // Auto-verify since they used a security key
             })
             .returning('*');
 
         // Create role-specific profile
-        await createRoleProfile(user.id, regToken.role, regToken.metadata);
+        await createRoleProfile(user.id, assignedRole, {});
 
-        // Log token usage
-        await db('token_usage_logs').insert({
-            token_id: regToken.id,
-            used_by: user.id,
-            ip_address: req.ip
+        if (useSecurityKey) {
+            // Consume the security key (mark as used)
+            await consumeSecurityKey(
+                keyResult.keyRecord.id,
+                user.id,
+                req.ip || req.connection?.remoteAddress
+            );
+
+            await logSecurityEvent({
+                eventType: 'SECURITY_KEY_CONSUMED',
+                userId: user.id,
+                email,
+                req,
+                metadata: { keyId: keyResult.keyRecord.id, role: assignedRole },
+                severity: 'info'
+            });
+        } else {
+            // Legacy token path — update usage
+            const regToken = await db('registration_tokens')
+                .where({ token_code: keyToValidate })
+                .first();
+
+            await db('token_usage_logs').insert({
+                token_id: regToken.id,
+                used_by: user.id,
+                ip_address: req.ip
+            });
+
+            await db('registration_tokens')
+                .where({ id: regToken.id })
+                .increment('used_count', 1);
+        }
+
+        // Log successful registration
+        await logSecurityEvent({
+            eventType: 'REGISTRATION_SUCCESS',
+            userId: user.id,
+            email,
+            req,
+            metadata: { role: assignedRole },
+            severity: 'info'
         });
-
-        // Update token usage count
-        await db('registration_tokens')
-            .where({ id: regToken.id })
-            .increment('used_count', 1);
 
         // Generate JWT tokens
         const accessToken = generateAccessToken(user);
@@ -84,6 +196,7 @@ async function register(req, res) {
             accessToken,
             user: {
                 id: user.id,
+                username: user.username,
                 email: user.email,
                 role: user.role,
                 firstName: user.first_name,
@@ -92,36 +205,98 @@ async function register(req, res) {
         });
     } catch (error) {
         console.error('Registration error:', error);
+        await logSecurityEvent({
+            eventType: 'REGISTRATION_ERROR',
+            req,
+            metadata: { error: error.message },
+            severity: 'critical'
+        });
         res.status(500).json({ error: 'Registration failed' });
     }
 }
 
 /**
- * Login user
+ * Login user — with brute-force protection
  */
 async function login(req, res) {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
+        const clientIp = req.ip || req.connection?.remoteAddress;
 
-        // Find user
+        // ─── Check lockout before anything else ───
+        try {
+            const lockout = await checkLockout(username, clientIp);
+            if (lockout.locked) {
+                const minutesRemaining = Math.ceil(lockout.remainingMs / 60000);
+                await logSecurityEvent({
+                    eventType: 'LOGIN_LOCKED_OUT',
+                    email: username,
+                    req,
+                    metadata: { minutesRemaining },
+                    severity: 'warning'
+                });
+                return res.status(429).json({
+                    error: `Account temporarily locked. Try again in ${minutesRemaining} minute(s).`
+                });
+            }
+        } catch (err) {
+            // If lockout check fails (e.g. table doesn't exist yet), proceed with login
+            console.log('Lockout check skipped:', err.message);
+        }
+
+        // Find user by username
         const user = await db('users')
-            .where({ email })
+            .where({ username })
             .first();
 
         if (!user) {
+            await recordLoginAttempt(username, clientIp, false).catch(() => { });
+            await logSecurityEvent({
+                eventType: 'LOGIN_FAILED',
+                email: username,
+                req,
+                metadata: { reason: 'User not found' },
+                severity: 'warning'
+            }).catch(() => { });
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         // Verify password
         const valid = await verifyPassword(password, user.password_hash);
         if (!valid) {
+            await recordLoginAttempt(username, clientIp, false).catch(() => { });
+            await logSecurityEvent({
+                eventType: 'LOGIN_FAILED',
+                userId: user.id,
+                email: username,
+                req,
+                metadata: { reason: 'Invalid password' },
+                severity: 'warning'
+            }).catch(() => { });
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         // Check if user is active
         if (!user.is_active) {
+            await logSecurityEvent({
+                eventType: 'LOGIN_INACTIVE_ACCOUNT',
+                userId: user.id,
+                email: username,
+                req,
+                severity: 'warning'
+            }).catch(() => { });
             return res.status(403).json({ error: 'Account has been deactivated' });
         }
+
+        // Record successful login
+        await recordLoginAttempt(username, clientIp, true).catch(() => { });
+        await logSecurityEvent({
+            eventType: 'LOGIN_SUCCESS',
+            userId: user.id,
+            email: username,
+            req,
+            severity: 'info'
+        }).catch(() => { });
 
         // Update last login
         await db('users')
@@ -153,6 +328,7 @@ async function login(req, res) {
             accessToken,
             user: {
                 id: user.id,
+                username: user.username,
                 email: user.email,
                 role: user.role,
                 firstName: user.first_name,
@@ -220,6 +396,13 @@ async function logout(req, res) {
                     token,
                     expires_at: new Date(decoded.exp * 1000)
                 });
+
+                await logSecurityEvent({
+                    eventType: 'LOGOUT',
+                    userId: decoded.id,
+                    req,
+                    severity: 'info'
+                }).catch(() => { });
             }
         }
 

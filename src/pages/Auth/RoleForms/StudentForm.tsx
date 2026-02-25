@@ -11,7 +11,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ onBack }) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
-        email: '',
+        username: '',
         password: '',
         yearLevel: '8',
         tokenCode: ''
@@ -22,7 +22,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ onBack }) => {
         await register({
             firstName: formData.firstName,
             lastName: formData.lastName,
-            email: formData.email,
+            username: formData.username,
             password: formData.password,
             role: 'student',
             yearLevel: parseInt(formData.yearLevel)
@@ -64,13 +64,14 @@ const StudentForm: React.FC<StudentFormProps> = ({ onBack }) => {
                 </div>
 
                 <div className="form-group">
-                    <label>Email Address</label>
+                    <label>Username</label>
                     <input
-                        type="email"
+                        type="text"
                         required
-                        placeholder="john@example.com"
-                        value={formData.email}
-                        onChange={e => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="e.g. Joshua123"
+                        value={formData.username}
+                        onChange={e => setFormData({ ...formData, username: e.target.value })}
+                        autoComplete="username"
                     />
                 </div>
 

@@ -7,8 +7,7 @@
 import type {
     CognitiveDimensionId,
     MindPrintProfile,
-    CognitiveDimension,
-    AssessmentResults
+    CognitiveDimension
 } from '../types/mindprint';
 
 const STORAGE_KEY = 'kk_mindprint_results';

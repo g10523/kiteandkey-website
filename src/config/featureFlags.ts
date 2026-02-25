@@ -10,15 +10,18 @@ export interface FeatureConfig {
 }
 
 export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
-    'dashboard': { status: 'ready' },
+    'dashboard': { status: 'locked', allowedRoles: [] },
     'subjects': { status: 'ready' },
     'subject-detail': { status: 'ready' },
     'lesson': { status: 'ready' },
     'quiz': { status: 'ready' },
     'assessments': { status: 'ready' },
 
-    // Core differentiator - keep ready
-    'mindprint': { status: 'ready' },
+    // Personal section — all locked for now
+    'mindprint': {
+        status: 'locked',
+        description: 'MindPrint cognitive profiling will be available soon.'
+    },
 
     // Features to be released gradually
     'assignments': {
@@ -26,28 +29,29 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
         description: 'The assignment portal is undergoing maintenance to support direct Google Drive integration.'
     },
     'analytics': {
-        status: 'ready',
-        description: 'Predictive growth modeling and visual progress tracking.'
+        status: 'locked',
+        description: 'Predictive growth modeling and visual progress tracking coming soon.'
     },
     'messages': {
-        status: 'coming-soon',
+        status: 'locked',
         description: 'The Secure Communication Vault is currently in final security auditing.'
     },
     'resources': {
-        status: 'coming-soon',
+        status: 'locked',
         description: 'Our digital library of 10,000+ revision materials is being cataloged.'
     },
     'schedule': {
-        status: 'coming-soon',
-        description: 'Real-time tutoring availability and rescheduling tools are launching soon.'
+        status: 'ready',
+        description: 'Synchronised weekly timetable with change-request workflow.',
+        allowedRoles: ['student', 'tutor', 'parent', 'admin']
     },
     'practice': {
-        status: 'coming-soon',
+        status: 'locked',
         description: 'Adaptive drill sets and AI-powered practice sessions are being calibrated.'
     },
     'study-lab': {
-        status: 'beta',
-        description: 'The Cognitive Sandbox is now in open beta for selected students.'
+        status: 'locked',
+        description: 'The Cognitive Sandbox will be available soon.'
     },
 
     'tokens': { status: 'ready', allowedRoles: ['admin'] },
@@ -56,8 +60,18 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
 
     'assessment-wm': { status: 'ready' },
     'assessment-center': { status: 'ready' },
+    'mindprint-working-memory': {
+        status: 'locked',
+        allowedRoles: ['student', 'parent', 'tutor', 'admin'],
+        description: 'Working Memory assessment module coming soon.'
+    },
 
     // Auth routes
     'login': { status: 'ready' },
     'register': { status: 'ready' },
+
+    // Course module
+    'courses': { status: 'ready', allowedRoles: ['student', 'tutor', 'parent', 'admin'] },
+    'course-detail': { status: 'ready', allowedRoles: ['student', 'tutor', 'parent', 'admin'] },
+    'course-quiz': { status: 'ready', allowedRoles: ['student', 'tutor', 'parent', 'admin'] },
 };

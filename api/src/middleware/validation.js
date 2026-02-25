@@ -27,8 +27,10 @@ function validate(schema) {
 // Common validation schemas
 const schemas = {
     register: Joi.object({
-        token: Joi.string().required(),
-        email: Joi.string().email().required(),
+        securityKey: Joi.string().optional(),
+        token: Joi.string().optional(),
+        username: Joi.string().min(3).max(50).optional(),
+        email: Joi.string().email().optional(),
         password: Joi.string()
             .min(8)
             .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
@@ -38,18 +40,16 @@ const schemas = {
             }),
         firstName: Joi.string().min(2).max(100).required(),
         lastName: Joi.string().min(2).max(100).required(),
-        dateOfBirth: Joi.date().when('role', {
-            is: 'student',
-            then: Joi.required()
+        dateOfBirth: Joi.date().optional(),
+        gradeLevel: Joi.number().min(5).max(10).optional()
+    }).or('securityKey', 'token')
+        .or('username', 'email')
+        .messages({
+            'object.missing': 'Either securityKey or token is required for registration'
         }),
-        gradeLevel: Joi.number().min(5).max(10).when('role', {
-            is: 'student',
-            then: Joi.required()
-        })
-    }),
 
     login: Joi.object({
-        email: Joi.string().email().required(),
+        username: Joi.string().required(),
         password: Joi.string().required()
     }),
 
@@ -58,6 +58,12 @@ const schemas = {
         maxUses: Joi.number().min(1).default(1),
         expiresInDays: Joi.number().min(1).max(365).default(30),
         metadata: Joi.object().optional()
+    }),
+
+    createSecurityKey: Joi.object({
+        role: Joi.string().valid('student', 'tutor', 'parent', 'admin').required(),
+        label: Joi.string().min(2).max(100).optional(),
+        expiresInDays: Joi.number().min(1).max(365).default(90)
     }),
 
     createUser: Joi.object({

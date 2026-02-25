@@ -328,5 +328,9 @@ export type PageType =
   | 'assessments'
   | 'assessment-wm'
   | 'assessment-center'
+  | 'mindprint-working-memory'
   | 'admin-panel'
-  | 'content-management';
+  | 'content-management'
+  | 'courses'
+  | 'course-detail'
+  | 'course-quiz';

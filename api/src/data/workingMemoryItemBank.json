@@ -1,0 +1,254 @@
+[
+  {
+    "id": "wm_span_fwd_y56_d1_01",
+    "taskType": "SPAN_FORWARD",
+    "ageBand": "Y5_Y6",
+    "difficulty": 1,
+    "prompt": { "sequence": [3, 8, 2], "instruction": "Repeat the numbers in the same order." },
+    "correctAnswer": [3, 8, 2],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 900, "allowReplay": false }
+  },
+  {
+    "id": "wm_span_fwd_y56_d2_01",
+    "taskType": "SPAN_FORWARD",
+    "ageBand": "Y5_Y6",
+    "difficulty": 2,
+    "prompt": { "sequence": [9, 1, 4, 7], "instruction": "Repeat the numbers in the same order." },
+    "correctAnswer": [9, 1, 4, 7],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 850, "allowReplay": false }
+  },
+  {
+    "id": "wm_span_back_y56_d1_01",
+    "taskType": "SPAN_BACKWARD",
+    "ageBand": "Y5_Y6",
+    "difficulty": 1,
+    "prompt": { "sequence": [4, 2, 9], "instruction": "Type the numbers backwards." },
+    "correctAnswer": [9, 2, 4],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 900 }
+  },
+  {
+    "id": "wm_span_back_y56_d2_01",
+    "taskType": "SPAN_BACKWARD",
+    "ageBand": "Y5_Y6",
+    "difficulty": 2,
+    "prompt": { "sequence": [5, 8, 1, 6], "instruction": "Type the numbers backwards." },
+    "correctAnswer": [6, 1, 8, 5],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 850 }
+  },
+  {
+    "id": "wm_nback_y56_d1_01",
+    "taskType": "N_BACK",
+    "ageBand": "Y5_Y6",
+    "difficulty": 1,
+    "prompt": {
+      "n": 1,
+      "stream": [2, 2, 3, 1, 1, 4],
+      "questionIndex": [1, 2, 3, 4, 5],
+      "instruction": "Tap MATCH when a number is the same as the one just before it."
+    },
+    "correctAnswer": [true, false, false, true, false],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.15 },
+    "ui": { "displayMs": 1100 }
+  },
+  {
+    "id": "wm_instruction_y56_d1_01",
+    "taskType": "INSTRUCTION",
+    "ageBand": "Y5_Y6",
+    "difficulty": 1,
+    "prompt": {
+      "steps": [
+        "Circle the triangle",
+        "Then tap the blue square",
+        "Then type the number 4"
+      ],
+      "interference": "A bell sound plays once between step 2 and 3"
+    },
+    "correctAnswer": ["triangle", "blue_square", "4"],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.05 },
+    "ui": { "maxStepDelayMs": 9000 }
+  },
+  {
+    "id": "wm_mathhold_y56_d1_01",
+    "taskType": "MENTAL_MATH_HOLD",
+    "ageBand": "Y5_Y6",
+    "difficulty": 1,
+    "prompt": {
+      "instruction": "Start with 12. Add 5. Subtract 3. What is the final number?",
+      "operations": ["+5", "-3"]
+    },
+    "correctAnswer": 14,
+    "scoring": { "maxPoints": 1, "speedWeight": 0.05 },
+    "ui": { "allowScratchpad": false }
+  },
+  {
+    "id": "wm_span_fwd_y78_d2_01",
+    "taskType": "SPAN_FORWARD",
+    "ageBand": "Y7_Y8",
+    "difficulty": 2,
+    "prompt": { "sequence": [6, 1, 8, 3, 4], "instruction": "Repeat the numbers in the same order." },
+    "correctAnswer": [6, 1, 8, 3, 4],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 800 }
+  },
+  {
+    "id": "wm_span_fwd_y78_d3_01",
+    "taskType": "SPAN_FORWARD",
+    "ageBand": "Y7_Y8",
+    "difficulty": 3,
+    "prompt": { "sequence": [8, 2, 9, 5, 1, 4], "instruction": "Repeat the numbers in the same order." },
+    "correctAnswer": [8, 2, 9, 5, 1, 4],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 760 }
+  },
+  {
+    "id": "wm_span_back_y78_d2_01",
+    "taskType": "SPAN_BACKWARD",
+    "ageBand": "Y7_Y8",
+    "difficulty": 2,
+    "prompt": { "sequence": [3, 7, 1, 8, 2], "instruction": "Type the numbers backwards." },
+    "correctAnswer": [2, 8, 1, 7, 3],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 800 }
+  },
+  {
+    "id": "wm_span_back_y78_d3_01",
+    "taskType": "SPAN_BACKWARD",
+    "ageBand": "Y7_Y8",
+    "difficulty": 3,
+    "prompt": { "sequence": [4, 9, 2, 6, 1, 7], "instruction": "Type the numbers backwards." },
+    "correctAnswer": [7, 1, 6, 2, 9, 4],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 760 }
+  },
+  {
+    "id": "wm_nback_y78_d2_01",
+    "taskType": "N_BACK",
+    "ageBand": "Y7_Y8",
+    "difficulty": 2,
+    "prompt": {
+      "n": 2,
+      "stream": [1, 4, 1, 6, 6, 3, 6, 3],
+      "questionIndex": [2, 3, 4, 5, 6, 7],
+      "instruction": "Tap MATCH when the number matches the one 2 steps back."
+    },
+    "correctAnswer": [true, false, false, false, true, true],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.15 },
+    "ui": { "displayMs": 1000 }
+  },
+  {
+    "id": "wm_instruction_y78_d2_01",
+    "taskType": "INSTRUCTION",
+    "ageBand": "Y7_Y8",
+    "difficulty": 2,
+    "prompt": {
+      "steps": [
+        "Write the word 'orbit'",
+        "Draw a small star",
+        "Then underline the second letter",
+        "Finally, tap done"
+      ],
+      "interference": "A pop-up appears with irrelevant text after step 2"
+    },
+    "correctAnswer": ["orbit", "star", "r", "done"],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.05 },
+    "ui": { "maxStepDelayMs": 8000 }
+  },
+  {
+    "id": "wm_mathhold_y78_d2_01",
+    "taskType": "MENTAL_MATH_HOLD",
+    "ageBand": "Y7_Y8",
+    "difficulty": 2,
+    "prompt": {
+      "instruction": "Start with 36. Divide by 3. Add 7. Multiply by 2. Final answer?",
+      "operations": ["/3", "+7", "*2"]
+    },
+    "correctAnswer": 38,
+    "scoring": { "maxPoints": 1, "speedWeight": 0.05 },
+    "ui": { "allowScratchpad": false }
+  },
+  {
+    "id": "wm_span_fwd_y910_d3_01",
+    "taskType": "SPAN_FORWARD",
+    "ageBand": "Y9_Y10",
+    "difficulty": 3,
+    "prompt": { "sequence": [2, 7, 4, 9, 1, 8], "instruction": "Repeat the numbers in the same order." },
+    "correctAnswer": [2, 7, 4, 9, 1, 8],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 740 }
+  },
+  {
+    "id": "wm_span_back_y910_d3_01",
+    "taskType": "SPAN_BACKWARD",
+    "ageBand": "Y9_Y10",
+    "difficulty": 3,
+    "prompt": { "sequence": [5, 1, 9, 2, 8, 3], "instruction": "Type the numbers backwards." },
+    "correctAnswer": [3, 8, 2, 9, 1, 5],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.1 },
+    "ui": { "displayMsPerDigit": 740 }
+  },
+  {
+    "id": "wm_nback_y910_d3_01",
+    "taskType": "N_BACK",
+    "ageBand": "Y9_Y10",
+    "difficulty": 3,
+    "prompt": {
+      "n": 2,
+      "stream": [7, 1, 7, 4, 4, 2, 4, 8, 8],
+      "questionIndex": [2, 3, 4, 5, 6, 7, 8],
+      "instruction": "Tap MATCH when the number matches the one 2 steps back."
+    },
+    "correctAnswer": [true, false, false, true, false, false, true],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.15 },
+    "ui": { "displayMs": 900 }
+  },
+  {
+    "id": "wm_instruction_y910_d3_01",
+    "taskType": "INSTRUCTION",
+    "ageBand": "Y9_Y10",
+    "difficulty": 3,
+    "prompt": {
+      "steps": [
+        "Type the code 41B",
+        "Add 3 to 41 in your head",
+        "Write the new number",
+        "Then type the final letter from the original code"
+      ],
+      "interference": "A timer appears counting down from 5"
+    },
+    "correctAnswer": ["41B", 44, "B"],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.05 },
+    "ui": { "maxStepDelayMs": 7000 }
+  },
+  {
+    "id": "wm_mathhold_y910_d3_01",
+    "taskType": "MENTAL_MATH_HOLD",
+    "ageBand": "Y9_Y10",
+    "difficulty": 3,
+    "prompt": {
+      "instruction": "Start with 84. Subtract 19. Divide by 5. Add 11. Final answer?",
+      "operations": ["-19", "/5", "+11"]
+    },
+    "correctAnswer": 24,
+    "scoring": { "maxPoints": 1, "speedWeight": 0.05 },
+    "ui": { "allowScratchpad": false }
+  },
+  {
+    "id": "wm_attention_y78_d1_01",
+    "taskType": "N_BACK",
+    "ageBand": "Y7_Y8",
+    "difficulty": 1,
+    "prompt": {
+      "n": 1,
+      "stream": [5, 5, 5],
+      "questionIndex": [1, 2],
+      "instruction": "Attention check: both should be MATCH."
+    },
+    "correctAnswer": [true, true],
+    "scoring": { "maxPoints": 1, "speedWeight": 0.0 },
+    "ui": { "displayMs": 1300, "attentionCheck": true }
+  }
+]

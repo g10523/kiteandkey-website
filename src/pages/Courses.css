@@ -1,0 +1,298 @@
+/* ============================================
+   COURSES PAGE — KITE & KEY ACADEMY
+   Premium card-based course grid
+   ============================================ */
+
+.courses-page {
+    animation: courseFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes courseFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ───── Header ───── */
+
+.courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+}
+
+.courses-title {
+    font-family: var(--font-display, 'Outfit', sans-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #1e1b2e);
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.01em;
+}
+
+.courses-subtitle {
+    color: var(--color-text-tertiary, #6b6575);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.courses-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(167, 139, 250, 0.12);
+    color: var(--color-primary, #6B5B95);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    white-space: nowrap;
+}
+
+/* ───── Grid ───── */
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+@media (max-width: 1100px) {
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 680px) {
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .courses-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+/* ───── Course Card ───── */
+
+.course-card {
+    position: relative;
+    background: var(--color-bg-card, #ffffff);
+    border: 1.5px solid rgba(107, 91, 149, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    cursor: pointer;
+    transition:
+        transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 280ms ease;
+    box-shadow: 0 2px 8px rgba(107, 91, 149, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 12px 36px rgba(107, 91, 149, 0.12),
+        0 4px 12px rgba(107, 91, 149, 0.06);
+    border-color: rgba(107, 91, 149, 0.2);
+}
+
+.course-card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+    opacity: 0;
+    transition: opacity 280ms ease;
+}
+
+.course-card:hover .course-card-accent {
+    opacity: 1;
+}
+
+/* Header row */
+.course-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.course-card-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 280ms ease;
+}
+
+.course-card:hover .course-card-icon-wrap {
+    transform: scale(1.08);
+}
+
+.course-card-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Title area */
+.course-card-title {
+    font-family: var(--font-display, 'Outfit', sans-serif);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #1e1b2e);
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.01em;
+}
+
+.course-card-subtitle {
+    color: var(--color-text-tertiary, #6b6575);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+
+/* Current focus */
+.course-card-focus {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.85rem 1rem;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.06) 0%, rgba(196, 181, 253, 0.03) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.1);
+    border-left: 3px solid var(--color-glass-purple, #a78bfa);
+    border-radius: 10px;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.course-card-focus-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary, #6b6575);
+}
+
+.course-card-focus-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary, #6B5B95);
+}
+
+/* Progress */
+.course-card-progress {
+    margin-bottom: 1.25rem;
+}
+
+.course-card-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.course-card-progress-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #4a4458);
+}
+
+.course-card-progress-value {
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: var(--font-display, 'Outfit', sans-serif);
+}
+
+.course-card-bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(107, 91, 149, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.course-card-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.course-card-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: barShimmer 2.5s infinite;
+}
+
+@keyframes barShimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Stats row */
+.course-card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    border-top: 1px solid rgba(107, 91, 149, 0.06);
+    padding-top: 1.25rem;
+    margin-top: auto;
+}
+
+.course-card-stat {
+    text-align: center;
+}
+
+.course-card-stat-value {
+    display: block;
+    font-family: var(--font-display, 'Outfit', sans-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1e1b2e);
+    margin-bottom: 0.15rem;
+}
+
+.course-card-stat-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted, #9490a0);
+}

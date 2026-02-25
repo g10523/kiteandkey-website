@@ -1,0 +1,377 @@
+.wm-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wm-glass {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(77, 67, 95, 0.08);
+}
+
+.wm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.wm-breadcrumb {
+  color: #7d758f;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.wm-sub {
+  color: #666070;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.wm-student-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wm-student-selector input {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(94, 85, 116, 0.2);
+}
+
+.wm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wm-tabs button {
+  border: 1px solid rgba(94, 85, 116, 0.14);
+  background: #fff;
+  color: #5e5574;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.wm-tabs button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(94, 85, 116, 0.1);
+}
+
+.wm-tabs button.active {
+  background: #5e5574;
+  color: #fff;
+}
+
+.wm-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 980px) {
+  .wm-grid {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
+.wm-score-card {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wm-score-wrap {
+  position: relative;
+  width: 154px;
+  height: 210px;
+}
+
+.wm-score-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: translateY(-18px);
+}
+
+.wm-score-value {
+  font-size: 32px;
+  font-weight: 300;
+  color: #2c2736;
+}
+
+.wm-score-label {
+  font-size: 11px;
+  color: #736b83;
+}
+
+.wm-score-meta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wm-band-chip,
+.wm-trend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  border: 1px solid rgba(94, 85, 116, 0.2);
+  background: #fff;
+}
+
+.wm-focus-card {
+  max-width: 520px;
+}
+
+.wm-focus-card h4 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.wm-next {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #5e5574;
+  font-weight: 600;
+}
+
+.wm-overview-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wm-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(94, 85, 116, 0.08);
+  padding-bottom: 8px;
+  color: #5f596f;
+}
+
+.wm-stat-row span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.wm-primary,
+.wm-secondary,
+.wm-task-card button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wm-primary {
+  background: #5e5574;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.wm-primary:disabled {
+  background: #b6afc5;
+  cursor: not-allowed;
+}
+
+.wm-secondary {
+  background: #ece8f7;
+  color: #5e5574;
+}
+
+.wm-muted {
+  color: #787282;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wm-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wm-accordion {
+  border: 1px solid rgba(94, 85, 116, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.wm-accordion-head {
+  width: 100%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.wm-accordion-head h4 {
+  margin: 0;
+}
+
+.wm-accordion-head p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #726a83;
+}
+
+.wm-accordion-body {
+  border-top: 1px solid rgba(94, 85, 116, 0.08);
+  padding: 14px 16px;
+}
+
+.wm-callout {
+  background: #f7f5fc;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.wm-callout-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #5e5574;
+}
+
+.wm-callout ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #5e576b;
+}
+
+.wm-training-card {
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(94, 85, 116, 0.1);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.wm-training-toggle {
+  border: none;
+  background: transparent;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+.wm-training-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wm-training-rule {
+  font-weight: 600;
+  color: #5e5574;
+}
+
+.wm-timeline-wrap {
+  margin-top: 10px;
+}
+
+.wm-timeline-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #746d84;
+}
+
+.wm-task-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wm-sequence {
+  letter-spacing: 0.35em;
+  background: #faf9fd;
+  border: 1px solid rgba(94, 85, 116, 0.12);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.wm-task-card input {
+  border: 1px solid rgba(94, 85, 116, 0.2);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.wm-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 18px;
+}
+
+.wm-step-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wm-wizard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wm-progress {
+  margin: 10px 0 16px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(94, 85, 116, 0.12);
+  overflow: hidden;
+}
+
+.wm-progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, #b5a5d4, #5e5574);
+  transition: width 250ms ease;
+}
+
+.wm-error {
+  color: #9f2b43;
+  background: #fff2f6;
+  border: 1px solid #ffd4df;
+  border-radius: 12px;
+  padding: 10px 12px;
+}

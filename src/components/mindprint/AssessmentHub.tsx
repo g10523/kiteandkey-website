@@ -9,7 +9,6 @@ import { formatDimensionName, getTestDuration, getDimensionDescription } from '.
 
 interface AssessmentHubProps {
     assessedDimensions: Map<CognitiveDimensionId, StoredAssessment>;
-    pendingDimensions: CognitiveDimensionId[];
     onStartAssessment: (dimension: CognitiveDimensionId) => void;
 }
 
@@ -43,7 +42,6 @@ const ALL_DIMENSIONS: CognitiveDimensionId[] = [
 
 export const AssessmentHub: React.FC<AssessmentHubProps> = ({
     assessedDimensions,
-    pendingDimensions,
     onStartAssessment
 }) => {
     const completedCount = assessedDimensions.size;
@@ -112,7 +110,6 @@ export const AssessmentHub: React.FC<AssessmentHubProps> = ({
                     const assessed = assessedDimensions.get(dim);
                     const colors = DIMENSION_COLORS[dim];
                     const icon = DIMENSION_ICONS[dim];
-                    const isPending = pendingDimensions.includes(dim);
 
                     if (assessed) {
                         return (

@@ -1,5 +1,11 @@
 const db = require('../config/database');
 const { hashPassword, generateTokenCode, getTokenExpiry } = require('../utils/auth');
+const {
+    createSecurityKey,
+    revokeSecurityKey,
+    getAllSecurityKeys
+} = require('../utils/securityKeys');
+const { logSecurityEvent } = require('../middleware/security');
 
 /**
  * Get all users with pagination and filtering
@@ -41,7 +47,7 @@ async function getUsers(req, res) {
                 isActive: u.is_active,
                 isVerified: u.is_verified,
                 createdAt: u.created_at,
-                last Login: u.last_login,
+                lastLogin: u.last_login,
                 subjects: u.subjects
             })),
             pagination: {
@@ -57,7 +63,7 @@ async function getUsers(req, res) {
 }
 
 /**
- * Create new user (admin bypass of token system)
+ * Create new user (admin bypass of key system)
  */
 async function createUser(req, res) {
     try {
@@ -95,6 +101,14 @@ async function createUser(req, res) {
         // Create role profile
         const metadata = { enrolledSubjects, parentId };
         await createRoleProfile(user.id, role, metadata);
+
+        await logSecurityEvent({
+            eventType: 'ADMIN_CREATE_USER',
+            userId: req.user.id,
+            req,
+            metadata: { createdUserId: user.id, role, email },
+            severity: 'info'
+        });
 
         res.status(201).json({
             user: {
@@ -143,6 +157,14 @@ async function updateUser(req, res) {
             return res.status(404).json({ error: 'User not found' });
         }
 
+        await logSecurityEvent({
+            eventType: 'ADMIN_UPDATE_USER',
+            userId: req.user.id,
+            req,
+            metadata: { targetUserId: id, updates: dbUpdates },
+            severity: 'info'
+        });
+
         res.json({
             user: {
                 id: user.id,
@@ -173,6 +195,14 @@ async function deleteUser(req, res) {
                 updated_at: new Date()
             });
 
+        await logSecurityEvent({
+            eventType: 'ADMIN_DEACTIVATE_USER',
+            userId: req.user.id,
+            req,
+            metadata: { targetUserId: id },
+            severity: 'warning'
+        });
+
         res.json({ message: 'User deactivated successfully' });
     } catch (error) {
         console.error('Delete user error:', error);
@@ -181,7 +211,153 @@ async function deleteUser(req, res) {
 }
 
 /**
- * Create registration token
+ * ═══════════════════════════════════════
+ *  SECURITY KEY MANAGEMENT
+ * ═══════════════════════════════════════
+ */
+
+/**
+ * Create a new security key (admin only)
+ */
+async function createKey(req, res) {
+    try {
+        const { role, label, expiresInDays } = req.body;
+
+        const result = await createSecurityKey({
+            role,
+            label: label || `${role.charAt(0).toUpperCase() + role.slice(1)} Key`,
+            createdBy: req.user.id,
+            expiresInDays: expiresInDays || 90
+        });
+
+        await logSecurityEvent({
+            eventType: 'SECURITY_KEY_CREATED',
+            userId: req.user.id,
+            req,
+            metadata: { keyId: result.id, role, label: result.label },
+            severity: 'info'
+        });
+
+        res.status(201).json({
+            message: 'Security key created successfully',
+            key: {
+                id: result.id,
+                plaintextKey: result.plaintextKey,
+                label: result.label,
+                role: result.role,
+                expiresAt: result.expiresAt,
+                createdAt: result.createdAt
+            },
+            warning: 'Store this key securely — it cannot be retrieved again after this response.'
+        });
+    } catch (error) {
+        console.error('Create security key error:', error);
+        res.status(500).json({ error: 'Failed to create security key' });
+    }
+}
+
+/**
+ * Get all security keys (admin dashboard)
+ */
+async function getKeys(req, res) {
+    try {
+        const keys = await getAllSecurityKeys();
+        res.json({ keys });
+    } catch (error) {
+        console.error('Get security keys error:', error);
+        res.status(500).json({ error: 'Failed to fetch security keys' });
+    }
+}
+
+/**
+ * Revoke a security key
+ */
+async function revokeKey(req, res) {
+    try {
+        const { id } = req.params;
+
+        await revokeSecurityKey(id);
+
+        await logSecurityEvent({
+            eventType: 'SECURITY_KEY_REVOKED',
+            userId: req.user.id,
+            req,
+            metadata: { keyId: id },
+            severity: 'warning'
+        });
+
+        res.json({ message: 'Security key revoked successfully' });
+    } catch (error) {
+        console.error('Revoke security key error:', error);
+        res.status(500).json({ error: 'Failed to revoke security key' });
+    }
+}
+
+/**
+ * Get security events log (admin only)
+ */
+async function getSecurityEvents(req, res) {
+    try {
+        const { severity, eventType, page = 1, limit = 50 } = req.query;
+
+        let query = db('security_events')
+            .leftJoin('users', 'security_events.user_id', 'users.id')
+            .select(
+                'security_events.*',
+                'users.email as user_email',
+                'users.first_name',
+                'users.last_name'
+            );
+
+        if (severity) {
+            query = query.where('security_events.severity', severity);
+        }
+
+        if (eventType) {
+            query = query.where('security_events.event_type', eventType);
+        }
+
+        const offset = (parseInt(page) - 1) * parseInt(limit);
+        const events = await query
+            .orderBy('security_events.created_at', 'desc')
+            .limit(parseInt(limit))
+            .offset(offset);
+
+        const total = await db('security_events').count('* as count').first();
+
+        res.json({
+            events: events.map(e => ({
+                id: e.id,
+                eventType: e.event_type,
+                userId: e.user_id,
+                userEmail: e.user_email || e.email,
+                userName: e.first_name ? `${e.first_name} ${e.last_name}` : null,
+                ipAddress: e.ip_address,
+                userAgent: e.user_agent,
+                metadata: e.metadata,
+                severity: e.severity,
+                createdAt: e.created_at
+            })),
+            pagination: {
+                page: parseInt(page),
+                limit: parseInt(limit),
+                total: parseInt(total.count)
+            }
+        });
+    } catch (error) {
+        console.error('Get security events error:', error);
+        res.status(500).json({ error: 'Failed to fetch security events' });
+    }
+}
+
+/**
+ * ═══════════════════════════════════════
+ *  LEGACY TOKEN MANAGEMENT
+ * ═══════════════════════════════════════
+ */
+
+/**
+ * Create registration token (legacy — kept for backward compatibility)
  */
 async function createToken(req, res) {
     try {
@@ -304,11 +480,35 @@ async function getAnalytics(req, res) {
             avgFidelity = fidelityScores.reduce((a, b) => a + b, 0) / fidelityScores.length;
         }
 
+        // Security stats
+        let securityStats = {};
+        try {
+            const recentLoginFailures = await db('security_events')
+                .where('event_type', 'LOGIN_FAILED')
+                .where('created_at', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000))
+                .count('* as count')
+                .first();
+
+            const activeKeys = await db('security_keys')
+                .where({ is_used: false, is_active: true })
+                .where('expires_at', '>', new Date())
+                .count('* as count')
+                .first();
+
+            securityStats = {
+                failedLoginsLast24h: parseInt(recentLoginFailures.count),
+                activeSecurityKeys: parseInt(activeKeys.count)
+            };
+        } catch (err) {
+            // Tables may not exist yet
+        }
+
         res.json({
             totalStudents: parseInt(totalStudents.count),
             activeInterventions: parseInt(activeInterventions.count),
             avgFidelityScore: Math.round(avgFidelity),
-            assessmentsThisMonth: parseInt(assessmentsThisMonth.count)
+            assessmentsThisMonth: parseInt(assessmentsThisMonth.count),
+            security: securityStats
         });
     } catch (error) {
         console.error('Get analytics error:', error);
@@ -359,5 +559,9 @@ module.exports = {
     createToken,
     getTokens,
     revokeToken,
-    getAnalytics
+    getAnalytics,
+    createKey,
+    getKeys,
+    revokeKey,
+    getSecurityEvents
 };

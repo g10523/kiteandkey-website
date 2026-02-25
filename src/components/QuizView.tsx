@@ -16,7 +16,6 @@ export default function QuizView({ quiz, studentId, onComplete, onClose }: QuizV
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [score, setScore] = useState(0);
     const [startTime] = useState(new Date());
-    const [showExplanation, setShowExplanation] = useState(false);
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const attemptsRemaining = quiz.maxAttempts
@@ -98,14 +97,12 @@ export default function QuizView({ quiz, studentId, onComplete, onClose }: QuizV
     const nextQuestion = () => {
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(prev => prev + 1);
-            setShowExplanation(false);
         }
     };
 
     const previousQuestion = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex(prev => prev - 1);
-            setShowExplanation(false);
         }
     };
 

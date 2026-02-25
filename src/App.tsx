@@ -6,6 +6,9 @@ import MindPrintBadge from './components/MindPrintBadge';
 import Dashboard from './pages/Dashboard';
 import Subjects from './pages/Subjects';
 import SubjectDetail from './pages/SubjectDetail';
+import Courses from './pages/Courses';
+import CourseDetail from './pages/CourseDetail';
+import CourseQuizView from './pages/CourseQuizView';
 import LessonView from './pages/LessonView';
 import Assignments from './pages/Assignments';
 import MindPrint from './pages/MindPrint';
@@ -20,6 +23,7 @@ import TokenManagement from './pages/TokenManagement';
 import AdminPanel from './pages/AdminPanel';
 import Assessments from './pages/Assessments';
 import AssessmentCenter from './pages/AssessmentCenter';
+import WorkingMemoryModule from './pages/WorkingMemoryModule';
 import { AdaptiveAssessment } from './components/assessments';
 import PendingVerification from './components/PendingVerification';
 import QuizView from './components/QuizView';
@@ -32,7 +36,7 @@ import ComingSoon from './components/ComingSoon';
 
 function App() {
   const { user, isLoading } = useAuth();
-  const [currentPage, setCurrentPage] = useState<PageType>('dashboard');
+  const [currentPage, setCurrentPage] = useState<PageType>('courses');
   const [selectedSubjectId, setSelectedSubjectId] = useState<string | null>(null);
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [selectedDimensionId, setSelectedDimensionId] = useState<string | null>(null);
@@ -74,7 +78,7 @@ function App() {
       const canBypass = user.role === 'admin';
 
       if (!canBypass) {
-        return <ComingSoon config={config} onBack={() => setCurrentPage('dashboard')} />;
+        return <ComingSoon config={config} onBack={() => setCurrentPage('courses')} />;
       }
     }
 
@@ -82,13 +86,27 @@ function App() {
     if (config?.allowedRoles && !config.allowedRoles.includes(user.role)) {
       return <ComingSoon
         config={{ status: 'locked', description: `Access to this module is restricted to ${config.allowedRoles.join(', ')} users only.` }}
-        onBack={() => setCurrentPage('dashboard')}
+        onBack={() => setCurrentPage('courses')}
       />;
     }
 
     switch (currentPage) {
       case 'dashboard':
         return <Dashboard onNavigate={handleNavigate} />;
+      case 'courses':
+        return <Courses onNavigate={handleNavigate} />;
+      case 'course-detail':
+        return selectedSubjectId ? (
+          <CourseDetail courseId={selectedSubjectId} onNavigate={handleNavigate} />
+        ) : (
+          <Courses onNavigate={handleNavigate} />
+        );
+      case 'course-quiz':
+        return selectedSubjectId && selectedLessonId ? (
+          <CourseQuizView courseId={selectedSubjectId} lessonId={selectedLessonId} onNavigate={handleNavigate} />
+        ) : (
+          <Courses onNavigate={handleNavigate} />
+        );
       case 'subjects':
         return <Subjects onNavigate={handleNavigate} />;
       case 'subject-detail':
@@ -125,6 +143,8 @@ function App() {
         return <Assessments />;
       case 'assessment-center':
         return <AssessmentCenter onNavigate={handleNavigate} />;
+      case 'mindprint-working-memory':
+        return <WorkingMemoryModule />;
       case 'assessment-wm':
         return <AdaptiveAssessment
           studentId={user.id}
@@ -159,9 +179,9 @@ function App() {
               studentId={user.id}
               onComplete={(attempt) => {
                 console.log('Quiz completed:', attempt);
-                handleNavigate('lesson', undefined, selectedLessonId);
+                handleNavigate('lesson', undefined, selectedLessonId || undefined);
               }}
-              onClose={() => handleNavigate('lesson', undefined, selectedLessonId)}
+              onClose={() => handleNavigate('lesson', undefined, selectedLessonId || undefined)}
             />
           ) : (
             <Dashboard onNavigate={handleNavigate} />

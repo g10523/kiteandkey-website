@@ -138,7 +138,6 @@ const MindPrint: React.FC = () => {
             {viewMode === 'hub' && (
                 <AssessmentHub
                     assessedDimensions={assessedMap}
-                    pendingDimensions={pendingDims}
                     onStartAssessment={handleStartAssessment}
                 />
             )}

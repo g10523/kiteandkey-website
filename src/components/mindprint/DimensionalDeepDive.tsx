@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { Brain, ChevronDown, ChevronUp, History, Play } from 'lucide-react';
-import type { CognitiveDimension } from '../../types/mindprint';
+import type { CognitiveDimension, CognitiveDimensionId } from '../../types/mindprint';
+import { formatDimensionName, getDimensionDescription } from '../../types/mindprint';
+import { cognitiveDimensions } from '../../assessments/cognitiveDimensions';
 import { useAnalytics } from '../../hooks/useAnalytics';
 
 interface DimensionalDeepDiveProps {
     dimensions: CognitiveDimension[];
 }
+
+const dimensionMetaById = cognitiveDimensions.reduce((acc, entry) => {
+    acc[entry.id] = entry;
+    return acc;
+}, {} as Record<CognitiveDimensionId, (typeof cognitiveDimensions)[number]>);
 
 // ─── Charts ───
 
@@ -70,17 +77,20 @@ const TrendSparkline: React.FC<{ dimensionId: string; color: string }> = ({ dime
 
     // Normalize to prevent flat lines if all scores are same
     const scores = data.map(d => d.percentile);
-    const min = Math.min(0, ...scores);
-    const max = Math.max(100, ...scores);
-    const range = max - min || 1;
+    const minScore = Math.min(...scores);
+    const maxScore = Math.max(...scores);
+    const scorePadding = 8;
+    const min = Math.max(0, minScore - scorePadding);
+    const max = Math.min(100, maxScore + scorePadding);
+    const range = Math.max(1, max - min);
 
     const width = 200;
     const height = 60;
-    const padding = 5;
+    const chartPadding = 5;
 
     const points = data.map((d, i) => {
-        const x = (i / (data.length - 1)) * (width - 2 * padding) + padding;
-        const y = height - ((d.percentile - min) / range) * (height - 2 * padding) - padding;
+        const x = (i / (data.length - 1)) * (width - 2 * chartPadding) + chartPadding;
+        const y = height - ((d.percentile - min) / range) * (height - 2 * chartPadding) - chartPadding;
         return `${x},${y}`;
     }).join(' ');
 
@@ -99,8 +109,8 @@ const TrendSparkline: React.FC<{ dimensionId: string; color: string }> = ({ dime
                     strokeLinejoin="round"
                 />
                 {data.map((d, i) => {
-                    const x = (i / (data.length - 1)) * (width - 2 * padding) + padding;
-                    const y = height - ((d.percentile - min) / range) * (height - 2 * padding) - padding;
+                    const x = (i / (data.length - 1)) * (width - 2 * chartPadding) + chartPadding;
+                    const y = height - ((d.percentile - min) / range) * (height - 2 * chartPadding) - chartPadding;
                     return (
                         <circle key={i} cx={x} cy={y} r="3" fill={color} stroke="white" strokeWidth="1.5" />
                     );
@@ -117,14 +127,24 @@ const DimensionDetailPanel: React.FC<{
     status: { label: string; color: string; bg: string };
     idx: number;
 }> = ({ dimension, status, idx }) => {
+    const metadata = dimensionMetaById[dimension.dimension];
+    const confidenceRange = `${dimension.confidenceInterval[0]}-${dimension.confidenceInterval[1]}th`;
+    const trendSummary = dimension.trend === 'improving'
+        ? 'Recent assessments show upward movement.'
+        : dimension.trend === 'declining'
+            ? 'Recent assessments show slight regression and should be monitored.'
+            : 'Recent assessments are holding steady.';
+    const recommendedSessions = Math.max(4, Math.min(12, Math.round((100 - dimension.percentile) / 10) + 4));
+    const completedSessions = Math.max(1, Math.min(recommendedSessions, Math.round((dimension.percentile / 100) * recommendedSessions)));
+    const progressPct = Math.round((completedSessions / recommendedSessions) * 100);
+
     return (
         <div className="mp-accordion-body">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--spacing-xl)' }}>
                 {/* Left column: description, chart, bullets */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-xl)' }}>
                     <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
-                        {/* Placeholder descriptions mapping since backend doesn't always send full text */}
-                        The ability to hold and manipulate information in mind. This is critical for following multi-step instructions and mental synthesis.
+                        {metadata?.definition || `This dimension captures ${getDimensionDescription(dimension.dimension)}.`}
                     </p>
 
                     {/* Historical Trajectory */}
@@ -147,12 +167,16 @@ const DimensionDetailPanel: React.FC<{
                     {/* Bullet points */}
                     <div>
                         <h5 style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--color-text-muted)', marginBottom: 10 }}>
-                            What this means for you
+                            Academic impact
                         </h5>
                         <ul className="mp-bullet-list">
-                            <li>You excel when information is chunked into logical units.</li>
-                            <li>Externalizing multi-step tasks reduces cognitive load.</li>
-                            <li>Visual cues significantly improve recall and accuracy.</li>
+                            {(metadata?.academicImpact || [
+                                `Performance patterns in ${formatDimensionName(dimension.dimension)} are still calibrating.`,
+                                trendSummary,
+                                'Additional assessments will sharpen these recommendations.'
+                            ]).slice(0, 3).map((item) => (
+                                <li key={item}>{item}</li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -165,8 +189,11 @@ const DimensionDetailPanel: React.FC<{
                                 Active Protocol
                             </h5>
                             <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 500, color: 'var(--color-text-primary)' }}>
-                                Externalization Training
+                                {formatDimensionName(dimension.dimension)} Training Loop
                             </h4>
+                            <p style={{ marginTop: 6, fontSize: 12, color: 'var(--color-text-muted)' }}>
+                                {trendSummary} Confidence interval: {confidenceRange}.
+                            </p>
                         </div>
                         <div style={{
                             width: 36, height: 36, borderRadius: '50%', background: '#fff',
@@ -182,10 +209,10 @@ const DimensionDetailPanel: React.FC<{
                     <div style={{ marginBottom: 'var(--spacing-lg)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
                             <span style={{ color: 'var(--color-text-muted)' }}>Progress</span>
-                            <span style={{ color: 'var(--mp-emerald)' }}>8 / 12 sessions</span>
+                            <span style={{ color: 'var(--mp-emerald)' }}>{completedSessions} / {recommendedSessions} sessions</span>
                         </div>
                         <div style={{ height: 6, width: '100%', background: 'var(--color-bg-tertiary)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
-                            <div style={{ width: '66%', height: '100%', background: 'var(--mp-emerald)', borderRadius: 'var(--radius-full)', transition: 'width 0.5s ease' }} />
+                            <div style={{ width: `${progressPct}%`, height: '100%', background: 'var(--mp-emerald)', borderRadius: 'var(--radius-full)', transition: 'width 0.5s ease' }} />
                         </div>
                     </div>
 
@@ -251,10 +278,18 @@ export const DimensionalDeepDive: React.FC<DimensionalDeepDiveProps> = ({ dimens
                                         <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text-secondary)' }}>
                                             {dim.percentile}<sup style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>th</sup>
                                         </span>
+                                        <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                                            CI {dim.confidenceInterval[0]}-{dim.confidenceInterval[1]}
+                                        </span>
                                         <span className="mp-status-pill" style={{ backgroundColor: status.bg, color: status.color }}>
                                             {status.label}
                                         </span>
                                     </div>
+                                    {dim.lastAssessed && (
+                                        <div style={{ marginTop: 5, fontSize: 11, color: 'var(--color-text-muted)' }}>
+                                            Last assessed {new Date(dim.lastAssessed).toLocaleDateString()}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

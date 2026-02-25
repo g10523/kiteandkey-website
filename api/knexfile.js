@@ -1,14 +1,13 @@
 require('dotenv').config();
 
+const sslConfig = process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false;
+
 module.exports = {
     development: {
         client: 'postgresql',
-        connection: process.env.DATABASE_URL || {
-            host: 'localhost',
-            port: 5432,
-            database: 'kite_and_key_dev',
-            user: 'postgres',
-            password: 'postgres'
+        connection: {
+            connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/kite_and_key_dev',
+            ssl: sslConfig,
         },
         pool: {
             min: parseInt(process.env.DATABASE_POOL_MIN) || 2,
@@ -27,7 +26,7 @@ module.exports = {
         client: 'postgresql',
         connection: {
             connectionString: process.env.DATABASE_URL,
-            ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false
+            ssl: sslConfig,
         },
         pool: {
             min: 2,

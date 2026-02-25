@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Eye, EyeOff, Calendar, Lock, Unlock, Save, Search, Filter } from 'lucide-react';
-import type { Lesson, Quiz, ContentVisibility } from '../types';
 
 interface ContentManagementProps {
     subjects: any[];

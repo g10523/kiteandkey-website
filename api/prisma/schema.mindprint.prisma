@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MindprintDimension {
+  WORKING_MEMORY
+  PROCESSING_SPEED
+  EXECUTIVE_FUNCTION
+  VERBAL_REASONING
+  SPATIAL_REASONING
+  PATTERN_RECOGNITION
+  FOCUS_ATTENTION
+  COGNITIVE_ENDURANCE
+}
+
+enum AttemptType {
+  BASELINE
+  CHECKIN
+}
+
+enum DataQualityLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum RecommendationAudience {
+  STUDENT
+  PARENT
+  TUTOR
+}
+
+model User {
+  id                     String                   @id @default(uuid())
+  learningCharacteristic Int?
+  attempts               MindprintAttempt[]
+
+  @@map("users")
+}
+
+model MindprintAttempt {
+  id               String                     @id @default(uuid())
+  userId           String                     @map("user_id")
+  dimension        MindprintDimension
+  type             AttemptType                @map("attempt_type")
+  startedAt        DateTime                   @map("started_at")
+  completedAt      DateTime?                  @map("completed_at")
+  nextEligibleAt   DateTime?                  @map("next_eligible_at")
+  dataQuality      DataQualityLevel?          @map("data_quality")
+  dataQualityNotes Json?                      @map("data_quality_notes")
+  meta             Json?
+  user             User                       @relation(fields: [userId], references: [id])
+  responses        MindprintItemResponse[]
+  score            MindprintScore?
+  recommendations  MindprintRecommendation[]
+  trainingPlan     MindprintTrainingPlan?
+
+  @@index([userId, dimension, startedAt])
+  @@map("mindprint_attempts")
+}
+
+model MindprintItemResponse {
+  id         String           @id @default(uuid())
+  attemptId  String           @map("attempt_id")
+  itemId     String           @map("item_id")
+  response   Json
+  correct    Boolean
+  timeMs     Int              @map("time_ms")
+  meta       Json?
+  attempt    MindprintAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@map("mindprint_item_responses")
+}
+
+model MindprintScore {
+  id          String           @id @default(uuid())
+  attemptId   String           @unique @map("attempt_id")
+  score0to100 Int              @map("score_0_to_100")
+  band        String
+  subscores   Json
+  trend       Json
+  diagnostics Json
+  attempt     MindprintAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@map("mindprint_scores")
+}
+
+model MindprintRecommendation {
+  id        String                   @id @default(uuid())
+  attemptId String                   @map("attempt_id")
+  audience  RecommendationAudience
+  content   Json
+  attempt   MindprintAttempt         @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId, audience])
+  @@map("mindprint_recommendations")
+}
+
+model MindprintTrainingPlan {
+  id                 String           @id @default(uuid())
+  attemptId          String           @unique @map("attempt_id")
+  plan               Json
+  schedule           Json
+  completionTracking Json             @map("completion_tracking")
+  attempt            MindprintAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@map("mindprint_training_plans")
+}

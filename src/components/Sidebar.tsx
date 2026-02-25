@@ -1,6 +1,6 @@
 import type { PageType, User } from '../types';
 import { FEATURE_FLAGS } from '../config/featureFlags';
-import { Home, BookOpen, FileText, Calendar, Brain, BarChart3, MessageSquare, Library, ChevronLeft, ChevronRight, Beaker, LogOut, Ticket, Settings, Lock } from 'lucide-react';
+import { BookOpen, FileText, Calendar, Brain, BarChart3, MessageSquare, Library, ChevronLeft, ChevronRight, Beaker, LogOut, Ticket, Settings, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
 
@@ -20,10 +20,9 @@ export default function Sidebar({ currentPage, onNavigate, user, isCollapsed, on
             {
                 title: 'LEARNING',
                 items: [
-                    { id: 'dashboard' as PageType, label: 'Dashboard', Icon: Home, roles: ['student', 'parent', 'tutor', 'admin'] },
-                    { id: 'subjects' as PageType, label: 'Courses', Icon: BookOpen, roles: ['student', 'tutor'] },
+                    { id: 'courses' as PageType, label: 'Courses', Icon: BookOpen, roles: ['student', 'tutor', 'admin', 'parent'] },
                     { id: 'assignments' as PageType, label: 'Assignments', Icon: FileText, roles: ['student'] },
-                    { id: 'schedule' as PageType, label: 'Schedule', Icon: Calendar, roles: ['student', 'tutor'] },
+                    { id: 'schedule' as PageType, label: 'Schedule', Icon: Calendar, roles: ['student', 'tutor', 'parent', 'admin'] },
                     { id: 'assessments' as PageType, label: 'Assessments', Icon: Brain, roles: ['tutor', 'admin'] },
                 ].filter(item => item.roles.includes(user.role))
             },
@@ -31,6 +30,7 @@ export default function Sidebar({ currentPage, onNavigate, user, isCollapsed, on
                 title: 'PERSONAL',
                 items: [
                     { id: 'mindprint' as PageType, label: 'MindPrint', Icon: Brain, roles: ['student', 'parent'] },
+                    { id: 'mindprint-working-memory' as PageType, label: 'Working Memory', Icon: Brain, roles: ['student', 'parent', 'tutor', 'admin'] },
                     { id: 'study-lab' as PageType, label: 'Study Lab', Icon: Beaker, roles: ['student'] },
                     { id: 'analytics' as PageType, label: 'Progress', Icon: BarChart3, roles: ['student', 'parent', 'admin'] },
                     { id: 'messages' as PageType, label: 'Messages', Icon: MessageSquare, roles: ['student', 'parent', 'tutor', 'admin'] },
@@ -56,7 +56,7 @@ export default function Sidebar({ currentPage, onNavigate, user, isCollapsed, on
         <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
             <div className="sidebar-header">
                 <div className="sidebar-top">
-                    <a href="#" className="logo" onClick={(e) => { e.preventDefault(); onNavigate('dashboard'); }}>
+                    <a href="#" className="logo" onClick={(e) => { e.preventDefault(); onNavigate('courses'); }}>
                         <img
                             src="/logo.jpg"
                             alt="Kite & Key Logo"
