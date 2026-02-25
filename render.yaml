@@ -2,7 +2,7 @@ services:
   - type: web
     name: kite-academy-api
     env: node
-    rootDir: api
+    rootDir: backend
     buildCommand: npm install
     startCommand: node src/server.js
     healthCheckPath: /api/health

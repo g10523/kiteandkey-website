@@ -1,1 +1,9 @@
-api/
+backend/node_modules/
+backend/.env*
+backend/api.log
+backend/prisma/
+backend/postman_collection.json
+backend/setup.sh
+backend/Dockerfile
+backend/*.md
+backend/_test_hang.js
