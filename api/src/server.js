@@ -185,12 +185,10 @@ app.use((err, req, res, next) => {
 //  START SERVER
 // ═══════════════════════════════════════
 app.listen(PORT, () => {
-    console.log(`\n🚀 Kite & Key API server running on port ${PORT}`);
-    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`   Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
-    console.log(`   Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`);
-    console.log(`   🔒 Security: Helmet + CORS + Rate Limiting + Security Keys + Audit Logging`);
-    console.log('');
+    console.log(`Kite & Key API server running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
+    console.log(`Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`);
 });
 
 // Graceful shutdown
