@@ -107,7 +107,7 @@ exports.seed = async function (knex) {
         password_hash: kamakshiPassword,
         role: 'parent',
         first_name: 'Kamakshi',
-        last_name: 'Sundaram',
+        last_name: 'Rathore',
         is_active: true,
         is_verified: true,
         created_by: admin.id
