@@ -55,7 +55,7 @@ export default function CourseQuizView({ courseId, lessonId, onNavigate }: Cours
     const [timeLeft, setTimeLeft] = useState(0);
     const [activeQuestion, setActiveQuestion] = useState(0);
     const [submitting, setSubmitting] = useState(false);
-    const [attemptId, setAttemptId] = useState<string | null>(null);
+    const [_attemptId, setAttemptId] = useState<string | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // Fetch quiz data

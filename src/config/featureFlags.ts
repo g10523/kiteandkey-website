@@ -74,4 +74,5 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
     'courses': { status: 'ready', allowedRoles: ['student', 'tutor', 'parent', 'admin'] },
     'course-detail': { status: 'ready', allowedRoles: ['student', 'tutor', 'parent', 'admin'] },
     'course-quiz': { status: 'ready', allowedRoles: ['student', 'tutor', 'parent', 'admin'] },
+    'tutor-grading': { status: 'ready', allowedRoles: ['tutor', 'admin'] },
 };
