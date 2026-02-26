@@ -4,47 +4,47 @@
  */
 
 exports.seed = async function (knex) {
-    // Find the lesson: English Y5 → Term 2 → Lesson 1
-    const course = await knex('courses')
-        .where({ subject_type: 'english', year_level: 5 })
-        .first();
+  // Find the lesson: English Y5 → Term 2 → Lesson 1
+  const course = await knex('courses')
+    .where({ subject_type: 'english', year_level: 5 })
+    .first();
 
-    if (!course) {
-        console.log('  ⚠ English Y5 course not found — skipping lesson content seed');
-        return;
-    }
+  if (!course) {
+    console.log('  ⚠ English Y5 course not found — skipping lesson content seed');
+    return;
+  }
 
-    const term2 = await knex('course_terms')
-        .where({ course_id: course.id, term_number: 2 })
-        .first();
+  const term2 = await knex('course_terms')
+    .where({ course_id: course.id, term_number: 2 })
+    .first();
 
-    if (!term2) {
-        console.log('  ⚠ English Y5 Term 2 not found — skipping');
-        return;
-    }
+  if (!term2) {
+    console.log('  ⚠ English Y5 Term 2 not found — skipping');
+    return;
+  }
 
-    const lesson = await knex('lessons')
-        .where({ term_id: term2.id, lesson_number: 1 })
-        .first();
+  const lesson = await knex('lessons')
+    .where({ term_id: term2.id, lesson_number: 1 })
+    .first();
 
-    if (!lesson) {
-        console.log('  ⚠ Lesson 1 not found in Term 2 — skipping');
-        return;
-    }
+  if (!lesson) {
+    console.log('  ⚠ Lesson 1 not found in Term 2 — skipping');
+    return;
+  }
 
-    console.log(`  📝 Updating lesson: ${lesson.title} (${lesson.id})`);
+  console.log(`  📝 Updating lesson: ${lesson.title} (${lesson.id})`);
 
-    // ════════════════════════════════════════════
-    //  SUMMARY NOTES (rich HTML)
-    // ════════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  SUMMARY NOTES (rich HTML)
+  // ════════════════════════════════════════════
 
-    const contentNotes = {
-        objectives: [
-            'Identify author purpose and point of view',
-            'Recognize text structures',
-            'Understand informative text features',
-        ],
-        html: `
+  const contentNotes = {
+    objectives: [
+      'Identify author purpose and point of view',
+      'Recognize text structures',
+      'Understand informative text features',
+    ],
+    html: `
 <div class="lesson-rich-content">
 
 <h2>1. Purpose of Informative Texts</h2>
@@ -188,29 +188,18 @@ exports.seed = async function (knex) {
   <li><strong>Lexical chains:</strong> Repeated use of key terms and synonyms to maintain topic focus</li>
 </ul>
 
-<hr/>
-
-<h2>5. Visual Features (Textual Conventions)</h2>
-<ul>
-  <li><strong>Headings and Subheadings:</strong> Hierarchical organization (Bold, larger font)</li>
-  <li><strong>Bullet Points and Numbered Lists:</strong> Enumeration of key facts</li>
-  <li><strong>Diagrams and Labels:</strong> Visual representation with explanatory captions</li>
-  <li><strong>Glossary:</strong> Definitions of technical terms (usually bolded in text)</li>
-  <li><strong>Index and Table of Contents:</strong> Navigational tools for longer texts</li>
-  <li><strong>Bold/Italic Text:</strong> Emphasis on key terminology or definitions</li>
-</ul>
 
 </div>
         `.trim(),
-    };
+  };
 
-    // ════════════════════════════════════════════
-    //  HOMEWORK
-    // ════════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  HOMEWORK
+  // ════════════════════════════════════════════
 
-    const homeworkContent = {
-        instructions: 'Complete in your Homework Book',
-        html: `
+  const homeworkContent = {
+    instructions: 'Complete in your Homework Book',
+    html: `
 <div class="homework-rich-content">
 
 <div class="homework-task">
@@ -247,123 +236,123 @@ exports.seed = async function (knex) {
 
 </div>
         `.trim(),
-    };
+  };
 
-    // ════════════════════════════════════════════
-    //  QUIZ (structured for the QuizView component)
-    // ════════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  QUIZ (structured for the QuizView component)
+  // ════════════════════════════════════════════
 
-    const quizQuestions = [
-        // ── SECTION A: Multiple Choice (10 marks) ──
-        {
-            section: 'A',
-            sectionTitle: 'Multiple Choice',
-            sectionInstructions: 'Circle the correct answer.',
-            type: 'multiple_choice',
-            number: 1,
-            marks: 1,
-            question: 'Which sentence best demonstrates the <strong>objective point of view</strong> required in informative texts?',
-            options: [
-                'I think that climate change is the most serious problem we face today.',
-                'Climate change is obviously caused by human activities and must be stopped now.',
-                'Research indicates that global temperatures have risen by 1.1°C since pre-industrial times.',
-                'Everyone knows that recycling is the best way to save our beautiful planet.',
-            ],
-            correctIndex: 2,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 2, marks: 1,
-            question: 'In a text structured using <strong>compare and contrast</strong>, which connective pair would you expect to find?',
-            options: ['First, then', 'Because, therefore', 'Similarly, however', 'The problem is, the solution is'],
-            correctIndex: 2,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 3, marks: 1,
-            question: 'A text explaining "How to Construct a Volcanic Eruption Model" would most likely use which structure?',
-            options: ['Problem and Solution', 'Chronological/Sequence', 'Cause and Effect', 'Description'],
-            correctIndex: 1,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 4, marks: 1,
-            question: 'Which feature indicates that a text is <strong>instructive</strong> rather than merely descriptive?',
-            options: [
-                'Use of colourful adjectives',
-                'Presence of historical dates',
-                'Imperative verbs (commands) and numbered steps',
-                'References to scientific studies',
-            ],
-            correctIndex: 2,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 5, marks: 1,
-            question: '"The experiment was conducted over a three-week period." This sentence uses passive voice to:',
-            options: [
-                'Hide who conducted the experiment',
-                'Emphasize the timeframe rather than the researcher',
-                'Make the sentence more confusing',
-                "Express the author's opinion",
-            ],
-            correctIndex: 1,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 6, marks: 1,
-            question: 'A lexical chain in a text about "The Amazon Rainforest" might include:',
-            options: [
-                'Rainforest, trees, canopy, deforestation, ecosystem',
-                'Rainforest, desert, arctic, ocean',
-                'Happy, exciting, dangerous, beautiful',
-                'I, me, my, mine',
-            ],
-            correctIndex: 0,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 7, marks: 1,
-            question: 'Which of the following is <strong>NOT</strong> a characteristic of informative text language?',
-            options: [
-                'Use of present tense for general facts',
-                'Technical vocabulary specific to the topic',
-                'Emotive adjectives designed to frighten the reader',
-                'Formal tone without contractions',
-            ],
-            correctIndex: 2,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 8, marks: 1,
-            question: 'The sentence <em>"Although bats are often feared, they play a crucial role in pollination"</em> signals which structure?',
-            options: ['Purely descriptive', 'Compare and contrast', 'Cause and effect', 'Problem and solution'],
-            correctIndex: 1,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 9, marks: 1,
-            question: 'In a scientific report, why would the writer include a glossary?',
-            options: [
-                'To show off their vocabulary',
-                'To define technical terms for the reader',
-                'To make the text longer',
-                'To persuade readers to buy a dictionary',
-            ],
-            correctIndex: 1,
-        },
-        {
-            section: 'A', type: 'multiple_choice', number: 10, marks: 1,
-            question: 'Which topic sentence indicates the text will use <strong>enumeration</strong> (listing) structure?',
-            options: [
-                'There are three primary types of volcanic eruptions.',
-                'The eruption destroyed the entire village.',
-                'Volcanoes are dangerous because they explode.',
-                'If we study volcanoes, we can predict eruptions.',
-            ],
-            correctIndex: 0,
-        },
+  const quizQuestions = [
+    // ── SECTION A: Multiple Choice (10 marks) ──
+    {
+      section: 'A',
+      sectionTitle: 'Multiple Choice',
+      sectionInstructions: 'Circle the correct answer.',
+      type: 'multiple_choice',
+      number: 1,
+      marks: 1,
+      question: 'Which sentence best demonstrates the <strong>objective point of view</strong> required in informative texts?',
+      options: [
+        'I think that climate change is the most serious problem we face today.',
+        'Climate change is obviously caused by human activities and must be stopped now.',
+        'Research indicates that global temperatures have risen by 1.1°C since pre-industrial times.',
+        'Everyone knows that recycling is the best way to save our beautiful planet.',
+      ],
+      correctIndex: 2,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 2, marks: 1,
+      question: 'In a text structured using <strong>compare and contrast</strong>, which connective pair would you expect to find?',
+      options: ['First, then', 'Because, therefore', 'Similarly, however', 'The problem is, the solution is'],
+      correctIndex: 2,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 3, marks: 1,
+      question: 'A text explaining "How to Construct a Volcanic Eruption Model" would most likely use which structure?',
+      options: ['Problem and Solution', 'Chronological/Sequence', 'Cause and Effect', 'Description'],
+      correctIndex: 1,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 4, marks: 1,
+      question: 'Which feature indicates that a text is <strong>instructive</strong> rather than merely descriptive?',
+      options: [
+        'Use of colourful adjectives',
+        'Presence of historical dates',
+        'Imperative verbs (commands) and numbered steps',
+        'References to scientific studies',
+      ],
+      correctIndex: 2,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 5, marks: 1,
+      question: '"The experiment was conducted over a three-week period." This sentence uses passive voice to:',
+      options: [
+        'Hide who conducted the experiment',
+        'Emphasize the timeframe rather than the researcher',
+        'Make the sentence more confusing',
+        "Express the author's opinion",
+      ],
+      correctIndex: 1,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 6, marks: 1,
+      question: 'A lexical chain in a text about "The Amazon Rainforest" might include:',
+      options: [
+        'Rainforest, trees, canopy, deforestation, ecosystem',
+        'Rainforest, desert, arctic, ocean',
+        'Happy, exciting, dangerous, beautiful',
+        'I, me, my, mine',
+      ],
+      correctIndex: 0,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 7, marks: 1,
+      question: 'Which of the following is <strong>NOT</strong> a characteristic of informative text language?',
+      options: [
+        'Use of present tense for general facts',
+        'Technical vocabulary specific to the topic',
+        'Emotive adjectives designed to frighten the reader',
+        'Formal tone without contractions',
+      ],
+      correctIndex: 2,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 8, marks: 1,
+      question: 'The sentence <em>"Although bats are often feared, they play a crucial role in pollination"</em> signals which structure?',
+      options: ['Purely descriptive', 'Compare and contrast', 'Cause and effect', 'Problem and solution'],
+      correctIndex: 1,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 9, marks: 1,
+      question: 'In a scientific report, why would the writer include a glossary?',
+      options: [
+        'To show off their vocabulary',
+        'To define technical terms for the reader',
+        'To make the text longer',
+        'To persuade readers to buy a dictionary',
+      ],
+      correctIndex: 1,
+    },
+    {
+      section: 'A', type: 'multiple_choice', number: 10, marks: 1,
+      question: 'Which topic sentence indicates the text will use <strong>enumeration</strong> (listing) structure?',
+      options: [
+        'There are three primary types of volcanic eruptions.',
+        'The eruption destroyed the entire village.',
+        'Volcanoes are dangerous because they explode.',
+        'If we study volcanoes, we can predict eruptions.',
+      ],
+      correctIndex: 0,
+    },
 
-        // ── SECTION B: Short Answer (15 marks) ──
-        {
-            section: 'B',
-            sectionTitle: 'Short Answer',
-            type: 'short_answer',
-            number: 11,
-            marks: 4,
-            question: `Read the following text excerpt:
+    // ── SECTION B: Short Answer (15 marks) ──
+    {
+      section: 'B',
+      sectionTitle: 'Short Answer',
+      type: 'short_answer',
+      number: 11,
+      marks: 4,
+      question: `Read the following text excerpt:
 
 <blockquote>"The monarch butterfly's migration is one of nature's most remarkable phenomena. Unlike other butterflies, monarchs undertake a multigenerational journey spanning up to 4,000 kilometres. First, the butterflies store fat reserves by feeding on nectar. Next, they use environmental cues, specifically the angle of sunlight, to navigate southward. As a result of this incredible navigation system, monarchs return to the exact same forests as their ancestors, despite never having visited these locations themselves."</blockquote>
 
@@ -372,34 +361,34 @@ Identify <strong>two</strong> different text structures used in this passage. Fo
   <li>Name the structure (1 mark each)</li>
   <li>Quote one word or phrase that signals this structure (1 mark each)</li>
 </ul>`,
-        },
-        {
-            section: 'B', type: 'short_answer', number: 12, marks: 4,
-            question: 'Explain the difference between <strong>author\'s purpose</strong> and <strong>author\'s point of view</strong>. Use examples from any informative text you have studied this term to illustrate your answer.',
-        },
-        {
-            section: 'B', type: 'short_answer', number: 13, marks: 3,
-            question: `A student has written: <em>"I think that the water cycle is super cool because it rains and then the sun makes the water disappear and that's amazing!!!"</em>
+    },
+    {
+      section: 'B', type: 'short_answer', number: 12, marks: 4,
+      question: 'Explain the difference between <strong>author\'s purpose</strong> and <strong>author\'s point of view</strong>. Use examples from any informative text you have studied this term to illustrate your answer.',
+    },
+    {
+      section: 'B', type: 'short_answer', number: 13, marks: 3,
+      question: `A student has written: <em>"I think that the water cycle is super cool because it rains and then the sun makes the water disappear and that's amazing!!!"</em>
 
 Identify <strong>three</strong> ways this sentence fails to meet informative text conventions. Rewrite the sentence correctly.`,
-        },
-        {
-            section: 'B', type: 'short_answer', number: 14, marks: 4,
-            question: `Analyze the following sentence: <em>"Due to deforestation and climate change, numerous species face extinction; however, conservation efforts have successfully stabilized several populations."</em>
+    },
+    {
+      section: 'B', type: 'short_answer', number: 14, marks: 4,
+      question: `Analyze the following sentence: <em>"Due to deforestation and climate change, numerous species face extinction; however, conservation efforts have successfully stabilized several populations."</em>
 <ul>
   <li>Identify the text structure(s) present (2 marks)</li>
   <li>Explain how the connectives function to link ideas (2 marks)</li>
 </ul>`,
-        },
+    },
 
-        // ── SECTION C: Extended Response (10 marks) ──
-        {
-            section: 'C',
-            sectionTitle: 'Extended Response',
-            type: 'extended_response',
-            number: 15,
-            marks: 10,
-            passage: `<h4>The Hidden World of Caves</h4>
+    // ── SECTION C: Extended Response (10 marks) ──
+    {
+      section: 'C',
+      sectionTitle: 'Extended Response',
+      type: 'extended_response',
+      number: 15,
+      marks: 10,
+      passage: `<h4>The Hidden World of Caves</h4>
 
 <p>Cave systems represent some of Earth's most ancient and mysterious environments. These subterranean formations develop through distinct geological processes that span millennia.</p>
 
@@ -408,64 +397,64 @@ Identify <strong>three</strong> ways this sentence fails to meet informative tex
 <p>Three primary features characterize mature cave systems. Stalactites form when mineral-rich water drips from cave ceilings, leaving calcite deposits that accumulate downward like icicles. Conversely, stalagmites build upward from the cave floor where droplets land. When these formations meet, they create columns. Unlike popular belief, these structures grow extremely slowly—approximately one cubic centimetre per century.</p>
 
 <p>Cave ecosystems support unique biodiversity. Troglophiles, species that can survive both inside and outside caves, include certain bats and crickets. In contrast, troglobites have evolved complete dependence on cave environments, losing pigmentation and eyesight over generations. The discovery of extremophiles—organisms surviving without sunlight—in these dark zones has revolutionized scientific understanding of life's adaptability.</p>`,
-            subQuestions: [
-                {
-                    label: 'a',
-                    title: 'Text Structure Analysis',
-                    marks: 4,
-                    question: 'Identify and explain <strong>two</strong> different text structures used in this passage. Provide specific evidence (quotations) to support your identification.',
-                },
-                {
-                    label: 'b',
-                    title: 'Language Features',
-                    marks: 3,
-                    question: 'Identify three technical terms used in the text. For each term, explain how its use enhances the informative purpose of the text.',
-                },
-                {
-                    label: 'c',
-                    title: 'Critical Evaluation',
-                    marks: 3,
-                    question: 'The author states these formations grow "extremely slowly—approximately one cubic centimetre per century." Why has the author included this specific statistic? How does this choice reflect informative text conventions?',
-                },
-            ],
-        },
-
-        // ── BONUS ──
+      subQuestions: [
         {
-            section: 'BONUS',
-            sectionTitle: 'Bonus Challenge (Optional)',
-            type: 'extended_response',
-            number: 16,
-            marks: 2,
-            question: 'Create a hierarchical diagram (bullet points acceptable) showing how you would organize an informative text about "The History of Australian Currency" using <strong>three</strong> different text structures we have studied. Label each section with the structure name and justify why that structure suits that section.',
-            isBonus: true,
+          label: 'a',
+          title: 'Text Structure Analysis',
+          marks: 4,
+          question: 'Identify and explain <strong>two</strong> different text structures used in this passage. Provide specific evidence (quotations) to support your identification.',
         },
-    ];
+        {
+          label: 'b',
+          title: 'Language Features',
+          marks: 3,
+          question: 'Identify three technical terms used in the text. For each term, explain how its use enhances the informative purpose of the text.',
+        },
+        {
+          label: 'c',
+          title: 'Critical Evaluation',
+          marks: 3,
+          question: 'The author states these formations grow "extremely slowly—approximately one cubic centimetre per century." Why has the author included this specific statistic? How does this choice reflect informative text conventions?',
+        },
+      ],
+    },
 
-    const quizSettings = {
-        title: 'Selective Grade Quiz — Informative Text Features',
-        time_limit_minutes: 30,
-        total_marks: 35,
-        bonus_marks: 2,
-        instructions: 'Answer all questions. Use evidence from texts where required.',
-        available_from: null,
-        available_until: null,
-        due_date: null,
-    };
+    // ── BONUS ──
+    {
+      section: 'BONUS',
+      sectionTitle: 'Bonus Challenge (Optional)',
+      type: 'extended_response',
+      number: 16,
+      marks: 2,
+      question: 'Create a hierarchical diagram (bullet points acceptable) showing how you would organize an informative text about "The History of Australian Currency" using <strong>three</strong> different text structures we have studied. Label each section with the structure name and justify why that structure suits that section.',
+      isBonus: true,
+    },
+  ];
 
-    // ── Update the lesson row ──
-    await knex('lessons').where('id', lesson.id).update({
-        content_notes: JSON.stringify(contentNotes),
-        homework_content: JSON.stringify(homeworkContent),
-        quiz_questions: JSON.stringify(quizQuestions),
-        quiz_settings: JSON.stringify(quizSettings),
-        is_accessible: true,
-        updated_at: knex.fn.now(),
-    });
+  const quizSettings = {
+    title: 'Selective Grade Quiz — Informative Text Features',
+    time_limit_minutes: 30,
+    total_marks: 35,
+    bonus_marks: 2,
+    instructions: 'Answer all questions. Use evidence from texts where required.',
+    available_from: null,
+    available_until: null,
+    due_date: null,
+  };
 
-    console.log('  ✅ Lesson content updated:');
-    console.log('     📖 Summary Notes: 5 sections with rich HTML');
-    console.log('     📝 Homework: 3 tasks (Analysis, Application, Critical Thinking)');
-    console.log('     🧪 Quiz: 16 questions (10 MC + 4 Short Answer + 1 Extended + 1 Bonus)');
-    console.log('     Total marks: 35 + 2 bonus\n');
+  // ── Update the lesson row ──
+  await knex('lessons').where('id', lesson.id).update({
+    content_notes: JSON.stringify(contentNotes),
+    homework_content: JSON.stringify(homeworkContent),
+    quiz_questions: JSON.stringify(quizQuestions),
+    quiz_settings: JSON.stringify(quizSettings),
+    is_accessible: true,
+    updated_at: knex.fn.now(),
+  });
+
+  console.log('  ✅ Lesson content updated:');
+  console.log('     📖 Summary Notes: 5 sections with rich HTML');
+  console.log('     📝 Homework: 3 tasks (Analysis, Application, Critical Thinking)');
+  console.log('     🧪 Quiz: 16 questions (10 MC + 4 Short Answer + 1 Extended + 1 Bonus)');
+  console.log('     Total marks: 35 + 2 bonus\n');
 };

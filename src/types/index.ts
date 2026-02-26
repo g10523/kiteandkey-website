@@ -333,4 +333,6 @@ export type PageType =
   | 'content-management'
   | 'courses'
   | 'course-detail'
-  | 'course-quiz';
+  | 'course-quiz'
+  | 'tutor-grading';
+

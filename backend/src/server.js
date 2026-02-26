@@ -24,6 +24,7 @@ const contentRoutes = require('./routes/content');
 const workingMemoryRoutes = require('./routes/workingMemory');
 const scheduleRoutes = require('./routes/schedule');
 const courseRoutes = require('./routes/courseRoutes');
+const gradingRoutes = require('./routes/grading');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -159,6 +160,7 @@ app.use('/api/students', studentRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/grading', gradingRoutes);
 
 // ═══════════════════════════════════════
 //  ERROR HANDLING

@@ -54,6 +54,8 @@ export default function CourseQuizView({ courseId, lessonId, onNavigate }: Cours
     const [answers, setAnswers] = useState<Record<string, any>>({});
     const [timeLeft, setTimeLeft] = useState(0);
     const [activeQuestion, setActiveQuestion] = useState(0);
+    const [submitting, setSubmitting] = useState(false);
+    const [attemptId, setAttemptId] = useState<string | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // Fetch quiz data
@@ -133,10 +135,21 @@ export default function CourseQuizView({ courseId, lessonId, onNavigate }: Cours
         setAnswers(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleSubmit = useCallback(() => {
+    const handleSubmit = useCallback(async () => {
         setSubmitted(true);
         if (timerRef.current) clearInterval(timerRef.current);
-    }, []);
+
+        // Save to backend
+        try {
+            setSubmitting(true);
+            const res = await apiClient.post(`/grading/lessons/${lessonId}/submit`, { answers });
+            setAttemptId(res.data.attemptId);
+        } catch (err) {
+            console.warn('Could not save quiz attempt to server:', err);
+        } finally {
+            setSubmitting(false);
+        }
+    }, [lessonId, answers]);
 
     const getScore = () => {
         let score = 0;
@@ -272,8 +285,10 @@ export default function CourseQuizView({ courseId, lessonId, onNavigate }: Cours
                         </div>
                         <p className="score-pct">{pct}% — Multiple Choice</p>
                         <p className="score-note">
-                            Short answer and extended response questions will be reviewed by your tutor.
+                            ✅ Your answers have been submitted to your tutor for review.<br />
+                            Short answer and extended response questions will be marked by your tutor.
                         </p>
+                        {submitting && <p style={{ color: '#a78bfa', textAlign: 'center', marginTop: '0.5rem' }}>Saving your answers…</p>}
                     </div>
 
                     {/* Show MC answers */}

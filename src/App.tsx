@@ -9,6 +9,7 @@ import SubjectDetail from './pages/SubjectDetail';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
 import CourseQuizView from './pages/CourseQuizView';
+import TutorGradingView from './pages/TutorGradingView';
 import LessonView from './pages/LessonView';
 import Assignments from './pages/Assignments';
 import MindPrint from './pages/MindPrint';
@@ -104,6 +105,12 @@ function App() {
       case 'course-quiz':
         return selectedSubjectId && selectedLessonId ? (
           <CourseQuizView courseId={selectedSubjectId} lessonId={selectedLessonId} onNavigate={handleNavigate} />
+        ) : (
+          <Courses onNavigate={handleNavigate} />
+        );
+      case 'tutor-grading':
+        return selectedSubjectId && selectedLessonId ? (
+          <TutorGradingView courseId={selectedSubjectId} lessonId={selectedLessonId} onNavigate={handleNavigate} />
         ) : (
           <Courses onNavigate={handleNavigate} />
         );

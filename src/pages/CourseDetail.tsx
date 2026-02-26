@@ -480,6 +480,19 @@ export default function CourseDetail({ courseId, onNavigate }: CourseDetailProps
                                                             </button>
                                                         )}
 
+                                                        {(user?.role === 'tutor' || user?.role === 'admin') && (
+                                                            <button
+                                                                className="quiz-start-btn"
+                                                                style={{ background: '#7c3aed', marginTop: '0.5rem' }}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    onNavigate('tutor-grading' as PageType, course.id, lesson.id);
+                                                                }}
+                                                            >
+                                                                Grade Quiz Submissions
+                                                            </button>
+                                                        )}
+
                                                         {quiz.status === 'locked' && (
                                                             <div className="quiz-locked-msg">
                                                                 <Lock size={16} /> {quiz.label}
