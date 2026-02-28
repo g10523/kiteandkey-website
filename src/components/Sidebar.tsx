@@ -23,14 +23,14 @@ export default function Sidebar({ currentPage, onNavigate, user, isCollapsed, on
                     { id: 'courses' as PageType, label: 'Courses', Icon: BookOpen, roles: ['student', 'tutor', 'admin', 'parent'] },
                     { id: 'assignments' as PageType, label: 'Assignments', Icon: FileText, roles: ['student'] },
                     { id: 'schedule' as PageType, label: 'Schedule', Icon: Calendar, roles: ['student', 'tutor', 'parent', 'admin'] },
-                    { id: 'assessments' as PageType, label: 'Assessments', Icon: Brain, roles: ['tutor', 'admin'] },
+                    { id: 'assessments' as PageType, label: 'Assessments', Icon: Brain, roles: ['admin'] },
                 ].filter(item => item.roles.includes(user.role))
             },
             {
                 title: 'PERSONAL',
                 items: [
                     { id: 'mindprint' as PageType, label: 'MindPrint', Icon: Brain, roles: ['student', 'parent'] },
-                    { id: 'mindprint-working-memory' as PageType, label: 'Working Memory', Icon: Brain, roles: ['student', 'parent', 'tutor', 'admin'] },
+                    { id: 'mindprint-working-memory' as PageType, label: 'Working Memory', Icon: Brain, roles: ['student', 'parent', 'admin'] },
                     { id: 'study-lab' as PageType, label: 'Study Lab', Icon: Beaker, roles: ['student'] },
                     { id: 'analytics' as PageType, label: 'Progress', Icon: BarChart3, roles: ['student', 'parent', 'admin'] },
                     { id: 'messages' as PageType, label: 'Messages', Icon: MessageSquare, roles: ['student', 'parent', 'tutor', 'admin'] },

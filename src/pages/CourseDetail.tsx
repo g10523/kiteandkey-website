@@ -89,9 +89,14 @@ export default function CourseDetail({ courseId, onNavigate }: CourseDetailProps
             const data = res.data;
             setCourse(data);
 
-            // Default to first unlocked term
-            const firstUnlocked = data.terms.find((t: TermData) => !t.isLocked);
-            if (firstUnlocked) setActiveTerm(firstUnlocked.number);
+            // Default to Term 2, or first unlocked term
+            const term2 = data.terms.find((t: TermData) => t.number === 2);
+            if (term2) {
+                setActiveTerm(2);
+            } else {
+                const firstUnlocked = data.terms.find((t: TermData) => !t.isLocked);
+                if (firstUnlocked) setActiveTerm(firstUnlocked.number);
+            }
 
             // Build access map
             const accessMap: Record<string, boolean> = {};

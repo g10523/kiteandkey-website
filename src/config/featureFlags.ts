@@ -15,7 +15,7 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
     'subject-detail': { status: 'ready' },
     'lesson': { status: 'ready' },
     'quiz': { status: 'ready' },
-    'assessments': { status: 'ready' },
+    'assessments': { status: 'ready', allowedRoles: ['student', 'parent', 'admin'] },
 
     // Personal section — all locked for now
     'mindprint': {
@@ -58,8 +58,8 @@ export const FEATURE_FLAGS: Record<PageType, FeatureConfig> = {
     'admin-panel': { status: 'ready', allowedRoles: ['admin'] },
     'content-management': { status: 'ready', allowedRoles: ['admin', 'tutor'] },
 
-    'assessment-wm': { status: 'ready' },
-    'assessment-center': { status: 'ready' },
+    'assessment-wm': { status: 'ready', allowedRoles: ['student', 'parent', 'admin'] },
+    'assessment-center': { status: 'ready', allowedRoles: ['student', 'parent', 'admin'] },
     'mindprint-working-memory': {
         status: 'locked',
         allowedRoles: ['student', 'parent', 'tutor', 'admin'],
